@@ -1,0 +1,5 @@
+<?php
+// Fallback front controller: include Laravel public index
+// This allows accessing the app at http://localhost/Milestour/ when Apache doesn't use root .htaccess
+require __DIR__ . '/public/index.php';
+define('LARAVEL_START', microtime(true));

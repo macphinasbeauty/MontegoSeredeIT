@@ -1,0 +1,145 @@
+{
+  "resources/css/style.css": {
+    "file": "css/style.min.css",
+    "src": "resources/css/style.css",
+    "isEntry": true,
+    "name": "style",
+    "names": [
+      "style.css"
+    ]
+  },
+  "resources/img/banner/banner-01.jpg": {
+    "file": "icons/banner-01.jpg",
+    "src": "resources/img/banner/banner-01.jpg"
+  },
+  "resources/img/banner/car-banner.jpg": {
+    "file": "icons/banner-01.jpg",
+    "src": "resources/img/banner/banner-01.jpg"
+  },
+  "resources/img/banner/cruise-banner.jpg": {
+    "file": "icons/banner-01.jpg",
+    "src": "resources/img/banner/banner-01.jpg"
+  },
+  "resources/img/banner/flight-banner.jpg": {
+    "file": "icons/banner-01.jpg",
+    "src": "resources/img/banner/banner-01.jpg"
+  },
+  "resources/img/bg/authentication-footer-bg.png": {
+    "file": "icons/authentication-footer-bg.png",
+    "src": "resources/img/bg/authentication-footer-bg.png"
+  },
+  "resources/img/bg/authetication-bg.png": {
+    "file": "icons/authetication-bg.png",
+    "src": "resources/img/bg/authetication-bg.png"
+  },
+  "resources/img/bg/benefit-bg.png": {
+    "file": "icons/benefit-bg.png",
+    "src": "resources/img/bg/benefit-bg.png"
+  },
+  "resources/img/bg/breadcrumb-02.jpg": {
+    "file": "icons/breadcrumb.jpg",
+    "src": "resources/img/bg/breadcrumb-02.jpg"
+  },
+  "resources/img/bg/breadcrumb-03.jpg": {
+    "file": "icons/breadcrumb.jpg",
+    "src": "resources/img/bg/breadcrumb-02.jpg"
+  },
+  "resources/img/bg/breadcrumb-04.jpg": {
+    "file": "icons/breadcrumb.jpg",
+    "src": "resources/img/bg/breadcrumb-02.jpg"
+  },
+  "resources/img/bg/breadcrumb-05.jpg": {
+    "file": "icons/breadcrumb.jpg",
+    "src": "resources/img/bg/breadcrumb-02.jpg"
+  },
+  "resources/img/bg/breadcrumb-06.jpg": {
+    "file": "icons/breadcrumb-06.jpg",
+    "src": "resources/img/bg/breadcrumb-06.jpg"
+  },
+  "resources/img/bg/breadcrumb.jpg": {
+    "file": "icons/breadcrumb.jpg",
+    "src": "resources/img/bg/breadcrumb-02.jpg"
+  },
+  "resources/img/bg/coming-soon-bg.svg": {
+    "file": "icons/coming-soon-bg.svg",
+    "src": "resources/img/bg/coming-soon-bg.svg"
+  },
+  "resources/img/bg/faq-bg-03.png": {
+    "file": "icons/faq-bg-03.png",
+    "src": "resources/img/bg/faq-bg-03.png"
+  },
+  "resources/img/bg/faq-bg.png": {
+    "file": "icons/faq-bg.png",
+    "src": "resources/img/bg/faq-bg.png"
+  },
+  "resources/img/bg/footer-bg.png": {
+    "file": "icons/footer-bg.png",
+    "src": "resources/img/bg/footer-bg.png"
+  },
+  "resources/img/bg/hotel-bg-07.png": {
+    "file": "icons/hotel-bg-07.png",
+    "src": "resources/img/bg/hotel-bg-07.png"
+  },
+  "resources/img/bg/menu-bg.png": {
+    "file": "icons/menu-bg.png",
+    "src": "resources/img/bg/menu-bg.png"
+  },
+  "resources/img/bg/section-top-bg.png": {
+    "file": "icons/section-top-bg.png",
+    "src": "resources/img/bg/section-top-bg.png"
+  },
+  "resources/img/bus/why-bg.png": {
+    "file": "icons/why-bg.png",
+    "src": "resources/img/bus/why-bg.png"
+  },
+  "resources/img/bus/why-bg1.png": {
+    "file": "icons/why-bg1.png",
+    "src": "resources/img/bus/why-bg1.png"
+  },
+  "resources/img/icons/line-icon.svg": {
+    "file": "icons/line-icon.svg",
+    "src": "resources/img/icons/line-icon.svg"
+  },
+  "resources/img/icons/star-icon-2.svg": {
+    "file": "icons/star-white.svg",
+    "src": "resources/img/icons/star-icon-2.svg"
+  },
+  "resources/img/icons/star-icon.svg": {
+    "file": "icons/star-icon.svg",
+    "src": "resources/img/icons/star-icon.svg"
+  },
+  "resources/img/icons/star-white.svg": {
+    "file": "icons/star-white.svg",
+    "src": "resources/img/icons/star-icon-2.svg"
+  },
+  "resources/img/tours/home-banner-6.jpg": {
+    "file": "icons/home-banner-6.jpg",
+    "src": "resources/img/tours/home-banner-6.jpg"
+  },
+  "resources/img/tours/tours-35.jpg": {
+    "file": "icons/tours-35.jpg",
+    "src": "resources/img/tours/tours-35.jpg"
+  },
+  "resources/img/video.jpg": {
+    "file": "icons/video.jpg",
+    "src": "resources/img/video.jpg"
+  },
+  "resources/js/flight-list-search.js": {
+    "file": "js/flight-list-search.js",
+    "name": "flight-list-search",
+    "src": "resources/js/flight-list-search.js",
+    "isEntry": true
+  },
+  "resources/js/flight-search.js": {
+    "file": "js/flight-search.js",
+    "name": "flight-search",
+    "src": "resources/js/flight-search.js",
+    "isEntry": true
+  },
+  "resources/js/script.js": {
+    "file": "js/script.js",
+    "name": "script",
+    "src": "resources/js/script.js",
+    "isEntry": true
+  }
+}
