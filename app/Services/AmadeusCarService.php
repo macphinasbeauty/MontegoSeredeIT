@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Provider;
+use App\Models\Car;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -131,12 +132,19 @@ class AmadeusCarService
             return ['data' => []];
         }
 
+        // Check if we have the required location codes for API search
+        $pickupLocationCode = $params['pickup_location_code'] ?? $this->extractLocationCode($params['location'] ?? '');
+        if (empty($pickupLocationCode)) {
+            Log::info('No valid pickup location code for car API search');
+            return ['data' => []];
+        }
+
         $token = $this->getAccessToken();
 
         // Prepare search parameters
         $searchParams = [
-            'pickupLocationCode' => $params['pickup_location_code'],
-            'dropoffLocationCode' => $params['dropoff_location_code'] ?? $params['pickup_location_code'],
+            'pickupLocationCode' => $pickupLocationCode,
+            'dropoffLocationCode' => $params['dropoff_location_code'] ?? $pickupLocationCode,
             'pickupDate' => $params['pickup_date'],
             'pickupTime' => $params['pickup_time'] ?? '10:00',
             'dropoffDate' => $params['dropoff_date'],
@@ -153,7 +161,7 @@ class AmadeusCarService
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get($this->provider->endpoint . '/shopping/car-rental-offers', $searchParams);
+        ])->get($this->provider->endpoint . '/shopping/car-rental/availability', $searchParams);
 
         if ($response->successful()) {
             return $response->json();
@@ -163,21 +171,67 @@ class AmadeusCarService
     }
 
     /**
+     * Extract IATA location code from location string
+     */
+    private function extractLocationCode(string $location): string
+    {
+        if (empty($location)) {
+            return '';
+        }
+
+        // Simple mapping for common locations (can be expanded)
+        $locationMap = [
+            'nairobi' => 'NBO',
+            'new york' => 'NYC',
+            'london' => 'LON',
+            'paris' => 'PAR',
+            'tokyo' => 'TYO',
+            'dubai' => 'DXB',
+            'barcelona' => 'BCN',
+            'rome' => 'ROM',
+            'amsterdam' => 'AMS',
+            'sydney' => 'SYD',
+            'los angeles' => 'LAX',
+        ];
+
+        $lowerLocation = strtolower(trim($location));
+
+        // Try exact match first
+        if (isset($locationMap[$lowerLocation])) {
+            return $locationMap[$lowerLocation];
+        }
+
+        // Try partial match (contains city name)
+        foreach ($locationMap as $city => $code) {
+            if (strpos($lowerLocation, $city) !== false) {
+                return $code;
+            }
+        }
+
+        // If no match found, try to extract IATA code if it's already in the string
+        if (preg_match('/\b([A-Z]{3})\b/', $location, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+
+    /**
      * Search cars from database (added by agents)
      */
     private function searchCarsFromDatabase(array $params)
     {
         $query = Car::query();
 
-        // Filter by location
-        if (isset($params['pickup_location']) && !empty($params['pickup_location'])) {
-            $query->where('location', 'like', '%' . $params['pickup_location'] . '%')
-                  ->orWhere('city', 'like', '%' . $params['pickup_location'] . '%');
+        // Filter by location - check multiple parameter names for compatibility
+        $locationParam = $params['pickup_location'] ?? $params['location'] ?? '';
+        if (!empty($locationParam)) {
+            $query->where('location', 'like', '%' . $locationParam . '%');
         }
 
         // Filter by car type if provided
         if (isset($params['car_type'])) {
-            $query->where('type', $params['car_type']);
+            $query->where('make', $params['car_type']);
         }
 
         // Filter by price range if provided
@@ -188,31 +242,32 @@ class AmadeusCarService
             $query->where('daily_rate', '<=', $params['max_price']);
         }
 
-        // Only get available cars
-        $query->where('is_active', true)
-              ->where('available_count', '>', 0);
+        // Only get cars that are not deleted (using soft deletes if implemented)
+        // For now, all cars are considered available
 
         $cars = $query->get()->map(function ($car) use ($params) {
             return [
                 'id' => 'db_' . $car->id,
-                'type' => $car->type,
+                'type' => $car->make . ' ' . $car->model,
                 'model' => $car->model,
-                'vendor_name' => $car->provider_name ?? 'Direct Booking',
+                'make' => $car->make,
+                'vendor_name' => 'Direct Booking',
                 'price_total' => $car->daily_rate,
                 'price_base' => $car->daily_rate,
-                'currency' => $car->currency ?? 'USD',
+                'currency' => 'USD',
                 'pickup_location' => ['name' => $car->location],
                 'dropoff_location' => ['name' => $car->location],
                 'estimated_total' => $car->daily_rate,
                 'vehicle_details' => [
-                    'type' => $car->type,
+                    'type' => $car->make . ' ' . $car->model,
+                    'make' => $car->make,
                     'model' => $car->model,
+                    'year' => $car->year,
                     'seats' => $car->seats ?? 5,
                     'transmission' => $car->transmission ?? 'automatic',
-                    'fuel_type' => $car->fuel_type ?? 'gasoline',
+                    'fuel_type' => $car->fuel_type ?? 'petrol',
                 ],
                 'db_id' => $car->id,
-                'available_count' => $car->available_count,
             ];
         })->toArray();
 

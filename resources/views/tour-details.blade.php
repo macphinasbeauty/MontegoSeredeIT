@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-12">
-                    <h2 class="breadcrumb-title mb-2">Tour Details</h2>
+                    <h2 class="breadcrumb-title mb-2">{{ $tour['title'] ?? $tour['name'] ?? 'Tour Details' }}</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
                             <li class="breadcrumb-item"><a href="{{url('index')}}"><i class="isax isax-home5"></i></a></li>
@@ -32,48 +32,71 @@
             <div class="row">
                 <div class="col-xl-8">
 
-                    <!-- Slider -->
-                    <div>
-                        <div class="service-wrap mb-4">
-                            <div class="slider-wrap vertical-slider tour-vertical-slide d-flex align-items-center">
+                    <!-- Image Section -->
+                    <div class="service-wrap mb-4">
+                        @php
+                            $mainImage = $tour['image'] ?? asset('build/img/tours/tours-07.jpg');
+                            $galleryImages = isset($tour['gallery']) && is_array($tour['gallery']) ? $tour['gallery'] : [];
+                            $totalImages = count($galleryImages) + 1; // +1 for main image
+                        @endphp
+
+                        @if($totalImages === 1)
+                            <!-- Single Image - No Carousel -->
+                            <div class="tour-single-image position-relative">
+                                <img src="{{ $mainImage }}" class="img-fluid rounded" alt="{{ $tour['title'] ?? 'Tour Image' }}">
+                                <a href="{{ $mainImage }}" data-fancybox="gallery" class="btn btn-white btn-xs view-btn position-absolute" style="top: 15px; right: 15px; z-index: 2;"><i class="isax isax-image me-1"></i>View</a>
+                            </div>
+                        @elseif($totalImages === 2)
+                            <!-- Two Images - Simple Carousel -->
+                            <div class="slider-wrap simple-slider">
                                 <div class="slider-for nav-center" id="large-img">
                                     <div class="service-img">
-                                        <img src="{{URL::asset('build/img/tours/tour-large-01.jpg')}}" class="img-fluid" alt="Slider Img">
+                                        <img src="{{ $mainImage }}" class="img-fluid" alt="{{ $tour['title'] ?? 'Tour Image' }}">
                                     </div>
                                     <div class="service-img">
-                                        <img src="{{URL::asset('build/img/tours/tour-large-02.jpg')}}" class="img-fluid" alt="Slider Img">
-                                    </div>
-                                    <div class="service-img">
-                                        <img src="{{URL::asset('build/img/tours/tour-large-03.jpg')}}" class="img-fluid" alt="Slider Img">
-                                    </div>
-                                    <div class="service-img">
-                                        <img src="{{URL::asset('build/img/tours/tour-large-04.jpg')}}" class="img-fluid" alt="Slider Img">
-                                    </div>
-                                    <div class="service-img">
-                                        <img src="{{URL::asset('build/img/tours/tour-large-05.jpg')}}" class="img-fluid" alt="Slider Img">
+                                        <img src="{{ $galleryImages[0] }}" class="img-fluid" alt="Gallery Image">
                                     </div>
                                 </div>
-                                <a href="{{URL::asset('build/img/tours/tour-large-01.jpg')}}" data-fancybox="gallery" class="btn btn-white btn-xs view-btn"><i class="isax isax-image me-1"></i>See All</a>
-                                <div class="slider-nav nav-center" id="small-img">
-                                    <div><img src="{{URL::asset('build/img/tours/tour-thumb-01.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/tours/tour-thumb-02.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/tours/tour-thumb-03.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/tours/tour-thumb-04.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/tours/tour-thumb-05.jpg')}}" class="img-fluid" alt="Slider Img"></div>
+                                <!-- Simple navigation dots for 2 images -->
+                                <div class="simple-nav text-center mt-2">
+                                    <span class="nav-dot active" data-slide="0"></span>
+                                    <span class="nav-dot" data-slide="1"></span>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <!-- Multiple Images - Full Carousel with Thumbnails -->
+                            <div class="slider-wrap vertical-slider d-flex align-items-center">
+                                <div class="slider-for nav-center" id="large-img">
+                                    <div class="service-img">
+                                        <img src="{{ $mainImage }}" class="img-fluid" alt="{{ $tour['title'] ?? 'Tour Image' }}">
+                                    </div>
+                                    @foreach($galleryImages as $galleryImg)
+                                    <div class="service-img">
+                                        <img src="{{ $galleryImg }}" class="img-fluid" alt="Gallery Image">
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <a href="{{ $mainImage }}" data-fancybox="gallery" class="btn btn-white btn-xs view-btn"><i class="isax isax-image me-1"></i>See All</a>
+                                <div class="slider-nav nav-center" id="small-img">
+                                    <div><img src="{{ $mainImage }}" class="img-fluid" alt="{{ $tour['title'] ?? 'Tour Thumbnail' }}"></div>
+                                    @foreach(array_slice($galleryImages, 0, 4) as $thumbImg)
+                                    <div><img src="{{ $thumbImg }}" class="img-fluid" alt="Gallery Thumbnail"></div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="mb-2">
-                                <h4 class="mb-1 d-flex align-items-center flex-wrap mb-2">Rainbow Mountain Valley<span class="badge badge-xs bg-success rounded-pill ms-2"><i class="isax isax-ticket-star me-1"></i>Verified</span></h4>
+                                <h4 class="mb-1 d-flex align-items-center flex-wrap mb-2">{{ $tour['title'] ?? $tour['name'] ?? 'Tour Details' }}<span class="badge badge-xs bg-success rounded-pill ms-2"><i class="isax isax-ticket-star me-1"></i>Verified</span></h4>
                                 <div class="d-flex align-items-center flex-wrap">
-                                    <p class="fs-14 mb-2 me-3 pe-3 border-end"><i class="isax isax-receipt text-primary me-2"></i>Adventure Tour</p>
-                                    <p class="fs-14 mb-2 me-3 pe-3 border-end"><i class="isax isax-location5 me-2"></i>Ciutat Vella, Barcelona
+                                    <p class="fs-14 mb-2 me-3 pe-3 border-end"><i class="isax isax-receipt text-primary me-2"></i>{{ $tour['category'] ?? 'Tour' }}</p>
+                                    <p class="fs-14 mb-2 me-3 pe-3 border-end"><i class="isax isax-location5 me-2"></i>{{ $tour['location'] ?? $tour['destination'] ?? 'Location Unknown' }}
                                         <a href="#location" class="link-primary text-decoration-underline fw-medium ms-2">View Location</a>
                                     </p>
                                     <div class="d-flex align-items-center mb-2">
-                                        <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">5.0</span>
-                                        <p class="fs-14"><a href="#reviews">(400 Reviews)</a></p>
+                                        <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">{{ $tour['rating'] ?? '4.5' }}</span>
+                                        <p class="fs-14"><a href="#reviews">({{ $tour['reviews_count'] ?? 0 }} Reviews)</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -83,447 +106,247 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /Slider -->
+                    <!-- /Image Section -->
 
                     <!-- Description -->
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Description</h5>
                         <div class="mb-2">
-                            <p>Kicking off on April 1, 2025, the "DreamsTour" will take Luna to major cities across North America and Europe, including Los Angeles, New York, Chicago, Toronto, and London. Each concert will showcase her unique blend of pop
-                                and ethereal soundscapes, bringing her music to life in a way you've never seen before.
-                            </p>
+                            <p>{{ $tour['description'] ?? 'Tour description not available.' }}</p>
                         </div>
+                        @if(isset($tour['long_description']) && $tour['long_description'] !== $tour['description'])
                         <div class="read-more">
                             <div class="more-text">
-                                <p>Each concert will showcase her unique blend of pop and ethereal soundscapes, bringing her music to life in a way you've never seen before.</p>
+                                <p>{{ $tour['long_description'] }}</p>
                             </div>
                             <a href="#" class="fs-14 fw-medium more-link text-decoration-underline mb-2">Show More</a>
                         </div>
+                        @endif
                     </div>
                     <!-- /Description -->
 
                     <!-- Highlights -->
+                    @if(isset($tour['highlights']) && is_array($tour['highlights']) && count($tour['highlights']) > 0)
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Highlights</h5>
                         <div>
+                            @foreach($tour['highlights'] as $highlight)
                             <div class="d-flex align-items-center mb-2">
                                 <span class="avatar avatar-md bg-primary-transparent rounded-circle me-2">
 									<i class="isax isax-send-sqaure-2 fs-16"></i>
 								</span>
-                                <p>Exclusive merchandise available at each show</p>
+                                <p>{{ $highlight }}</p>
                             </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <span class="avatar avatar-md bg-primary-transparent rounded-circle me-2">
-									<i class="isax isax-send-sqaure-2 fs-16"></i>
-								</span>
-                                <p>VIP packages with meet-and-greet options</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <span class="avatar avatar-md bg-primary-transparent rounded-circle me-2">
-									<i class="isax isax-send-sqaure-2 fs-16"></i>
-								</span>
-                                <p>Special acoustic set in select cities</p>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
+                    @endif
                     <!-- /Highlights -->
 
                     <!-- Itinerary -->
+                    @if(isset($tour['itinerary']) && is_array($tour['itinerary']) && count($tour['itinerary']) > 0)
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Itinerary</h5>
                         <div class="card shadow-none mb-0">
                             <div class="card-body p-3">
                                 <div class="stage-flow">
+                                    @foreach($tour['itinerary'] as $index => $day)
                                     <div class="d-flex align-items-center flows-step">
-                                        <span class="flow-step">01</span>
+                                        <span class="flow-step">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
                                         <div class="flow-content">
                                             <div class="d-flex align-items-center justify-content-between mb-2">
                                                 <div>
-                                                    <h6 class="fw-medium mb-1">Day 1, Kickoff in Los Angeles</h6>
-                                                    <p>25 May 2025, 04:45 AM</p>
+                                                    <h6 class="fw-medium mb-1">{{ $day['title'] ?? 'Day ' . ($index + 1) }}</h6>
+                                                    <p>{{ $day['time'] ?? '' }}</p>
                                                 </div>
-                                                <span class="avatar avatar-lg avatar-rounded flex-shrink-0"><img src="{{URL::asset('build/img/tours/tours-16.jpg')}}" alt="Img"></span>
+                                                @if(isset($day['image']))
+                                                <span class="avatar avatar-lg avatar-rounded flex-shrink-0"><img src="{{ $day['image'] }}" alt="Itinerary Image"></span>
+                                                @endif
                                             </div>
-                                            <p>The tour launches with a spectacular concert at The Hollywood Bowl, where Luna will debut her latest hits amidst a breathtaking backdrop of lights and visuals.
-                                            </p>
+                                            <p>{{ $day['description'] ?? '' }}</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center flows-step">
-                                        <span class="flow-step">02</span>
-                                        <div class="flow-content">
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <div>
-                                                    <h6 class="fw-medium mb-1">Day 2, West Coast Wonders</h6>
-                                                    <p>26 May 2025, 09:45 AM</p>
-                                                </div>
-                                                <span class="avatar avatar-lg avatar-rounded flex-shrink-0"><img src="{{URL::asset('build/img/tours/tours-17.jpg')}}" alt="Img"></span>
-                                            </div>
-                                            <p>Fans in Seattle and Portland can look forward to intimate performances, complete with fan meet-and-greets that allow for personal connections with Luna.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center flows-step">
-                                        <span class="flow-step">03</span>
-                                        <div class="flow-content">
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <div>
-                                                    <h6 class="fw-medium mb-1">Day 3, Midwest Magic</h6>
-                                                    <p>27 May 2025, 09:45 AM</p>
-                                                </div>
-                                                <span class="avatar avatar-lg avatar-rounded flex-shrink-0"><img src="{{URL::asset('build/img/tours/tours-18.jpg')}}" alt="Img"></span>
-                                            </div>
-                                            <p>The tour moves to Chicago, where Luna will perform at the iconic United Center. Expect a night filled with energy and emotion as she shares her music with devoted fans.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center flows-step">
-                                        <span class="flow-step">04</span>
-                                        <div class="flow-content">
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <div>
-                                                    <h6 class="fw-medium mb-1">Day 4, East Coast Excitement</h6>
-                                                    <p>31 May 2025, 09:45 AM</p>
-                                                </div>
-                                                <span class="avatar avatar-lg avatar-rounded flex-shrink-0"><img src="{{URL::asset('build/img/tours/tours-19.jpg')}}" alt="Img"></span>
-                                            </div>
-                                            <p>
-                                                The New York show at Madison Square Garden promises to be a highlight of the tour, featuring special guests and surprises. Luna will also engage with fans in Central Park, offering a chance for unforgettable memories.
-                                            </p>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endif
                     <!-- /Itinerary -->
 
                     <!-- Includes & Excludes -->
+                    @if(isset($tour['includes']) && is_array($tour['includes']) && count($tour['includes']) > 0 || isset($tour['excludes']) && is_array($tour['excludes']) && count($tour['excludes']) > 0)
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Includes & Excludes</h5>
                         <div class="row gy-2">
+                            @if(isset($tour['includes']) && is_array($tour['includes']) && count($tour['includes']) > 0)
                             <div class="col-md-6">
+                                @foreach($tour['includes'] as $include)
                                 <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-tick-square5 text-success me-2"></i> Exclusive Merchandise
+                                    <i class="isax isax-tick-square5 text-success me-2"></i> {{ $include }}
                                 </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-tick-square5 text-success me-2"></i> Early Venue Access
-                                </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-tick-square5 text-success me-2"></i> Acoustic Performance
-                                </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-tick-square5 text-success me-2"></i> Tour Program
-                                </p>
-                                <p class="d-flex align-items-center">
-                                    <i class="isax isax-tick-square5 text-success me-2"></i> Transportation (if applicable)
-                                </p>
+                                @endforeach
                             </div>
+                            @endif
+                            @if(isset($tour['excludes']) && is_array($tour['excludes']) && count($tour['excludes']) > 0)
                             <div class="col-md-6">
+                                @foreach($tour['excludes'] as $exclude)
                                 <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-close-square5 text-danger me-2"></i> Travel Expenses
+                                    <i class="isax isax-close-square5 text-danger me-2"></i> {{ $exclude }}
                                 </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-close-square5 text-danger me-2"></i> Accommodation
-                                </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-close-square5 text-danger me-2"></i> Food and Beverage
-                                </p>
-                                <p class="d-flex align-items-center mb-2">
-                                    <i class="isax isax-close-square5 text-danger me-2"></i> Parking Fees
-                                </p>
-                                <p class="d-flex align-items-center">
-                                    <i class="isax isax-close-square5 text-danger me-2"></i> Personal Expenses
-                                </p>
+                                @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
+                    @endif
                     <!-- /Includes & Excludes -->
 
                     <!-- Gallery -->
+                    @if(isset($tour['gallery']) && is_array($tour['gallery']) && count($tour['gallery']) > 1)
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Gallery</h5>
                         <div class="tour-gallery-slider owl-carousel">
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-01.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-01.jpg')}}" alt="img">
+                            @foreach(array_slice($tour['gallery'], 1, 6) as $index => $galleryImg)
+                            <a class="galley-wrap" data-fancybox="gallery" href="{{ $galleryImg }}">
+                                <img src="{{ $galleryImg }}" alt="Gallery Image {{ $index + 1 }}">
                             </a>
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-02.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-02.jpg')}}" alt="img">
-                            </a>
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-03.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-03.jpg')}}" alt="img">
-                            </a>
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-04.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-04.jpg')}}" alt="img">
-                            </a>
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-05.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-05.jpg')}}" alt="img">
-                            </a>
-                            <a class="galley-wrap" data-fancybox="gallery" href="{{URL::asset('build/img/tours/gallery-tour-lg-06.jpg')}}">
-                                <img src="{{URL::asset('build/img/tours/gallery-tour-06.jpg')}}" alt="img">
-                            </a>
+                            @endforeach
                         </div>
                     </div>
+                    @endif
                     <!-- /Gallery -->
 
+                    @if(isset($tour['location']) && !empty($tour['location']))
                     <div class="bg-light-200 card-bg-light mb-4" id="location">
                         <h5 class="fs-18 mb-3">Location</h5>
                         <!-- Map -->
                         <div>
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6509170.989457427!2d-123.80081967108484!3d37.192957227641294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb9fe5f285e3d%3A0x8b5109a227086f55!2sCalifornia%2C%20USA!5e0!3m2!1sen!2sin!4v1669181581381!5m2!1sen!2sin"
+                            @php
+                                $location = urlencode($tour['location'] ?? $tour['destination'] ?? 'Location Unknown');
+                                $mapUrl = "https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q={$location}";
+                            @endphp
+                            <iframe src="https://www.google.com/maps?q={{ $location }}&output=embed"
                             allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="tour-detail-map w-100"></iframe>
                         </div>
                         <!-- /Map -->
                     </div>
+                    @endif
 
                     <!-- FAQ -->
+                    @if(isset($tour['faq']) && is_array($tour['faq']) && count($tour['faq']) > 0)
                     <div class="bg-light-200 card-bg-light mb-4">
                         <h5 class="fs-18 mb-3">Frequently Asked Questions</h5>
                         <div class="accordion faq-accordion" id="accordionFaq">
-                            <div class="accordion-item show mb-2">
+                            @foreach($tour['faq'] as $index => $faq)
+                            <div class="accordion-item {{ $index === 0 ? 'show' : '' }} mb-2">
                                 <div class="accordion-header">
-                                    <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq-collapseOne" aria-expanded="false" aria-controls="faq-collapseOne">
-                                        Does offer free cancellation for a full refund?
+                                    <button class="accordion-button fw-medium {{ $index > 0 ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#faq-{{ $index }}" aria-expanded="{{ $index === 0 ? 'true' : 'false' }}" aria-controls="faq-{{ $index }}">
+                                        {{ $faq['question'] ?? 'FAQ Question' }}
                                     </button>
                                 </div>
-                                <div id="faq-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFaq">
+                                <div id="faq-{{ $index }}" class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}" data-bs-parent="#accordionFaq">
                                     <div class="accordion-body">
-                                        <p class="mb-0">Does have fully refundable room rates available to book on our site. If you’ve booked a fully refundable room rate, this can be cancelled up to a few days before check-in depending on the property's cancellation
-                                            policy. Just make sure to check this property's cancellation policy for the exact terms and conditions.</p>
+                                        <p class="mb-0">{{ $faq['answer'] ?? 'FAQ Answer' }}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item mb-2">
-                                <div class="accordion-header">
-                                    <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-two" aria-expanded="false" aria-controls="faq-two">
-                                        Is there a pool?
-                                    </button>
-                                </div>
-                                <div id="faq-two" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
-                                    <div class="accordion-body">
-                                        <p class="mb-0">Does have fully refundable room rates available to book on our site. If you’ve booked a fully refundable room rate, this can be cancelled up to a few days before check-in depending on the property's cancellation policy. Just make sure to check this property's cancellation policy for the exact terms and conditions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item mb-2">
-                                <div class="accordion-header">
-                                    <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-three" aria-expanded="false" aria-controls="faq-three">
-                                        Are pets allowed?
-                                    </button>
-                                </div>
-                                <div id="faq-three" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
-                                    <div class="accordion-body">
-                                        <p class="mb-0">Does have fully refundable room rates available to book on our site. If you’ve booked a fully refundable room rate, this can be cancelled up to a few days before check-in depending on the property's cancellation  policy. Just make sure to check this property's cancellation policy for the exact terms and conditions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item mb-2">
-                                <div class="accordion-header">
-                                    <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-four" aria-expanded="false" aria-controls="faq-four">
-                                        Is airport shuttle service offered?
-                                    </button>
-                                </div>
-                                <div id="faq-four" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
-                                    <div class="accordion-body">
-                                        <p class="mb-0">Does have fully refundable room rates available to book on our site. If you’ve booked a fully refundable room rate, this can be cancelled up to a few days before check-in depending on the property's cancellation policy. Just make sure to check this property's cancellation policy for the exact terms and conditions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item mb-2">
-                                <div class="accordion-header">
-                                    <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-five" aria-expanded="false" aria-controls="faq-five">
-                                        What are the check-in and check-out times?
-                                    </button>
-                                </div>
-                                <div id="faq-five" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
-                                    <div class="accordion-body">
-                                        <p class="mb-0">Does have fully refundable room rates available to book on our site. If you’ve booked a fully refundable room rate, this can be cancelled up to a few days before check-in depending on the property's cancellation policy. Just make sure to check this property's cancellation policy for the exact terms and conditions.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
+                    @endif
                     <!-- /FAQ -->
 
                     <!-- Reviews -->
+                    @if(isset($tour['reviews']) && is_array($tour['reviews']) && count($tour['reviews']) > 0)
                     <div class="d-flex align-items-center justify-content-between flex-wrap mb-2" id="reviews">
-                        <h6 class="mb-3">Reviews (45)</h6>
+                        <h6 class="mb-3">Reviews ({{ $tour['reviews_count'] ?? count($tour['reviews']) }})</h6>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#add_review" class="btn btn-primary btn-md mb-3"><i class="isax isax-edit-2 me-1"></i>Write a Review</a>
                     </div>
                     <div class="row">
                         <div class="col-md-6 d-flex">
                             <div class="rating-item bg-light-200 text-center flex-fill mb-3">
                                 <h6 class="fw-medium mb-3">Customer Reviews & Ratings</h6>
-                                <h5 class="display-6">4.9 / 5.0</h5>
+                                <h5 class="display-6">{{ $tour['rating'] ?? '4.5' }} / 5.0</h5>
                                 <div class="d-inline-flex align-items-center justify-content-center mb-3">
-                                    <i class="ti ti-star-filled text-primary me-1"></i>
-                                    <i class="ti ti-star-filled text-primary me-1"></i>
-                                    <i class="ti ti-star-filled text-primary me-1"></i>
-                                    <i class="ti ti-star-filled text-primary me-1"></i>
-                                    <i class="ti ti-star-filled text-primary"></i>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= ($tour['rating'] ?? 4.5))
+                                            <i class="ti ti-star-filled text-primary me-1"></i>
+                                        @else
+                                            <i class="ti ti-star text-primary me-1"></i>
+                                        @endif
+                                    @endfor
                                 </div>
-                                <p>Based On 2,459 Reviews</p>
+                                <p>Based On {{ $tour['reviews_count'] ?? count($tour['reviews']) }} Reviews</p>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex">
                             <div class="card rating-progress shadow-none flex-fill mb-3">
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="me-2 text-nowrap mb-0">5 Star Ratings</p>
-                                        <div class="progress w-100" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-primary" style="width: 90%"></div>
+                                    @if(isset($tour['rating_breakdown']) && is_array($tour['rating_breakdown']))
+                                        @foreach($tour['rating_breakdown'] as $stars => $count)
+                                        <div class="d-flex align-items-center mb-2">
+                                            <p class="me-2 text-nowrap mb-0">{{ $stars }} Star Ratings</p>
+                                            <div class="progress w-100" role="progressbar" aria-valuenow="{{ ($count / ($tour['reviews_count'] ?? 1)) * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                                                <div class="progress-bar bg-primary" style="width: {{ ($count / ($tour['reviews_count'] ?? 1)) * 100 }}%"></div>
+                                            </div>
+                                            <p class="progress-count ms-2">{{ $count }}</p>
                                         </div>
-                                        <p class="progress-count ms-2">247</p>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="me-2 text-nowrap mb-0">4 Star Ratings</p>
-                                        <div class="progress mb-0 w-100" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @if(isset($tour['reviews']) && is_array($tour['reviews']) && count($tour['reviews']) > 0)
+                        @foreach(array_slice($tour['reviews'], 0, 3) as $review)
+                        <div class="card review-item shadow-none mb-3">
+                            <div class="card-body p-3">
+                                <div class="review-info">
+                                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <span class="avatar avatar-lg me-2 flex-shrink-0">
+                                                <img src="{{ $review['avatar'] ?? asset('build/img/users/user-05.jpg') }}" class="rounded-circle" alt="Reviewer">
+                                            </span>
+                                            <div>
+                                                <h6 class="fs-16 fw-medium mb-1">{{ $review['name'] ?? 'Anonymous' }}</h6>
+                                                <div class="d-flex align-items-center flex-wrap date-info">
+                                                    <p class="fs-14 mb-0">{{ $review['date'] ?? 'Recently' }}</p>
+                                                    <p class="fs-14 d-inline-flex align-items-center mb-0">
+                                                        <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">{{ $review['rating'] ?? '5.0' }}</span>
+                                                        {{ $review['title'] ?? 'Great Experience!' }}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p class="progress-count ms-2">145</p>
+                                        <a href="#" class="btn btn-outline-light btn-md d-inline-flex align-items-center mb-2"><i class="isax isax-repeat me-1"></i>Reply</a>
                                     </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="me-2 text-nowrap mb-0">3 Star Ratings</p>
-                                        <div class="progress mb-0 w-100" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-primary" style="width: 70%"></div>
-                                        </div>
-                                        <p class="progress-count ms-2">600</p>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="me-2 text-nowrap mb-0">2 Star Ratings</p>
-                                        <div class="progress mb-0 w-100" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-primary" style="width: 60%"></div>
-                                        </div>
-                                        <p class="progress-count ms-2">560</p>
-                                    </div>
+                                    <p class="mb-2">{{ $review['comment'] ?? 'Great tour experience!' }}</p>
+                                    @if(isset($review['images']) && is_array($review['images']))
                                     <div class="d-flex align-items-center">
-                                        <p class="me-2 text-nowrap mb-0">1 Star Ratings</p>
-                                        <div class="progress mb-0 w-100" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar bg-primary" style="width: 40%"></div>
+                                        @foreach(array_slice($review['images'], 0, 3) as $img)
+                                        <div class="avatar avatar-md me-2 mb-2" data-fancybox="gallery" href="{{ $img }}">
+                                            <img src="{{ $img }}" class="br-10" alt="Review Image">
                                         </div>
-                                        <p class="progress-count ms-2">400</p>
+                                        @endforeach
+                                    </div>
+                                    @endif
+                                    <div class="d-inline-flex align-items-center">
+                                        <a href="#" class="d-inline-flex align-items-center fs-14 me-3"><i class="isax isax-like-1 me-2"></i>{{ $review['likes'] ?? 0 }}</a>
+                                        <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-dislike me-2"></i>{{ $review['dislikes'] ?? 0 }}</a>
+                                        <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-heart5 text-danger me-2"></i>{{ $review['hearts'] ?? 0 }}</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card review-item shadow-none mb-3">
-                        <div class="card-body p-3">
-                            <div class="review-info">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="avatar avatar-lg me-2 flex-shrink-0">
-											<img src="{{URL::asset('build/img/users/user-05.jpg')}}" class="rounded-circle" alt="img">
-										</span>
-                                        <div>
-                                            <h6 class="fs-16 fw-medium mb-1">Joseph Massey</h6>
-                                            <div class="d-flex align-items-center flex-wrap date-info">
-                                                <p class="fs-14 mb-0">2 days ago</p>
-                                                <p class="fs-14 d-inline-flex align-items-center mb-0"><span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">5.0</span>Unforgettable Stay!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="btn btn-outline-light btn-md d-inline-flex align-items-center mb-2"><i class="isax isax-repeat me-1"></i>Reply</a>
-                                </div>
-                                <p class="mb-2">It was a good location however the cocoon concept was weird. No tables, chairs etc was difficult as everything went on the floor.</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-md me-2 mb-2" data-fancybox="gallery" href="{{URL::asset('build/img/tours/tour-large-01.jpg')}}">
-                                        <img src="{{URL::asset('build/img/tours/tour-thumb-01.jpg')}}" class="br-10" alt="img">
-                                    </div>
-                                    <div class="avatar avatar-md me-2 mb-2" data-fancybox="gallery" href="{{URL::asset('build/img/tours/tour-large-02.jpg')}}">
-                                        <img src="{{URL::asset('build/img/tours/tour-thumb-02.jpg')}}" class="br-10" alt="img">
-                                    </div>
-                                    <div class="avatar avatar-md me-0 mb-2" data-fancybox="gallery" href="{{URL::asset('build/img/tours/tour-large-03.jpg')}}">
-                                        <img src="{{URL::asset('build/img/tours/tour-thumb-03.jpg')}}" class="br-10" alt="img">
-                                    </div>
-                                </div>
-                                <div class="d-inline-flex align-items-center">
-                                    <a href="#" class="d-inline-flex align-items-center fs-14 me-3"><i class="isax isax-like-1 me-2"></i>21</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-dislike me-2"></i>50</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-heart5 text-danger me-2"></i>45</a>
-                                </div>
-                            </div>
+                        @endforeach
+                        @if(count($tour['reviews']) > 3)
+                        <div class="text-center mb-4 mb-xl-0">
+                            <a href="#" class="btn btn-primary btn-md d-inline-flex align-items-center justify-content-center mt-2">See all {{ count($tour['reviews']) }} reviews<i class="isax isax-arrow-right-3 ms-1"></i></a>
                         </div>
-                    </div>
-                    <div class="card review-item shadow-none mb-3">
-                        <div class="card-body p-3">
-                            <div class="review-info">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="avatar avatar-lg me-2 flex-shrink-0">
-											<img src="{{URL::asset('build/img/users/user-21.jpg')}}" class="rounded-circle" alt="img">
-										</span>
-                                        <div>
-                                            <h6 class="fs-16 fw-medium mb-1">Jeffrey Jones</h6>
-                                            <div class="d-flex align-items-center flex-wrap date-info">
-                                                <p class="fs-14 mb-0">2 days ago</p>
-                                                <p class="fs-14 d-inline-flex align-items-center mb-0"><span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">4.0</span>Excellent service!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="btn btn-outline-light btn-md d-inline-flex align-items-center mb-2"><i class="isax isax-repeat me-1"></i>Reply</a>
-                                </div>
-                                <p class="mb-2">From the moment we arrived, the staff made us feel welcome. The rooms were immaculate, and every detail was thoughtfully arranged. It was the perfect blend of comfort and luxury!</p>
-                                <div class="d-inline-flex align-items-center">
-                                    <a href="#" class="d-inline-flex align-items-center fs-14 me-3"><i class="isax isax-like-1 me-2"></i>15</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-dislike me-2"></i>30</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-heart5 text-danger me-2"></i>52</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card review-item shadow-none mb-3">
-                        <div class="card-body p-3">
-                            <div class="review-info">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="avatar avatar-lg me-2 flex-shrink-0">
-											<img src="{{URL::asset('build/img/users/user-26.jpg')}}" class="rounded-circle" alt="img">
-										</span>
-                                        <div>
-                                            <h6 class="fs-16 fw-medium mb-1">Jessie Alves</h6>
-                                            <div class="d-flex align-items-center flex-wrap date-info">
-                                                <p class="fs-14 mb-0">2 days ago</p>
-                                                <p class="fs-14 d-inline-flex align-items-center mb-0"><span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">5.0</span>Convenient Location!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="btn btn-outline-light btn-md d-inline-flex align-items-center mb-2"><i class="isax isax-repeat me-1"></i>Reply</a>
-                                </div>
-                                <p class="mb-2">The location was perfect for exploring the city, and the views from our room were breathtaking. It made our trip so much more enjoyable to stay somewhere central and scenic</p>
-                                <div class="d-inline-flex align-items-center">
-                                    <a href="#" class="d-inline-flex align-items-center fs-14 me-3"><i class="isax isax-like-1 me-2"></i>13</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-dislike me-2"></i>38</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-heart5 text-danger me-2"></i>75</a>
-                                </div>
-                            </div>
-                            <div class="review-info reply mt-4 p-3">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="avatar avatar-lg me-2 flex-shrink-0">
-											<img src="{{URL::asset('build/img/users/user-25.jpg')}}" class="rounded-circle" alt="img">
-										</span>
-                                        <div>
-                                            <h6 class="fs-16 fw-medium mb-1">Adrian Hendriques</h6>
-                                            <div class="d-flex align-items-center flex-wrap date-info">
-                                                <p class="fs-14 mb-0">2 days ago</p>
-                                                <p class="fs-14 d-inline-flex align-items-center mb-0"><span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">2.0</span>Excellent service!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="btn btn-outline-light btn-md d-inline-flex align-items-center me-2"><i class="isax isax-repeat me-1"></i>Reply</a>
-                                </div>
-                                <p class="mb-2">Thank you so much for your kind words! We're thrilled to hear that our location and views made your trip even more enjoyable. We hope to welcome you back soon for another scenic stay!</p>
-                                <div class="d-inline-flex align-items-center">
-                                    <a href="#" class="d-inline-flex align-items-center fs-14 me-3"><i class="isax isax-like-1 me-2"></i>10</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-dislike me-2"></i>21</a>
-                                    <a href="#" class="d-inline-flex align-items-center me-3"><i class="isax isax-heart5 text-danger me-2"></i>46</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mb-4 mb-xl-0">
-                        <a href="#" class="btn btn-primary btn-md d-inline-flex align-items-center justify-content-center mt-2">See all 4,078 reviews<i class="isax isax-arrow-right-3 ms-1"></i></a>
-                    </div>
+                        @endif
+                    @endif
                 </div>
                 <!-- /Reviews -->
 
@@ -538,27 +361,27 @@
                             <div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
                                     <h6 class="fw-medium">Date</h6>
-                                    <p class="flex-fill">25 May 2025 - 31 May 2025</p>
+                                    <p class="flex-fill">{{ $startDate ? date('d M Y', strtotime($startDate)) : 'TBD' }} - {{ $endDate ? date('d M Y', strtotime($endDate)) : 'TBD' }}</p>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
                                     <h6 class="fw-medium">Destination</h6>
-                                    <p class="flex-fill">Eidnesburg</p>
+                                    <p class="flex-fill">{{ $tour['location'] ?? $tour['destination'] ?? 'TBD' }}</p>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
                                     <h6 class="fw-medium">Duration</h6>
-                                    <p class="flex-fill">4 Day, 3 Night</p>
+                                    <p class="flex-fill">{{ $tour['duration'] ?? 'N/A' }} hours</p>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
                                     <h6 class="fw-medium">Departure</h6>
-                                    <p class="flex-fill">25 May 2025, 04:45 AM</p>
+                                    <p class="flex-fill">{{ $startDate ? date('d M Y, h:i A', strtotime($startDate)) : 'TBD' }}</p>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
                                     <h6 class="fw-medium">Return</h6>
-                                    <p class="flex-fill">31 May 2025, 10:00 PM</p>
+                                    <p class="flex-fill">{{ $endDate ? date('d M Y, h:i A', strtotime($endDate)) : 'TBD' }}</p>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between details-info">
-                                    <h6 class="fw-medium">Total Peoples</h6>
-                                    <p class="flex-fill">28</p>
+                                    <h6 class="fw-medium">Group Size</h6>
+                                    <p class="flex-fill">{{ $tour['group_size'] ?? $travelers ?? 'N/A' }} People</p>
                                 </div>
                             </div>
                         </div>
@@ -567,87 +390,58 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <p class="fs-13 fw-medium mb-1">Starts From</p>
-                                <h5 class="text-primary mb-1">$500 <span class="fs-14 text-default fw-normal">/ Night</span></h5>
+                                <h5 class="text-primary mb-1">{{ $tour['currency'] ?? 'USD' }} {{ $tour['price'] ?? $tour['starting_price'] ?? $tour['min_price'] ?? '500' }} <span class="fs-14 text-default fw-normal">/ Person</span></h5>
                             </div>
                             <div class="banner-form">
-                                <form action="{{url('tour-booking')}}">
-                                    <div class="form-info border-0">
-                                        <div class="form-item border rounded p-3 mb-3 w-100">
-                                            <label class="form-label fs-14 text-default mb-0">From</label>
-                                            <input type="text" class="form-control datetimepicker" value="21-10-2025">
-                                            <p class="fs-12">Monday</p>
-                                        </div>
-                                        <div class="form-item border rounded p-3 mb-3 w-100">
-                                            <label class="form-label fs-14 text-default mb-0">To</label>
-                                            <input type="text" class="form-control datetimepicker" value="21-10-2025">
-                                            <p class="fs-12">Monday</p>
-                                        </div>
-                                        <div class="card shadow-none mb-3">
-                                            <div class="card-body p-3 pb-0">
-                                                <div class="border-bottom pb-2 mb-2">
-                                                    <h6>Details</h6>
+                                <!-- Main Book Now Button -->
+                                <a href="{{ route('tour-booking', $tour['id']) }}" class="btn btn-primary btn-lg search-btn ms-0 w-100 fs-14 d-flex align-items-center justify-content-center mb-3">
+                                    <i class="isax isax-ticket me-2"></i>Book Now
+                                </a>
+
+                                <!-- Quantity Controls (Display Only - No Form Submission) -->
+                                <div class="form-info border-0">
+                                    <div class="form-item border rounded p-3 mb-3 w-100">
+                                        <label class="form-label fs-14 text-default mb-0">From</label>
+                                        <input type="text" class="form-control datetimepicker" readonly value="{{ $startDate ? date('d-m-Y', strtotime($startDate)) : date('d-m-Y', strtotime('+1 day')) }}">
+                                        <p class="fs-12">{{ $startDate ? date('l', strtotime($startDate)) : date('l', strtotime('+1 day')) }}</p>
+                                    </div>
+                                    <div class="form-item border rounded p-3 mb-3 w-100">
+                                        <label class="form-label fs-14 text-default mb-0">To</label>
+                                        <input type="text" class="form-control datetimepicker" readonly value="{{ $endDate ? date('d-m-Y', strtotime($endDate)) : date('d-m-Y', strtotime('+3 days')) }}">
+                                        <p class="fs-12">{{ $endDate ? date('l', strtotime($endDate)) : date('l', strtotime('+3 days')) }}</p>
+                                    </div>
+                                    <div class="card shadow-none mb-3">
+                                        <div class="card-body p-3 pb-0">
+                                            <div class="border-bottom pb-2 mb-2">
+                                                <h6>Travelers</h6>
+                                            </div>
+                                            <div class="traveler-summary">
+                                                <div class="mb-3 d-flex align-items-center justify-content-between">
+                                                    <label class="form-label text-gray-9 mb-0">Adults</label>
+                                                    <span class="fw-medium">{{ session('tour_adults', 2) }}</span>
                                                 </div>
-                                                <div class="custom-increment">
-                                                    <div class="mb-3 d-flex align-items-center justify-content-between">
-                                                        <label class="form-label text-gray-9 mb-0">Adults</label>
-                                                        <div class="custom-increment">
-                                                            <div class="input-group">
-                                                                <span class="input-group-btn float-start">
-                                                                    <button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
-                                                                    <span><i class="isax isax-minus"></i></span>
-                                                                </button>
-                                                                </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
-                                                                <span class="input-group-btn float-end">
-                                                                    <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                                                                        <span><i class="isax isax-add"></i></span>
-                                                                </button>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-3 d-flex align-items-center justify-content-between">
-                                                        <label class="form-label text-gray-9 mb-0">Infants <span class="text-default fw-normal">( 0-12 Yrs )</span></label>
-                                                        <div class="custom-increment">
-                                                            <div class="input-group">
-                                                                <span class="input-group-btn float-start">
-                                                                    <button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
-                                                                    <span><i class="isax isax-minus"></i></span>
-                                                                </button>
-                                                                </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
-                                                                <span class="input-group-btn float-end">
-                                                                    <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                                                                        <span><i class="isax isax-add"></i></span>
-                                                                </button>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-3 d-flex align-items-center justify-content-between">
-                                                        <label class="form-label text-gray-9 mb-0">Children <span class="text-default fw-normal">( 2-12 Yrs )</span></label>
-                                                        <div class="custom-increment">
-                                                            <div class="input-group">
-                                                                <span class="input-group-btn float-start">
-                                                                    <button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
-                                                                    <span><i class="isax isax-minus"></i></span>
-                                                                </button>
-                                                                </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
-                                                                <span class="input-group-btn float-end">
-                                                                    <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                                                                        <span><i class="isax isax-add"></i></span>
-                                                                </button>
-                                                                </span>
-                                                            </div>
-                                                        </div>
+                                                @if(session('tour_children', 0) > 0)
+                                                <div class="mb-3 d-flex align-items-center justify-content-between">
+                                                    <label class="form-label text-gray-9 mb-0">Children (2-12 Yrs)</label>
+                                                    <span class="fw-medium">{{ session('tour_children', 0) }}</span>
+                                                </div>
+                                                @endif
+                                                @if(session('tour_infants', 0) > 0)
+                                                <div class="mb-3 d-flex align-items-center justify-content-between">
+                                                    <label class="form-label text-gray-9 mb-0">Infants (0-2 Yrs)</label>
+                                                    <span class="fw-medium">{{ session('tour_infants', 0) }}</span>
+                                                </div>
+                                                @endif
+                                                <div class="border-top pt-3 mt-3">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <label class="form-label text-gray-9 mb-0 fw-medium">Total Travelers</label>
+                                                        <span class="fw-bold text-primary">{{ $travelers }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-lg search-btn ms-0 w-100 fs-14">Book Now</button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -689,40 +483,50 @@
                             </div>
                         </div>
                     </div>
+                    @if(isset($tour['provider']) || isset($tour['source_name']))
                     <div class="card shadow-none mb-0">
                         <div class="card-body">
                             <h5 class="fs-18 mb-3">Provider Details</h5>
                             <div class="py-1">
                                 <div class="bg-light-500 br-10 mb-3 d-flex align-items-center p-3">
                                     <a href="#" class="avatar avatar-lg flex-shrink-0">
-                                        <img src="{{URL::asset('build/img/users/user-05.jpg')}}" alt="img" class="rounded-circle">
+                                        <img src="{{ $tour['provider']['avatar'] ?? asset('build/img/users/user-05.jpg') }}" alt="Provider" class="rounded-circle">
                                     </a>
                                     <div class="ms-2 overflow-hidden">
-                                        <h6 class="fw-medium text-truncate"><a href="#">Adrian Hendriques</a></h6>
-                                        <p class="fs-14">Member Since : 14 May 2024</p>
+                                        <h6 class="fw-medium text-truncate"><a href="#">{{ $tour['provider']['name'] ?? $tour['source_name'] ?? 'Tour Provider' }}</a></h6>
+                                        <p class="fs-14">Member Since : {{ $tour['provider']['member_since'] ?? date('M Y') }}</p>
                                     </div>
                                 </div>
+                                @if(isset($tour['provider']['phone']) || isset($tour['provider']['email']))
                                 <div class="border br-10 mb-3 p-3">
+                                    @if(isset($tour['provider']['phone']))
                                     <div class="d-flex align-items-center border-bottom pb-3 mb-3">
                                         <span class="avatar avatar-sm me-2 rounded-circle flex-shrink-0 bg-primary"><i class="isax isax-call-outgoing5"></i></span>
-                                        <p>Call Us : +1 12545 45548</p>
+                                        <p>Call Us : {{ $tour['provider']['phone'] }}</p>
                                     </div>
+                                    @endif
+                                    @if(isset($tour['provider']['email']))
                                     <div class="d-flex align-items-center">
                                         <span class="avatar avatar-sm me-2 rounded-circle flex-shrink-0 bg-primary"><i class="isax isax-message-search5"></i></span>
-                                        <p>Email : Info@example.com</p>
+                                        <p>Email : {{ $tour['provider']['email'] }}</p>
                                     </div>
+                                    @endif
                                 </div>
+                                @endif
                             </div>
                             <div class="row g-2">
+                                @if(isset($tour['provider']['whatsapp']))
                                 <div class="col-sm-6">
-                                    <a href="#" class="btn btn-light d-flex align-items-center justify-content-center"><i class="isax isax-messages5 me-2"></i>Whatsapp Us</a>                      
+                                    <a href="https://wa.me/{{ $tour['provider']['whatsapp'] }}" class="btn btn-light d-flex align-items-center justify-content-center"><i class="isax isax-messages5 me-2"></i>Whatsapp Us</a>
                                 </div>
+                                @endif
                                 <div class="col-sm-6">
                                     <a href="{{url('chat')}}" class="btn btn-primary d-flex align-items-center justify-content-center"><i class="isax isax-message-notif5 me-2"></i>Chat Now</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <!-- /Tour Sidebar -->
 
@@ -736,3 +540,113 @@
     ========================= -->
 
 @endsection
+
+@push('styles')
+<style>
+/* Tour Details Responsive Image Styles */
+.tour-single-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.tour-single-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Simple slider for 2 images */
+.simple-slider .slider-for {
+    margin-bottom: 10px;
+}
+
+.simple-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-dot.active {
+    background-color: #007bff;
+}
+
+/* Ensure proper carousel behavior */
+.slider-wrap:not(.vertical-slider) .slider-for {
+    margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tour-single-image img {
+        height: 250px;
+    }
+
+    .vertical-slider {
+        flex-direction: column;
+    }
+
+    .vertical-slider .slider-nav {
+        order: 2;
+        margin-top: 15px;
+    }
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Handle simple 2-image slider navigation
+    $('.simple-nav .nav-dot').on('click', function() {
+        var slideIndex = $(this).data('slide');
+        $('.simple-slider .slider-for').slick('slickGoTo', slideIndex);
+
+        // Update active dot
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+    });
+
+    // Sync simple slider with dots
+    $('.simple-slider .slider-for').on('afterChange', function(event, slick, currentSlide) {
+        $('.simple-nav .nav-dot').removeClass('active');
+        $('.simple-nav .nav-dot[data-slide="' + currentSlide + '"]').addClass('active');
+    });
+
+    // Disable problematic quantity button JavaScript on tour details page
+    $('.quantity-left-minus, .quantity-right-plus').off('click').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var $button = $(this);
+        var $input = $button.closest('.input-group').find('.input-number');
+        var oldValue = parseInt($input.val());
+
+        if ($button.hasClass('quantity-left-minus')) {
+            var newVal = oldValue > 0 ? oldValue - 1 : 0;
+        } else {
+            var newVal = oldValue + 1;
+        }
+
+        $input.val(newVal);
+        return false;
+    });
+
+    // Prevent any form submission from quantity buttons
+    $('.custom-increment form, .banner-form form').on('submit', function(e) {
+        e.preventDefault();
+        return false;
+    });
+});
+</script>
+@endpush

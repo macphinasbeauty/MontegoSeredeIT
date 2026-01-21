@@ -118,6 +118,17 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="submenu">
+                                    <a href="#" class="d-block {{ (isset($page) && $page === 'admin-website-settings') ? 'active subdrop' : '' }}"><i class="isax isax-image5 me-2"></i><span>Website Settings</span><span class="menu-arrow"></span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="{{ route('admin.website-settings') }}" class="fs-14 d-inline-flex align-items-center {{ (isset($page) && $page === 'admin-website-settings') ? 'active' : '' }}">Page Sliders</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="fs-14 d-inline-flex align-items-center">Theme</a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a href="{{ route('admin.expert-applications.index') }}" class="d-flex align-items-center">
                                         <i class="isax isax-user-tick5 me-2"></i>Expert Applications
@@ -210,24 +221,16 @@
                                         <h6>Bookings Statistics</h6>
                                         <div class="dropdown ">
                                             <a href="#" class="dropdown-toggle btn bg-light-200 btn-sm text-gray-6 rounded-pill fw-normal fs-14 d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                                <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>2025
+                                                <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>{{ $filterYears[0] }}
                                             </a>
                                             <ul class="dropdown-menu  dropdown-menu-end p-3">
+                                                @foreach($filterYears as $year)
                                                 <li>
                                                     <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2025
+                                                        <i class="ti ti-point-filled me-1"></i>{{ $year }}
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2024
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2023
-                                                    </a>
-                                                </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>
@@ -255,24 +258,16 @@
                                         <h6>Earnings</h6>
                                         <div class="dropdown ">
                                             <a href="#" class="dropdown-toggle btn bg-light-200 btn-sm text-gray-6 rounded-pill fw-normal fs-14 d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                                <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>2025
+                                                <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>{{ $filterYears[0] }}
                                             </a>
                                             <ul class="dropdown-menu  dropdown-menu-end p-3">
+                                                @foreach($filterYears as $year)
                                                 <li>
                                                     <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2025
+                                                        <i class="ti ti-point-filled me-1"></i>{{ $year }}
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2024
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="dropdown-item rounded-1">
-                                                        <i class="ti ti-point-filled me-1"></i>2023
-                                                    </a>
-                                                </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>

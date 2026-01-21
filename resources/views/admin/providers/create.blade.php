@@ -155,6 +155,8 @@
                                         <option value="hotels">Hotels</option>
                                         <option value="cars">Cars</option>
                                         <option value="villas">Villas</option>
+                                        <option value="tours">Tours</option>
+                                        <option value="cruises">Cruises</option>
                                     </select>
                                 </div>
 

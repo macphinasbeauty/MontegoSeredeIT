@@ -302,7 +302,7 @@
                                             <td>
                                                 @if($booking->check_in && $booking->check_out)
                                                     @php
-                                                        $days = \Carbon\Carbon::parse($booking->check_in)->diffInDays(\Carbon\Carbon::parse($booking->check_out));
+                                                        $days = \Carbon\Carbon::parse(explode(' ', $booking->check_in)[0])->diffInDays(\Carbon\Carbon::parse(explode(' ', $booking->check_out)[0]));
                                                         $nights = $days - 1;
                                                     @endphp
                                                     {{ $days }} Days, {{ $nights }} Nights

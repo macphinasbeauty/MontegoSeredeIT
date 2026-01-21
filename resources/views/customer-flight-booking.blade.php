@@ -301,7 +301,7 @@
                                             </td>
                                             <td>{{ $booking->details['flight_snapshot']['origin_code'] ?? '' }} - {{ $booking->details['flight_snapshot']['destination_code'] ?? '' }}</td>
                                             <td>${{ number_format($booking->total_price, 2) }}</td>
-                                            <td>{{ $booking->departure_date ? \Carbon\Carbon::parse($booking->departure_date)->format('d M Y') : 'N/A' }}</td>
+                                            <td>{{ $booking->departure_date ? \Carbon\Carbon::parse(explode(' ', $booking->departure_date)[0])->format('d M Y') : 'N/A' }}</td>
                                             <td>
                                                 @if($booking->status == 'completed')
                                                     <span class="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i class="fa-solid fa-circle fs-5 me-1"></i>Completed</span>

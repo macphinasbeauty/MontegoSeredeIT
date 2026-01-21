@@ -32,7 +32,7 @@ class ProviderController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|in:flights,hotels,cars,villas',
+            'type' => 'required|string|in:flights,hotels,cars,villas,tours,cruises',
             'api_key' => 'nullable|string',
             'api_secret' => 'nullable|string',
             'endpoint' => 'nullable|url',
@@ -79,7 +79,7 @@ class ProviderController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|in:flights,hotels,cars,villas',
+            'type' => 'required|string|in:flights,hotels,cars,villas,tours,cruises',
             'api_key' => 'nullable|string',
             'api_secret' => 'nullable|string',
             'endpoint' => 'nullable|url',
@@ -145,7 +145,7 @@ class ProviderController extends Controller
                     return response()->json(['status' => 'error', 'message' => 'API secret is required for Amadeus']);
                 }
 
-                $tokenResponse = \Illuminate\Support\Facades\Http::asForm()->post($provider->endpoint . '/security/oauth2/token', [
+                $tokenResponse = \Illuminate\Support\Facades\Http::asForm()->post($provider->endpoint . '/v1/security/oauth2/token', [
                     'grant_type' => 'client_credentials',
                     'client_id' => $provider->api_key,
                     'client_secret' => $provider->api_secret,
@@ -153,6 +153,23 @@ class ProviderController extends Controller
 
                 if ($tokenResponse->successful()) {
                     return response()->json(['status' => 'success', 'message' => 'Amadeus API connection successful']);
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'Failed to obtain Amadeus access token']);
+                }
+            } elseif ($provider->type === 'hotels' && $provider->name === 'Amadeus') {
+                // Test Amadeus Hotel API - first get token, then test
+                if (!$provider->api_secret) {
+                    return response()->json(['status' => 'error', 'message' => 'API secret is required for Amadeus']);
+                }
+
+                $tokenResponse = \Illuminate\Support\Facades\Http::asForm()->post($provider->endpoint . '/v1/security/oauth2/token', [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => $provider->api_key,
+                    'client_secret' => $provider->api_secret,
+                ]);
+
+                if ($tokenResponse->successful()) {
+                    return response()->json(['status' => 'success', 'message' => 'Amadeus Hotel API connection successful']);
                 } else {
                     return response()->json(['status' => 'error', 'message' => 'Failed to obtain Amadeus access token']);
                 }
@@ -174,6 +191,54 @@ class ProviderController extends Controller
                     return response()->json(['status' => 'error', 'message' => 'API key does not have permission for car hire endpoints']);
                 } else {
                     return response()->json(['status' => 'error', 'message' => 'API request failed: ' . $response->status() . ' - ' . $response->body()]);
+                }
+            } elseif ($provider->type === 'tours' && $provider->name === 'Viator') {
+                // Test Viator API - try to get a list of destinations (lightweight endpoint)
+                $response = \Illuminate\Support\Facades\Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $provider->api_key,
+                    'exp-api-key' => $provider->api_key,
+                    'Accept' => 'application/json;version=2.0',
+                ])->get($provider->endpoint . '/destinations', [
+                    'limit' => 1, // Just get one destination to test
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (isset($data['data']) && is_array($data['data']) && count($data['data']) > 0) {
+                        return response()->json(['status' => 'success', 'message' => 'Viator API connection successful']);
+                    } else {
+                        return response()->json(['status' => 'error', 'message' => 'Viator API responded but returned no destinations']);
+                    }
+                } elseif ($response->status() === 401) {
+                    return response()->json(['status' => 'error', 'message' => 'Invalid API key or unauthorized']);
+                } elseif ($response->status() === 403) {
+                    return response()->json(['status' => 'error', 'message' => 'API key does not have permission for this endpoint']);
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'Viator API request failed: ' . $response->status() . ' - ' . $response->body()]);
+                }
+            } elseif ($provider->type === 'tours' && $provider->name === 'GetYourGuide') {
+                // Test GetYourGuide API - try to get tours (lightweight endpoint)
+                $response = \Illuminate\Support\Facades\Http::withHeaders([
+                    'X-ACCESS-TOKEN' => $provider->api_key,
+                    'Accept' => 'application/json',
+                ])->get($provider->endpoint . '/tours', [
+                    'limit' => 1, // Just get one tour to test
+                    'currency' => 'USD',
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (isset($data['data']) && is_array($data['data'])) {
+                        return response()->json(['status' => 'success', 'message' => 'GetYourGuide API connection successful']);
+                    } else {
+                        return response()->json(['status' => 'error', 'message' => 'GetYourGuide API responded but returned invalid data']);
+                    }
+                } elseif ($response->status() === 401) {
+                    return response()->json(['status' => 'error', 'message' => 'Invalid API key or unauthorized']);
+                } elseif ($response->status() === 403) {
+                    return response()->json(['status' => 'error', 'message' => 'API key does not have permission for this endpoint']);
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'GetYourGuide API request failed: ' . $response->status() . ' - ' . $response->body()]);
                 }
             }
 

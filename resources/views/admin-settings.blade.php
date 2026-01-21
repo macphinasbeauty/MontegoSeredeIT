@@ -439,6 +439,26 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <div class="settings-content">
+                                        <h6 class="fs-16 mb-3">Tour Service Fee</h6>
+                                        <form action="{{ route('admin.system.tour-service-fee.update') }}" method="POST">
+                                            @csrf
+                                            <div class="row gy-2">
+                                                <div class="col-lg-6">
+                                                    <label class="form-label">Service Fee Amount (USD)</label>
+                                                    <input type="number" step="0.01" min="0" name="tour_service_fee" class="form-control" value="{{ \App\Models\Setting::getValue('tour_service_fee', 15.50) }}" placeholder="15.50" required>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label class="form-label">Service Fee Description</label>
+                                                    <input type="text" name="tour_service_fee_description" class="form-control" value="{{ \App\Models\Setting::getValue('tour_service_fee_description', 'Processing and service fee') }}" placeholder="Processing and service fee" required>
+                                                </div>
+                                            </div>
+                                            <p class="fs-14 text-gray-6 fw-normal mt-2">This fee is added to all tour bookings and can be modified by administrators.</p>
+                                            <div class="d-flex justify-content-end mt-3">
+                                                <button type="submit" class="btn btn-primary">Update Service Fee</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                                 <!-- /System Settings Tab -->
 

@@ -1,0 +1,703 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Provider;
+use App\Models\Hotel;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
+
+class AmadeusHotelService
+{
+    protected $provider;
+    protected $accessToken;
+
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        $this->provider = Provider::where('name', 'Amadeus')
+            ->where('type', 'hotels')
+            ->first();
+    }
+
+    /**
+     * Get or refresh access token from Amadeus OAuth2
+     */
+    protected function getAccessToken()
+    {
+        $cacheKey = 'amadeus_hotel_token_' . ($this->provider->id ?? 'default');
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        if (!$this->provider || !$this->provider->api_key || !$this->provider->api_secret) {
+            Log::error('Amadeus credentials missing in database.');
+            return null;
+        }
+
+        try {
+            // CLEANUP: Ensure endpoint doesn't have a trailing slash
+            $baseUrl = rtrim($this->provider->endpoint, '/');
+
+            // IMPORTANT: Removed the forced production fallback.
+            // Test keys ONLY work on test.api.amadeus.com
+
+            $options = [
+                'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+                'timeout' => 60, // Increased total timeout
+                'connect_timeout' => 60, // Increased connect timeout
+            ];
+
+            if (env('HTTP_PROXY')) {
+                $options['proxy'] = env('HTTP_PROXY');
+            }
+
+            $response = Http::asForm()->retry(3, 100)->withOptions($options)->post($baseUrl . '/v1/security/oauth2/token', [
+                'grant_type'    => 'client_credentials',
+                'client_id'     => trim($this->provider->api_key),
+                'client_secret' => trim($this->provider->api_secret),
+            ]);
+
+            if (!$response->successful()) {
+                Log::error('Amadeus Hotel Token Error', [
+                    'status' => $response->status(),
+                    'body' => $response->json() // JSON is easier to read in logs
+                ]);
+
+                // If 401, don't just disable it, alert the dev.
+                if ($response->status() === 401) {
+                    Log::error('Check Amadeus Dashboard: Are these Test or Live keys?');
+                }
+
+                return null;
+            }
+
+            $tokenData = $response->json();
+            $accessToken = $tokenData['access_token'];
+            $expiresIn = $tokenData['expires_in'] ?? 1799;
+
+            Cache::put($cacheKey, $accessToken, $expiresIn - 60);
+
+            return $accessToken;
+
+        } catch (\Exception $e) {
+            Log::error("Amadeus Auth Exception: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Search hotels by location, dates, and guests
+     * Searches both API and database for hybrid results
+     * @param array $params - Must contain: city_code|destination, checkin, checkout, adults, rooms
+     */
+    public function searchHotels(array $params)
+    {
+        $apiResults = [];
+        $dbResults = [];
+
+        // Try API search if enabled
+        if ($this->provider && $this->provider->is_active) {
+            try {
+                $apiData = $this->searchHotelsFromAPI($params);
+                $rawApiResults = $apiData['data'] ?? [];
+                $apiResults = $this->parseSearchResults(['data' => $rawApiResults]);
+                Log::info('Amadeus Hotel API Search Success', [
+                    'results_count' => count($apiResults)
+                ]);
+            } catch (\Exception $e) {
+                Log::warning('Amadeus Hotel API Search Failed: ' . $e->getMessage());
+                $apiResults = [];
+            }
+        }
+
+        // Always search database for agent-added hotels
+        try {
+            $dbResults = $this->searchHotelsFromDatabase($params);
+            Log::info('Hotel Database Search Success', [
+                'results_count' => count($dbResults)
+            ]);
+        } catch (\Exception $e) {
+            Log::warning('Hotel Database Search Failed: ' . $e->getMessage());
+        }
+
+        // Combine results: API first, then database
+        $combinedData = [];
+        
+        // Add API results with source flag
+        foreach ($apiResults as $hotel) {
+            $hotel['source'] = 'api';
+            $hotel['source_name'] = 'Amadeus';
+            $combinedData[] = $hotel;
+        }
+
+        // Add database results with source flag
+        foreach ($dbResults as $hotel) {
+            $hotel['source'] = 'database';
+            $hotel['source_name'] = 'Direct Booking';
+            $combinedData[] = $hotel;
+        }
+
+        return [
+            'data' => $combinedData,
+            'api_count' => count($apiResults),
+            'database_count' => count($dbResults),
+            'total' => count($combinedData),
+        ];
+    }
+
+    /**
+     * Search hotels from Amadeus API only
+     */
+    private function searchHotelsFromAPI(array $params)
+    {
+        if (!$this->provider || !$this->provider->is_active) {
+            return ['data' => []];
+        }
+
+        $token = $this->getAccessToken();
+
+        if (!$token) {
+            throw new \Exception('Amadeus API authentication failed');
+        }
+
+        // Get city code for hotel list search
+        $cityCode = null;
+        if (isset($params['city_code']) && !empty($params['city_code'])) {
+            $cityCode = strtoupper(trim($params['city_code']));
+        } else if (isset($params['destination']) && !empty($params['destination'])) {
+            $destination = trim($params['destination']);
+            
+            // If destination looks like "City (CODE)", extract the code
+            if (preg_match('/\(([A-Z]{3})\)$/i', $destination, $matches)) {
+                $cityCode = strtoupper($matches[1]);
+            } else {
+                // Try to extract city name and map to IATA code
+                $cityCode = $this->mapCityToIataCode($destination);
+                
+                // If no mapping found, try to take first 3 characters as fallback
+                if (!$cityCode) {
+                    $cityCode = strtoupper(substr($destination, 0, 3));
+                }
+            }
+        }
+
+        if (!$cityCode || strlen($cityCode) !== 3 || !preg_match('/^[A-Z]{3}$/', $cityCode)) {
+            Log::error('Amadeus Search aborted: Invalid city code format', [
+                'destination' => $params['destination'] ?? 'unknown',
+                'extracted_city_code' => $cityCode,
+                'params' => $params
+            ]);
+            return ['data' => []];
+        }
+
+        Log::info('Amadeus city code extracted', [
+            'destination' => $params['destination'] ?? 'unknown',
+            'city_code' => $cityCode
+        ]);
+
+        $endpoint = $this->provider->endpoint;
+
+        // Step 1: Get Hotel IDs for the city
+        $hotelListResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->retry(3, 100)->withOptions([
+            'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+            'timeout' => 30,
+            'connect_timeout' => 15,
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, // Force IPv4
+            ],
+        ])->get($endpoint . '/v1/reference-data/locations/hotels/by-city', [
+            'cityCode' => $cityCode,
+        ]);
+
+        if (!$hotelListResponse->successful()) {
+            Log::error('Failed to get hotel list for city', [
+                'cityCode' => $cityCode,
+                'status' => $hotelListResponse->status()
+            ]);
+            return ['data' => []];
+        }
+
+        $hotelData = $hotelListResponse->json();
+        if (!isset($hotelData['data']) || empty($hotelData['data'])) {
+            Log::warning('No hotels found for city', ['cityCode' => $cityCode]);
+            return ['data' => []];
+        }
+
+        // Take up to 20 hotel IDs
+        $hotelIds = collect($hotelData['data'])->pluck('hotelId')->take(20)->toArray();
+
+        if (empty($hotelIds)) {
+            Log::warning('No hotel IDs extracted from response', ['cityCode' => $cityCode]);
+            return ['data' => []];
+        }
+
+        // Step 2: Search for offers using those hotel IDs
+        $searchParams = [
+            'hotelIds' => implode(',', $hotelIds),
+            'adults' => $params['adults'] ?? 1,
+            'checkInDate' => $params['checkin'],
+            'checkOutDate' => $params['checkout'],
+        ];
+
+        // Add optional parameters
+        if (isset($params['children'])) {
+            $searchParams['children'] = $params['children'];
+        }
+        if (isset($params['rooms'])) {
+            $searchParams['roomQuantity'] = $params['rooms'];
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->retry(3, 100)->withOptions([
+            'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+            'timeout' => 30,
+            'connect_timeout' => 15,
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, // Force IPv4
+            ],
+        ])->get($endpoint . '/v3/shopping/hotel-offers', $searchParams);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        throw new \Exception('Amadeus API v3 request failed: ' . $response->status());
+    }
+
+    /**
+     * Search hotels from database (added by agents)
+     */
+    private function searchHotelsFromDatabase(array $params)
+    {
+        $query = Hotel::query();
+
+        // Filter by location/destination
+        if (isset($params['destination']) && !empty($params['destination'])) {
+            $query->where(function($q) use ($params) {
+                $q->where('location', 'like', '%' . $params['destination'] . '%')
+                  ->orWhere('name', 'like', '%' . $params['destination'] . '%');
+            });
+        }
+
+        // Filter by price range if provided
+        if (isset($params['min_price'])) {
+            $query->where('price_per_night', '>=', $params['min_price']);
+        }
+        if (isset($params['max_price'])) {
+            $query->where('price_per_night', '<=', $params['max_price']);
+        }
+
+        // Filter by rating if provided
+        if (isset($params['min_rating'])) {
+            $query->where('rating', '>=', $params['min_rating']);
+        }
+
+        // Only get manually added hotels (agent-added hotels)
+        $query->where('is_manual', true);
+
+        $hotels = $query->get()->map(function ($hotel) use ($params) {
+            // Get currency code from relationship
+            $currencyCode = 'USD'; // default
+            if ($hotel->currency) {
+                $currencyCode = $hotel->currency->code ?? 'USD';
+            }
+
+            return [
+                'id' => 'db_' . $hotel->id,
+                'name' => $hotel->name,
+                'price' => $hotel->price_per_night,
+                'currency' => $currencyCode,
+                'rating' => $hotel->stars, // Use stars field from hotels table
+                'image' => $hotel->images ? json_decode($hotel->images, true)[0] ?? null : null,
+                'address' => [
+                    'streetAddress' => $hotel->location, // Use location field
+                    'city' => $hotel->location, // Use location as city
+                    'countryCode' => 'US', // Default, could be improved with country relationship
+                ],
+                'checkin' => $params['checkin'] ?? null,
+                'checkout' => $params['checkout'] ?? null,
+                'db_id' => $hotel->id,
+            ];
+        })->toArray();
+
+        return $hotels;
+    }
+
+    /**
+     * Get detailed information about a specific hotel offer
+     */
+    public function getHotelDetails($hotelId)
+    {
+        if (!$this->provider || !$this->provider->is_active) {
+            throw new \Exception('Amadeus Hotel provider not configured');
+        }
+
+        try {
+            $token = $this->getAccessToken();
+
+            $endpoint = $this->provider->endpoint;
+
+            // Use the endpoint exactly as configured - no forced fallback
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])->retry(3, 100)->withOptions([
+                'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+                'timeout' => 30,
+                'connect_timeout' => 15,
+                'curl' => [
+                    CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, // Force IPv4
+                ],
+            ])->get($endpoint . '/v3/shopping/hotel-offers/' . $hotelId);
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            Log::warning('Failed to fetch hotel details', [
+                'hotel_id' => $hotelId,
+                'status' => $response->status()
+            ]);
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Error fetching hotel details: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Create a booking for a hotel offer
+     */
+    public function createBooking(array $bookingData)
+    {
+        if (!$this->provider || !$this->provider->is_active) {
+            throw new \Exception('Amadeus Hotel provider not configured');
+        }
+
+        try {
+            $token = $this->getAccessToken();
+
+            // Structure booking payload according to Amadeus requirements
+            $payload = [
+                'data' => [
+                    'offerId' => $bookingData['offer_id'],
+                    'guests' => $this->formatGuests($bookingData['guests'] ?? []),
+                    'contactInformation' => [
+                        'email' => $bookingData['email'],
+                        'phone' => $bookingData['phone'] ?? null,
+                    ],
+                    'remarks' => $bookingData['remarks'] ?? null,
+                ]
+            ];
+
+            // Add payment info if provided
+            if (isset($bookingData['payment'])) {
+                $payload['data']['payments'] = [$bookingData['payment']];
+            }
+
+            $endpoint = $this->provider->endpoint;
+
+            // Use the endpoint exactly as configured - no forced fallback
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])->retry(3, 100)->withOptions([
+                'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+                'timeout' => 30,
+                'connect_timeout' => 15,
+            ])->post($endpoint . '/v1/booking/hotel-bookings', $payload);
+
+            if ($response->successful()) {
+                Log::info('Hotel booking created', [
+                    'offer_id' => $bookingData['offer_id'],
+                    'booking_id' => $response->json()['data']['id'] ?? null
+                ]);
+                return $response->json();
+            }
+
+            Log::error('Hotel booking failed', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+
+            throw new \Exception('Hotel booking creation failed: ' . $response->body());
+        } catch (\Exception $e) {
+            Log::error('Hotel booking exception: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Format guest information for Amadeus API
+     */
+    protected function formatGuests(array $guests)
+    {
+        return array_map(function ($guest) {
+            return [
+                'title' => $guest['title'] ?? 'MR',
+                'firstName' => $guest['first_name'] ?? $guest['firstName'],
+                'lastName' => $guest['last_name'] ?? $guest['lastName'],
+                'email' => $guest['email'] ?? null,
+                'phone' => $guest['phone'] ?? null,
+                'address' => $guest['address'] ?? [
+                    'countryCode' => $guest['country_code'] ?? 'US',
+                ],
+            ];
+        }, $guests);
+    }
+
+    /**
+     * Get available cities for auto-complete
+     */
+    public function getCitySearch(string $keyword)
+    {
+        if (!$this->provider || !$this->provider->is_active) {
+            return [];
+        }
+
+        try {
+            $token = $this->getAccessToken();
+
+            $endpoint = $this->provider->endpoint;
+
+            // Use the endpoint exactly as configured - no forced fallback
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])->retry(3, 100)->withOptions([
+                'verify' => false, // TEMPORARY: Skip SSL verification for local testing
+                'timeout' => 30,
+                'connect_timeout' => 15,
+            ])->get($endpoint . '/v1/reference-data/locations', [
+                'subType' => 'CITY,AIRPORT',
+                'keyword' => $keyword,
+            ]);
+
+            if ($response->successful()) {
+                return $response->json()['data'] ?? [];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            Log::error('City search error: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Parse Amadeus v3 HotelOffer response for display in views
+     */
+    public function parseSearchResults($apiResponse)
+    {
+        $hotels = [];
+
+        if (!isset($apiResponse['data'])) {
+            return $hotels;
+        }
+
+        foreach ($apiResponse['data'] as $hotelData) {
+            // Each item in data[] represents a hotel with its offers
+            $hotel = $hotelData['hotel'];
+            $offers = $hotelData['offers'] ?? [];
+
+            // Use the first offer for basic hotel info
+            $firstOffer = $offers[0] ?? [];
+
+            // Fetch images for this hotel
+            $hotelImages = $this->fetchHotelImages(
+                $hotel['name'] ?? 'Hotel',
+                ['city' => $hotel['cityCode'] ?? null]
+            );
+
+            $parsedHotel = [
+                'id' => $firstOffer['id'] ?? $hotel['hotelId'] ?? 'unknown',
+                'name' => $hotel['name'] ?? 'Hotel Name',
+                'price_per_night' => $firstOffer['price']['total'] ?? '0',
+                'currency' => $firstOffer['price']['currency'] ?? 'USD',
+                'rating' => $hotel['rating'] ?? null,
+                'images' => $hotelImages, // Add fetched images
+                'address' => [
+                    'city' => $hotel['cityCode'] ?? 'Unknown City',
+                    'countryCode' => 'US', // Default
+                ],
+                'offers' => $offers, // Keep all offers
+                'checkInDate' => $firstOffer['checkInDate'] ?? null,
+                'checkOutDate' => $firstOffer['checkOutDate'] ?? null,
+                'roomQuantity' => $firstOffer['roomQuantity'] ?? 1,
+                'rateCode' => $firstOffer['rateCode'] ?? null,
+                'boardType' => $firstOffer['boardType'] ?? null,
+                'room' => $firstOffer['room'] ?? [],
+                'policies' => $firstOffer['policies'] ?? [],
+                'guests' => $firstOffer['guests'] ?? [],
+                'source' => 'api',
+                'source_name' => 'Amadeus',
+            ];
+
+            $hotels[] = $parsedHotel;
+        }
+
+        return $hotels;
+    }
+
+    /**
+     * Fetch hotel images from Unsplash API
+     */
+    protected function fetchHotelImages($hotelName, $location = null)
+    {
+        $unsplashAccessKey = env('UNSPLASH_ACCESS_KEY');
+        
+        if (!$unsplashAccessKey) {
+            Log::warning('Unsplash access key not configured, using placeholder images');
+            return $this->getPlaceholderImages();
+        }
+
+        try {
+            // Create multiple search queries, from most specific to most generic
+            $searchQueries = $this->buildImageSearchQueries($hotelName, $location);
+            
+            foreach ($searchQueries as $searchQuery) {
+                $cacheKey = 'unsplash_images_' . md5($searchQuery);
+                
+                // Check cache first
+                if (Cache::has($cacheKey)) {
+                    return Cache::get($cacheKey);
+                }
+
+                $response = Http::withOptions([
+                    'verify' => false,
+                    'timeout' => 10,
+                ])->get('https://api.unsplash.com/search/photos', [
+                    'query' => $searchQuery,
+                    'per_page' => 3,
+                    'orientation' => 'landscape',
+                    'client_id' => $unsplashAccessKey,
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    
+                    $images = [];
+
+                    if (isset($data['results']) && count($data['results']) > 0) {
+                        foreach (array_slice($data['results'], 0, 3) as $result) {
+                            $images[] = [
+                                'url' => $result['urls']['regular'] ?? $result['urls']['small'],
+                                'thumbnail' => $result['urls']['thumb'],
+                                'caption' => $result['description'] ?? $result['alt_description'] ?? $hotelName,
+                                'photographer' => $result['user']['name'] ?? 'Unknown',
+                                'source' => 'unsplash'
+                            ];
+                        }
+                    }
+
+                    if (!empty($images)) {
+                        Cache::put($cacheKey, $images, 3600 * 24); // Cache for 24 hours
+                        return $images;
+                    }
+                }
+
+                Log::warning('Failed to fetch images from Unsplash', [
+                    'query' => $searchQuery,
+                    'status' => $response->status()
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Unsplash API error: ' . $e->getMessage());
+        }
+
+        return $this->getPlaceholderImages();
+    }
+
+    /**
+     * Build multiple search queries from most specific to most generic
+     */
+    protected function buildImageSearchQueries($hotelName, $location = null)
+    {
+        $queries = [];
+        
+        // Extract location
+        $city = '';
+        if ($location && is_array($location) && isset($location['city'])) {
+            $city = $location['city'];
+        } elseif ($location && is_string($location)) {
+            $city = $location;
+        }
+        
+        // 1. Full hotel name + city + hotel
+        $queries[] = $hotelName . ($city ? ' ' . $city : '') . ' hotel';
+        
+        // 2. Extract brand name + city + hotel
+        // $brand = $this->extractHotelBrand($hotelName);
+        // if ($brand) {
+        //     $queries[] = $brand . ($city ? ' ' . $city : '') . ' hotel';
+        // }
+        
+        // 3. Just city + hotel
+        if ($city) {
+            $queries[] = $city . ' hotel';
+        }
+        
+        // 4. Generic hotel images
+        $queries[] = 'luxury hotel';
+        
+        return array_unique($queries);
+    }
+
+    // /**
+    //  * Extract hotel brand from hotel name
+    //  */
+    // protected function extractHotelBrand($hotelName)
+    // {
+    //     $brands = [
+    //         'Marriott', 'Hilton', 'Hyatt', 'Sheraton', 'Westin', 'Waldorf',
+    //         'Ritz', 'Four Seasons', 'InterContinental', 'Holiday Inn',
+    //         'Best Western', 'Courtyard', 'Fairfield', 'SpringHill',
+    //         'Residence Inn', 'TownePlace', 'Aloft', 'AC Hotels',
+    //         'Ibis', 'Novotel', 'Mercure', 'Pullman', 'Sofitel'
+    //     ];
+    //     
+    //     foreach ($brands as $brand) {
+    //         if (stripos($hotelName, $brand) !== false) {
+    //             return $brand;
+    //         }
+    //     }
+    //     
+    //     return null;
+    // }
+
+    /**
+     * Get placeholder images when API fails
+     */
+    protected function getPlaceholderImages()
+    {
+        return [
+            [
+                'url' => URL::asset('build/img/hotels/hotel-01.jpg'),
+                'thumbnail' => URL::asset('build/img/hotels/hotel-01.jpg'),
+                'caption' => 'Hotel Image',
+                'source' => 'placeholder'
+            ],
+            [
+                'url' => URL::asset('build/img/hotels/hotel-02.jpg'),
+                'thumbnail' => URL::asset('build/img/hotels/hotel-02.jpg'),
+                'caption' => 'Hotel Image',
+                'source' => 'placeholder'
+            ],
+            [
+                'url' => URL::asset('build/img/hotels/hotel-03.jpg'),
+                'thumbnail' => URL::asset('build/img/hotels/hotel-03.jpg'),
+                'caption' => 'Hotel Image',
+                'source' => 'placeholder'
+            ]
+        ];
+    }

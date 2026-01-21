@@ -173,6 +173,14 @@ class AdminDashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Generate years for filter dropdowns (current year + 2 more)
+        $currentYear = date('Y');
+        $filterYears = [
+            $currentYear,
+            $currentYear + 1,
+            $currentYear + 2
+        ];
+
         return view('admin-dashboard', compact(
             'totalBookings',
             'totalUsers',
@@ -191,7 +199,8 @@ class AdminDashboardController extends Controller
             'monthlyEarnings',
             'recentlyAdded',
             'latestInvoices',
-            'pendingExpertApplications'
+            'pendingExpertApplications',
+            'filterYears'
         ));
     }
 }

@@ -95,8 +95,13 @@
                                 <div class="form-item dropdown">
                                     <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
                                         <label class="form-label fs-14 text-default mb-1">Travellers </label>
-                                        <h5>4 <span class="fw-normal fs-14">Persons</span></h5>
-                                        <p class="fs-12 mb-0">2 Adult</p>
+                                        <input type="hidden" name="travelers" value="{{ $travelers ?? 1 }}">
+                                        <h5>{{ $travelers ?? 1 }} <span class="fw-normal fs-14">Persons</span></h5>
+                                        <p class="fs-12 mb-0">
+                                            @if(($adults ?? 2) > 0){{ $adults ?? 2 }} Adults ( 12+ Yrs )@endif
+                                            @if(($children ?? 0) > 0) @if(($adults ?? 2) > 0), @endif{{ $children ?? 0 }} Childrens ( 2-12 Yrs )@endif
+                                            @if(($infants ?? 0) > 0) @if(($adults ?? 2) > 0 || ($children ?? 0) > 0), @endif{{ $infants ?? 0 }} Infants ( 0-2 Yrs )@endif
+                                        </p>
                                     </div>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-xl">
                                         <h5 class="mb-3">Select Travelers &  Class</h5>
@@ -262,72 +267,19 @@
                     <h5 class="mb-2">Choose type of Tours you are interested</h5>
                 </div>
                 <div class="row">
+                    @foreach($tourCategories as $category)
                     <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
                         <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-01.jpg')}}" class="rounded-circle" alt="img">
+                            <a href="{{ $category['url'] }}" class="avatar avatar-lg">
+                                <img src="{{ URL::asset('build/img/tours/' . $category['image']) }}" class="rounded-circle" alt="{{ $category['name'] }}">
                             </a>
                             <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Ecotourism</a></h6>
-                                <p class="fs-14">216 Hotels</p>
+                                <h6 class="fs-16 fw-medium"><a href="{{ $category['url'] }}">{{ $category['name'] }}</a></h6>
+                                <p class="fs-14">{{ $category['count'] }} tours</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-02.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Adventure Tour</a></h6>
-                                <p class="fs-14">569 tours</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-03.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Group Tours</a></h6>
-                                <p class="fs-14">129 tours</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-04.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Beach Tours</a></h6>
-                                <p class="fs-14">600 tours</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-05.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Historical Tours</a></h6>
-                                <p class="fs-14">200 tours</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('tour-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/tours/tours-06.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('tour-grid')}}">Summer Trip</a></h6>
-                                <p class="fs-14">200 tours</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <!-- /Tour Types -->
@@ -750,28 +702,14 @@
                     <div class="hotel-list">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
+                                @forelse($tours as $tour)
                                 <!-- Tours List -->
                                 <div class="place-item mb-4">
                                     <div class="place-img">
                                         <div class="img-slider image-slide owl-carousel nav-center">
                                             <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-07.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-08.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-09.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-10.jpg')}}" class="img-fluid" alt="img">
+                                                <a href="{{ url('tour-details', $tour['source'] === 'database' ? $tour['db_id'] : $tour['id']) }}">
+                                                    <img src="{{ $tour['image'] ?? URL::asset('build/img/tours/tours-07.jpg') }}" class="img-fluid" alt="{{ $tour['title'] ?? 'Tour' }}">
                                                 </a>
                                             </div>
                                         </div>
@@ -785,31 +723,30 @@
                                     <div class="place-content">
                                         <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
                                             <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Rainbow Mountain Valley</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Ciutat Vella, Barcelona</p>
+                                                <h5 class="mb-1 text-truncate"><a href="{{ url('tour-details', $tour['source'] === 'database' ? $tour['db_id'] : $tour['id']) }}">{{ $tour['title'] ?? $tour['name'] ?? 'Tour' }}</a></h5>
+                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>{{ $searchLocation ?? $tour['location'] ?? $tour['destination'] ?? 'Location Unknown' }}</p>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Ecotourism
+                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span>{{ $tour['category'] ?? 'Tour' }}
                                                 </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">5.0</span>
-                                                <p class="fs-14">(105 Reviews)</p>
+                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">{{ $tour['rating'] ?? '4.5' }}</span>
+                                                <p class="fs-14">({{ $tour['reviews_count'] ?? 0 }} Reviews)</p>
                                             </div>
                                         </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">Journey through majestic peaks and serene valleys, where nature’s beauty surrounds you at every turn.</p>
+                                        <p class="fs-14 border-bottom pb-3 mb-3">{{ $tour['description'] ?? 'Experience the beauty of this amazing tour destination.' }}</p>
                                         <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
                                             <div class="d-flex align-items-center">
                                                 <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">4 Day,3 Night</p>
+                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">{{ $tour['duration'] ?? 'N/A' }} hours</p>
                                                 <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>14 Guests
+                                                    <i class="isax isax-profile-2user me-1"></i>{{ $tour['group_size'] ?? '12' }} Guests
                                                 </p>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <h6 class="d-flex align-items-center text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$500</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$789</span>
+													Starts From
+													<span class="ms-1 fs-18 fw-semibold text-primary">{{ $tour['currency'] ?? 'USD' }} {{ $tour['price'] ?? '0' }}</span>
 												</h6>
                                                 <a href="#" class="avatar avatar-sm flex-shrink-0">
                                                     <img src="{{URL::asset('build/img/users/user-08.jpg')}}" class="rounded-circle" alt="img">
@@ -819,442 +756,16 @@
                                     </div>
                                 </div>
                                 <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-08.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-09.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-10.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-11.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Mystic Falls</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Oxford Street, London</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Adventure Tour
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">4.5</span>
-                                                <p class="fs-14">(110 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Experience the breathtaking beauty of nature on a tour to majestic waterfalls, where cascading waters meet lush greenery.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
-                                            <div class="d-flex align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">3 Day,2 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>12 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <h6 class="d-flex align-items-center text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$600</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$700</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-09.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
+                                @empty
+                                <div class="col-12">
+                                    <div class="alert alert-info" role="alert">
+                                        <h6 class="alert-heading">No tours found</h6>
+                                        <p class="mb-0">Try searching for a different destination or adjusting your filters.</p>
                                     </div>
                                 </div>
-                                <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-09.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-10.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-11.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-12.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Crystal Lake</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Deansgate, Manchester</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Summer Trip
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">5.0</span>
-                                                <p class="fs-14">(180 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Enjoy the calm waters and scenic views, making your lake tour a refreshing escape into nature's beauty.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
-                                            <div class="d-flex align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">5 Day,4 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>16 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <h6 class="d-flex align-items-center text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$300</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$500</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-10.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-11.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-12.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-13.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-14.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Enchanted Forest</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Bold Street, Liverpool</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Group Tours
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">4.1</span>
-                                                <p class="fs-14">(250 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Immerse yourself in the enchanting beauty of a forest tour, where towering trees and diverse wildlife create a serene escape.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex flex-wrap align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9 border-end pe-2 me-2 mb-0">2 Day,1 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>17 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <h6 class="d-flex align-items-center flex-wrap text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$550</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$600</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-12.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-10.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-11.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-12.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-13.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Majestic Peaks</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>King’s Road, Chelsea</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Adventure Tour
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">4.3</span>
-                                                <p class="fs-14">(300 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Conquer towering peaks and enjoy panoramic views on a thrilling mountain tour, perfect for adventure seekers.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex flex-wrap align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">3 Day,2 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>10 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <h6 class="d-flex align-items-center flex-wrap text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$400</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$480</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-11.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-12.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-13.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-15.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-14.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Serene Bay</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Broad Street, Bristol</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Beach Tours
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">4.6</span>
-                                                <p class="fs-14">(280 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Explore the stunning beauty of a picturesque bay, where calm waters meet scenic coastlines for the perfect coastal getaway.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex flex-wrap align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">3 Day,2 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>08 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <h6 class="d-flex align-items-center flex-wrap text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$450</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$520</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-13.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Tours List -->
-
-                                <!-- Tours List -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-13.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-14.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-15.jpg')}}" class="img-fluid " alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('tour-details')}}">
-                                                    <img src="{{URL::asset('build/img/tours/tours-08.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                        </div>
-                                    </div>
-                                    <div class="place-content">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2 mb-3">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('tour-details')}}">Ancient Ruins</a></h5>
-                                                <p class="fs-14 d-flex align-items-center"><i class="isax isax-location5 me-2"></i>Broad Street, Bristol</p>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">
-                                                    <span class="me-1"><i class="ti ti-receipt text-primary"></i></span> Historical Tours
-                                                </p>
-                                                <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">5.0</span>
-                                                <p class="fs-14">(105 Reviews)</p>
-                                            </div>
-                                        </div>
-                                        <p class="fs-14 border-bottom pb-3 mb-3">
-                                            Journey through majestic peaks and serene valleys, where nature’s beauty surrounds you at every turn.
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex flex-wrap align-items-center">
-                                                <span class="me-2"><i class="isax isax-calendar-tick text-gray-6"></i></span>
-                                                <p class="fs-14 text-gray-9  border-end pe-2 me-2 mb-0">4 Day,3 Night</p>
-                                                <p class="fs-14 text-gray-9 mb-0 text-truncate d-flex align-items-center">
-                                                    <i class="isax isax-profile-2user me-1"></i>14 Guests
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <h6 class="d-flex align-items-center flex-wrap text-gray-6 fs-14 fw-normal border-end pe-2 me-2">
-													Starts From 
-													<span class="ms-1 fs-18 fw-semibold text-primary">$500</span>
-													<span class="ms-1 fs-18 fw-semibold text-gray-3 text-decoration-line-through">$789</span>
-												</h6>
-                                                <a href="#" class="avatar avatar-sm flex-shrink-0">
-                                                    <img src="{{URL::asset('build/img/users/user-14.jpg')}}" class="rounded-circle" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Tours List -->
-
+                                @endforelse
                             </div>
                         </div>
-
                     </div>
 
                     <!-- Pagination -->

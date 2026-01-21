@@ -156,6 +156,8 @@
                                         <option value="hotels" {{ $provider->type == 'hotels' ? 'selected' : '' }}>Hotels</option>
                                         <option value="cars" {{ $provider->type == 'cars' ? 'selected' : '' }}>Cars</option>
                                         <option value="villas" {{ $provider->type == 'villas' ? 'selected' : '' }}>Villas</option>
+                                        <option value="tours" {{ $provider->type == 'tours' ? 'selected' : '' }}>Tours</option>
+                                        <option value="cruises" {{ $provider->type == 'cruises' ? 'selected' : '' }}>Cruises</option>
                                     </select>
                                 </div>
 

@@ -15,7 +15,7 @@
                 <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap ">
                     <div class="col-xxl-4 col-lg-6 col-md-6 col-11 mx-auto">
                         <div class="p-4 text-center">
-                            <img src="{{URL::asset('build/img/logo-dark.svg')}}" alt="logo" class="img-fluid">
+                            <x-application-logo data-logo-type="dark" class="img-fluid" style="max-height: 50px; max-width: 200px;" />
                         </div>
                         <div class="card authentication-card">
                             <div class="card-header">

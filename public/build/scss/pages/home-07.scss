@@ -37,6 +37,8 @@
         }
         .banner-content {
             margin-bottom: 110px;
+            max-height: 120px;
+            overflow: hidden;
             @include mixins.respond-below(lg) {
                 margin-bottom: 100px;
                 text-align: center !important;
@@ -670,4 +672,3 @@
 .offcanvas-backdrop {
     z-index: 1111;
 }
-

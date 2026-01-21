@@ -1,6 +1,6 @@
 <?php $page="hotel-map";?>
 @extends('layout.mainlayout')
-@section('content')	
+@section('content')
 
     <!-- ========================
         Start Page Content
@@ -16,7 +16,7 @@
                         <ol class="breadcrumb justify-content-center mb-0">
                             <li class="breadcrumb-item"><a href="{{url('index')}}"><i class="isax isax-home5"></i></a></li>
                             <li class="breadcrumb-item">Hotels</li>
-                            <li class="breadcrumb-item active" aria-current="page">Hotel Lists</li>
+                            <li class="breadcrumb-item active" aria-current="page">Hotel Map</li>
                         </ol>
                     </nav>
                 </div>
@@ -32,70 +32,53 @@
             <div class="card">
                 <div class="card-body">
                     <div class="banner-form">
-                        <form class="d-lg-flex">
+                        <form class="d-lg-flex" method="GET" action="{{ route('hotel-map') }}">
                             <div class="d-flex  form-info">
                                 <div class="form-item dropdown">
                                     <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
                                         <label class="form-label fs-14 text-default mb-1">City, Property name or Location</label>
-                                        <input type="text" class="form-control" value="Newyork">
-                                        <p class="fs-12 mb-0">USA</p>
+                                        <input type="text" class="form-control hotel-destination-search" name="destination" placeholder="Enter destination" value="{{ old('destination', session('hotel_destination', '')) }}" required>
+                                        <input type="hidden" name="destination_iata" class="hotel-destination-iata" value="{{ old('destination_iata', session('hotel_destination_iata', '')) }}">
+                                        <p class="fs-12 mb-0 hotel-destination-info">{{ old('destination', session('hotel_destination', 'e.g., New York, Paris, Tokyo')) }}</p>
                                     </div>
                                     <div class="dropdown-menu dropdown-md p-0">
                                         <div class="input-search p-3 border-bottom">
                                             <div class="input-group">
-                                                <input type="email" class="form-control" placeholder="Search for City, Property name or Location">
+                                                <input type="text" class="form-control hotel-location-search" placeholder="Search for City, Property name or Location">
                                                 <span class="input-group-text px-2 border-start-0"><i class="isax isax-search-normal"></i></span>
                                             </div>
                                         </div>
-                                        <ul>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">USA</h6>
-                                                    <p>2000 Properties</p>
-                                                </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">Japan</h6>
-                                                    <p>3000 Properties</p>
-                                                </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">Singapore</h6>
-                                                    <p>8000 Properties</p>
-                                                </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">Russia</h6>
-                                                    <p>8000 Properties</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">Germany</h6>
-                                                    <p>2000 Properties</p>
-                                                </a>
+                                        <ul class="hotel-location-list">
+                                            <li class="text-center py-3 text-muted">
+                                                <small>Start typing to search...</small>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="form-item">
                                     <label class="form-label fs-14 text-default mb-1">Check In</label>
-                                    <input type="text" class="form-control datetimepicker" value="21-10-2025">
-                                    <p class="fs-12 mb-0">Monday</p>
+                                    <input type="text" class="form-control datetimepicker" name="checkin" value="{{ $checkin ? \Carbon\Carbon::createFromFormat('Y-m-d', $checkin)->format('d-m-Y') : '' }}" placeholder="Select check-in date" required>
+                                    <p class="fs-12 mb-0">{{ $checkin ? \Carbon\Carbon::createFromFormat('Y-m-d', $checkin)->format('d-m-Y') : 'Select date' }}</p>
                                 </div>
                                 <div class="form-item">
                                     <label class="form-label fs-14 text-default mb-1">Check Out</label>
-                                    <input type="text" class="form-control datetimepicker" value="21-10-2025">
-                                    <p class="fs-12 mb-0">Monday</p>
+                                    <input type="text" class="form-control datetimepicker" name="checkout" value="{{ $checkout ? \Carbon\Carbon::createFromFormat('Y-m-d', $checkout)->format('d-m-Y') : '' }}" placeholder="Select check-out date" required>
+                                    <p class="fs-12 mb-0">{{ $checkout ? \Carbon\Carbon::createFromFormat('Y-m-d', $checkout)->format('d-m-Y') : 'Select date' }}</p>
                                 </div>
                                 <div class="form-item dropdown">
                                     <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
                                         <label class="form-label fs-14 text-default mb-1">Guests</label>
-                                        <h5>4 <span class="fw-normal fs-14">Persons</span></h5>
-                                        <p class="fs-12 mb-0">4 Adult, 2 Rooms</p>
+                                        <h5>{{ (session('hotel_adults', 1) + session('hotel_children', 0) + session('hotel_infants', 0)) }} <span class="fw-normal fs-14">Persons</span></h5>
+                                        <p class="fs-12 mb-0">
+    {{ session('hotel_adults', 1) }} Adult{{ session('hotel_adults', 1) > 1 ? 's' : '' }}
+    @if(session('hotel_children', 0) > 0)
+        , {{ session('hotel_children', 0) }} Child{{ session('hotel_children', 0) > 1 ? 'ren' : '' }}
+    @endif
+    @if(session('hotel_infants', 0) > 0)
+        , {{ session('hotel_infants', 0) }} Infant{{ session('hotel_infants', 0) > 1 ? 's' : '' }}
+    @endif
+    , {{ session('hotel_rooms', 1) }} Room{{ session('hotel_rooms', 1) > 1 ? 's' : '' }}
+</p>
                                     </div>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-xl">
                                         <h5 class="mb-3">Select Travelers &  Class</h5>
@@ -107,13 +90,13 @@
                                                         <div class="custom-increment">
                                                             <div class="input-group">
                                                                 <span class="input-group-btn float-start">
-																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
+																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="rooms">
 																	  <span><i class="isax isax-minus"></i></span>
-                                                                     </button>
+                                                                    </button>
                                                                 </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
+                                                                <input type="text" name="rooms" class=" input-number" value="{{ session('hotel_rooms', 1) }}">
                                                                 <span class="input-group-btn float-end">
-																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="rooms">
 																		<span><i class="isax isax-add"></i></span>
                                                                     </button>
                                                                 </span>
@@ -127,13 +110,13 @@
                                                         <div class="custom-increment">
                                                             <div class="input-group">
                                                                 <span class="input-group-btn float-start">
-																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
+																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="adults">
 																	  <span><i class="isax isax-minus"></i></span>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
+                                                                <input type="text" name="adults" class=" input-number" value="{{ session('hotel_adults', 1) }}">
                                                                 <span class="input-group-btn float-end">
-																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="adults">
 																		<span><i class="isax isax-add"></i></span>
                                                                     </button>
                                                                 </span>
@@ -147,13 +130,13 @@
                                                         <div class="custom-increment">
                                                             <div class="input-group">
                                                                 <span class="input-group-btn float-start">
-																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
+																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="children">
 																	  <span><i class="isax isax-minus"></i></span>
-                                                                </button>
+                                                                    </button>
                                                                 </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
+                                                                <input type="text" name="children" class=" input-number" value="{{ session('hotel_children', 0) }}">
                                                                 <span class="input-group-btn float-end">
-																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="children">
 																		<span><i class="isax isax-add"></i></span>
                                                                     </button>
                                                                 </span>
@@ -167,77 +150,19 @@
                                                         <div class="custom-increment">
                                                             <div class="input-group">
                                                                 <span class="input-group-btn float-start">
-																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="">
+																	<button type="button" class="quantity-left-minus btn btn-light btn-number"  data-type="minus" data-field="infants">
 																	  <span><i class="isax isax-minus"></i></span>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" name="quantity" class=" input-number" value="01">
+                                                                <input type="text" name="infants" class=" input-number" value="{{ session('hotel_infants', 0) }}">
                                                                 <span class="input-group-btn float-end">
-																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+																	<button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="infants">
 																		<span><i class="isax isax-add"></i></span>
                                                                     </button>
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 border br-10 info-item pb-1">
-                                            <h6 class="fs-16 fw-medium mb-2">Travellers</h6>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="room" id="room1" checked>
-                                                    <label class="form-check-label" for="room1">
-                                                        Single
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="room" id="room2">
-                                                    <label class="form-check-label" for="room2">
-                                                        Double
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="room" id="room3">
-                                                    <label class="form-check-label" for="room3">
-                                                        Delux
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <input class="form-check-input" type="radio" name="room" id="room4">
-                                                    <label class="form-check-label" for="room4">
-                                                        Suite
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 border br-10 info-item pb-1">
-                                            <h6 class="fs-16 fw-medium mb-2">Property Type</h6>
-                                            <div class="d-flex align-items-center flex-wrap">
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="property" id="property1" checked>
-                                                    <label class="form-check-label" for="property1">
-                                                        Villa
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="property" id="property2">
-                                                    <label class="form-check-label" for="property2">
-                                                        Condo
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-3 mb-3">
-                                                    <input class="form-check-input" type="radio" name="property" id="property3">
-                                                    <label class="form-check-label" for="property3">
-                                                        Cabin
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <input class="form-check-input" type="radio" name="property" id="property4">
-                                                    <label class="form-check-label" for="property4">
-                                                        Apartments
-                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,42 +175,38 @@
                                 <div class="form-item dropdown">
                                     <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
                                         <label class="form-label fs-14 text-default mb-1">Price per Night</label>
-                                        <input type="text" class="form-control" value="$1000 - $15000">
-                                        <p class="fs-12 mb-0">20 Offers Available</p>
+                                        <input type="text" class="form-control hotel-price-display" value="{{ (session('hotel_min_price') || session('hotel_max_price')) ? '$' . number_format(session('hotel_min_price', 0)) . ' - $' . number_format(session('hotel_max_price', 50000)) : 'Any Price' }}" readonly>
+                                        <p class="fs-12 mb-0 hotel-price-offers">{{ (session('hotel_min_price') || session('hotel_max_price')) ? 'Custom price range' : 'Select price range' }}</p>
                                     </div>
                                     <div class="dropdown-menu dropdown-md p-0">
-                                        <ul>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">$500 - $2000</h6>
-                                                    <p>Upto 65% offers</p>
+                                        <div class="mb-3">
+                                            <label class="form-label fs-12 text-default mb-2">Min Price ($)</label>
+                                            <input type="number" class="form-control hotel-min-price" name="min_price" value="{{ session('hotel_min_price', '') }}" placeholder="0" min="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fs-12 text-default mb-2">Max Price ($)</label>
+                                            <input type="number" class="form-control hotel-max-price" name="max_price" value="{{ session('hotel_max_price', '') }}" placeholder="50000" min="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="fs-12 fw-medium mb-2">Quick Select:</h6>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="#" class="hotel-price-preset btn btn-sm btn-outline-primary" data-min="500" data-max="2000">
+                                                    <span class="fs-11">$500 - $2K</span>
                                                 </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">Upto 65% offers</h6>
-                                                    <p>Upto 40% offers</p>
+                                                <a href="#" class="hotel-price-preset btn btn-sm btn-outline-primary" data-min="2000" data-max="5000">
+                                                    <span class="fs-11">$2K - $5K</span>
                                                 </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">$5000 - $8000</h6>
-                                                    <p>Upto 35% offers</p>
+                                                <a href="#" class="hotel-price-preset btn btn-sm btn-outline-primary" data-min="5000" data-max="8000">
+                                                    <span class="fs-11">$5K - $8K</span>
                                                 </a>
-                                            </li>
-                                            <li class="border-bottom">
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">$9000 - $11000</h6>
-                                                    <p>Upto 20% offers</p>
+                                                <a href="#" class="hotel-price-preset btn btn-sm btn-outline-primary" data-min="8000" data-max="15000">
+                                                    <span class="fs-11">$8K - $15K</span>
                                                 </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <h6 class="fs-16 fw-medium">$11000 - $15000</h6>
-                                                    <p>Upto 10% offers</p>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                            </div>
+                                        </div>
+                                        <div class="text-center pt-2 border-top">
+                                            <small class="text-muted">Prices are per night</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -295,81 +216,32 @@
                 </div>
             </div>
             <!-- /Hotel Search -->
+
             <!-- Hotel Types -->
+            @if(isset($filterData['hotelTypes']) && !empty($filterData['hotelTypes']))
             <div class="mb-2">
                 <div class="mb-3">
                     <h5 class="mb-2">Choose type of Hotels you are interested</h5>
                 </div>
                 <div class="row">
+                    @foreach(array_slice($filterData['hotelTypes'], 0, 6) as $index => $hotelType)
                     <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
                         <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-01.jpg')}}" class="rounded-circle" alt="img">
+                            <a href="{{url('hotel-map')}}" class="avatar avatar-lg">
+                                <img src="{{URL::asset('build/img/hotels/hotel-model-' . (($index % 6) + 1) . '.jpg')}}" class="rounded-circle" alt="img">
                             </a>
                             <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">Condos</a></h6>
-                                <p class="fs-14">216 Hotels</p>
+                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-map')}}">{{ $hotelType['name'] }}</a></h6>
+                                <p class="fs-14">{{ $hotelType['count'] }} Hotels</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-02.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">Apartments</a></h6>
-                                <p class="fs-14">569 Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-03.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">Villas</a></h6>
-                                <p class="fs-14">129 Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-04.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">5 Star Hotels</a></h6>
-                                <p class="fs-14">600 Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-01.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">3 Start Hotels</a></h6>
-                                <p class="fs-14">200 Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="d-flex align-items-center hotel-type-item mb-3">
-                            <a href="{{url('hotel-grid')}}" class="avatar avatar-lg">
-                                <img src="{{URL::asset('build/img/hotels/hotel-model-06.jpg')}}" class="rounded-circle" alt="img">
-                            </a>
-                            <div class="ms-2">
-                                <h6 class="fs-16 fw-medium"><a href="{{url('hotel-grid')}}">2 Start Hotels</a></h6>
-                                <p class="fs-14">180 Hotels</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
+            @endif
             <!-- /Hotel Types -->
+
             <div class="d-flex align-items-center justify-content-between flex-wrap recommend-wrap mb-2">
                 <div class="d-flex align-items-center flex-wrap">
                     <div class="dropdown mb-3">
@@ -382,7 +254,7 @@
 							Pricing
 						</a>
                         <div class="dropdown-menu dropdown-sm">
-                            <form action="{{url('hotel-grid')}}">
+                            <form action="{{url('hotel-map')}}">
                                 <h6 class="fw-medium fs-16 mb-3">Pricing</h6>
                                 <div class="form-check d-flex align-items-center ps-0 mb-2">
                                     <input class="form-check-input ms-0 mt-0" name="pricing1" type="checkbox" id="pricing1" checked>
@@ -420,7 +292,7 @@
 							Guest Ratings
 						</a>
                         <div class="dropdown-menu dropdown-sm">
-                            <form action="{{url('hotel-grid')}}">
+                            <form action="{{url('hotel-map')}}">
                                 <h6 class="fw-medium fs-16 mb-3">Ratings</h6>
                                 <div class="form-check d-flex align-items-center ps-0 mb-2">
                                     <input class="form-check-input ms-0 mt-0" name="review01" type="checkbox" id="review01">
@@ -489,7 +361,7 @@
 							Amenities
 						</a>
                         <div class="dropdown-menu dropdown-sm">
-                            <form action="{{url('hotel-grid')}}">
+                            <form action="{{url('hotel-map')}}">
                                 <h6 class="fw-medium fs-16 mb-3">Amenities</h6>
                                 <div class="form-check d-flex align-items-center ps-0 mb-2">
                                     <input class="form-check-input ms-0 mt-0" name="amenities1" type="checkbox" id="amenities1" checked>
@@ -549,7 +421,7 @@
                     <div class="list-item d-flex align-items-center mb-3">
                         <a href="{{url('hotel-grid')}}" class="list-icon me-2"><i class="isax isax-grid-1"></i></a>
                         <a href="{{url('hotel-list')}}" class="list-icon me-2"><i class="isax isax-firstline"></i></a>
-                        <a href="{{url('hotel-map')}}" class="list-icon active  me-2"><i class="isax isax-map-1"></i></a>
+                        <a href="{{url('hotel-map')}}" class="list-icon active me-2"><i class="isax isax-map-1"></i></a>
                     </div>
                     <div class="dropdown mb-3">
                         <a href="#" class="dropdown-toggle py-2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -585,7 +457,7 @@
                                 <div class="d-flex align-items-center justify-content-end border-top pt-3 mt-3">
                                     <a href="#" class="btn btn-light btn-sm me-2">Reset</a>
                                     <button type="submit" class="btn btn-primary btn-sm">Apply</button>
-                                </div>       
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -596,7 +468,7 @@
             <div class="col-xl-8">
                 <div class="map-lists-widget border-top">
                     <div class="d-flex align-items-center justify-content-between flex-wrap">
-                        <h6 class="mb-4">1920 Hotels Found on Your Search</h6>
+                        <h6 class="mb-4">{{ count($hotels ?? []) }} Hotels Found on Your Search @if($apiCount ?? 0 > 0 || $dbCount ?? 0 > 0)<small class="text-muted">(API: {{ $apiCount ?? 0 }}, Database: {{ $dbCount ?? 0 }})</small>@endif</h6>
                         <div class="list-item d-flex align-items-center shadow-md bg-white rounded-3 p-2 mb-4">
                             <a href="{{url('hotel-grid')}}" class="list-icon me-2"><i class="isax isax-grid-1"></i></a>
                             <a href="{{url('hotel-list')}}" class="list-icon active"><i class="isax isax-firstline"></i></a>
@@ -604,277 +476,676 @@
                     </div>
                     <div class="hotel-list">
                         <div class="row justify-content-center">
-
+                            @forelse($hotels ?? [] as $hotel)
+                            <!-- Hotel List Item -->
                             <div class="col-md-12">
-
-                                <!-- Hotel Grid -->
                                 <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-01.jpg')}}" class="img-fluid" alt="img">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="place-img">
+                                                @if(isset($hotel['images']) && count($hotel['images']) > 1)
+                                                <div class="img-slider image-slide owl-carousel nav-center">
+                                                    @foreach($hotel['images'] as $image)
+                                                    <div class="slide-images">
+                                                        <a href="{{url('hotel-details', $hotel['id'] ?? '')}}">
+                                                            <img src="{{ $image['url'] ?? URL::asset('build/img/hotels/hotel-01.jpg') }}" class="img-fluid" alt="img" style="height: 200px; object-fit: cover;" onerror="this.src='{{ URL::asset('build/img/hotels/hotel-01.jpg') }}'">
+                                                        </a>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                @else
+                                                <a href="{{url('hotel-details', $hotel['id'] ?? '')}}">
+                                                    <img src="{{ $hotel['images'][0]['url'] ?? URL::asset('build/img/hotels/hotel-01.jpg') }}" class="img-fluid" alt="img" style="height: 200px; object-fit: cover;" onerror="this.src='{{ URL::asset('build/img/hotels/hotel-01.jpg') }}'">
                                                 </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-02.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-03.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                            <a href="#" class="fav-icon selected">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="place-content pb-1">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details')}}">Hotel Plaza Athenee</a></h5>
-                                                <p class="d-flex align-items-center mb-2"><i class="isax isax-location5 me-2"></i>Ciutat Vella, Barcelona</p>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#" class="d-flex align-items-center overflow-hidden border-end pe-2 me-2">
-                                                    <span class="avatar avatar-md flex-shrink-0 me-2">
-														<img src="{{URL::asset('build/img/users/user-01.jpg')}}" class="rounded-circle" alt="img">
-													</span>
-                                                    <p class="fs-14 text-truncate">Beth Williams</p>
-                                                </a>
-                                                <div class="d-flex align-items-center text-nowrap">
-                                                    <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">5.0</span>
-                                                    <p class="fs-14">(400 Reviews)</p>
+                                                @endif
+                                                <div class="fav-item">
+                                                    @if($hotel['is_trending'] ?? false)
+                                                    <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
+                                                    @endif
+                                                    <a href="#" class="fav-icon {{ ($hotel['is_favorite'] ?? false) ? 'selected' : '' }}">
+                                                        <i class="isax isax-heart5"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <p class="line-ellipsis fs-14">Experience luxury and comfort at our centrally located hotel, featuring modern amenities, spacious rooms, and exceptional service.</p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
-                                            <h6 class="d-flex align-items-center mb-3">Facillities :<i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><a href="#" class="fs-14 fw-normal text-default d-inline-block">+2</a></h6>
-                                            <h5 class="text-primary text-nowrap me-2 mb-3">$500 <span class="fs-14 fw-normal text-default">/ Night</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Hotel Grid -->
+                                        <div class="col-md-8">
+                                            <div class="place-content pb-1">
+                                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">{{ $hotel['rating'] ?? 'N/A' }}</span>
+                                                        <p class="fs-14">({{ $hotel['review_count'] ?? 0 }} Reviews)</p>
+                                                    </div>
+                                                    <h5 class="text-primary text-nowrap me-2 mb-3">{{ $hotel['currency'] ?? 'USD' }} {{ number_format($hotel['price_per_night'] ?? 0, 2) }} <span class="fs-14 fw-normal text-default">/ Night</span></h5>
+                                                </div>
+                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details', $hotel['id'] ?? '')}}">{{ $hotel['name'] ?? 'Hotel Name' }}</a></h5>
+                                                @if($hotel['address'] ?? false)
+                                                <p class="d-flex align-items-center mb-2"><i class="isax isax-location5 me-2"></i>{{ $hotel['address'] }}</p>
+                                                @endif
 
-                                <!-- Hotel Grid -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <a href="{{url('hotel-details')}}">
-                                            <img src="{{URL::asset('build/img/hotels/hotel-05.jpg')}}" class="img-fluid" alt="img">
-                                        </a>
-                                        <div class="fav-item">
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                            <a href="#" class="fav-icon selected">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="place-content pb-1">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                            <div>
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details')}}">The Luxe Haven</a></h5>
-                                                <p class="d-flex align-items-center mb-2"><i class="isax isax-location5 me-2"></i>Oxford Street, London</p>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#" class="d-flex align-items-center overflow-hidden border-end pe-2 me-2">
-                                                    <span class="avatar avatar-md flex-shrink-0 me-2">
-														<img src="{{URL::asset('build/img/users/user-02.jpg')}}" class="rounded-circle" alt="img">
-													</span>
-                                                    <p class="fs-14 text-truncate">Tom Andrews</p>
-                                                </a>
-                                                <div class="d-flex align-items-center text-nowrap">
-                                                    <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">4.7</span>
-                                                    <p class="fs-14">(360 Reviews)</p>
+                                                <!-- Room Types -->
+                                                @if($hotel['room_types'] ?? [])
+                                                    <small class="d-block mb-2 text-muted">
+                                                        @foreach(array_slice($hotel['room_types'], 0, 2) as $room)
+                                                            <span class="badge bg-light text-dark me-1">{{ $room['type'] ?? 'Standard' }} - {{ $room['occupancy'] ?? 'Room' }}</span>
+                                                        @endforeach
+                                                    </small>
+                                                @endif
+
+                                                <p class="line-ellipsis fs-14">{{ Str::limit($hotel['description'] ?? 'Experience luxury and comfort at our centrally located hotel, featuring modern amenities, spacious rooms, and exceptional service.', 150) }}</p>
+
+                                                <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
+                                                    <h6 class="d-flex align-items-center">Facilities :
+                                                        @if($hotel['amenities'] ?? [])
+                                                            @foreach(array_slice($hotel['amenities'], 0, 4) as $amenity)
+                                                                @php
+                                                                    $amenityName = is_array($amenity) ? ($amenity['name'] ?? 'Amenity') : $amenity;
+                                                                    $iconMap = [
+                                                                        'wifi' => 'isax-home-wifi',
+                                                                        'parking' => 'isax-car',
+                                                                        'pool' => 'isax-drop',
+                                                                        'gym' => 'isax-dumbbell',
+                                                                        'spa' => 'isax-massage',
+                                                                        'restaurant' => 'isax-restaurant',
+                                                                        'bar' => 'isax-wine',
+                                                                        'air_conditioning' => 'isax-wind-2',
+                                                                        'room_service' => 'isax-call',
+                                                                    ];
+                                                                    $icon = $iconMap[strtolower($amenityName)] ?? 'isax-star';
+                                                                @endphp
+                                                                <i class="isax {{ $icon }} ms-2 me-2 text-primary" title="{{ $amenityName }}"></i>
+                                                            @endforeach
+                                                            @if(count($hotel['amenities']) > 4)
+                                                                <button type="button" class="btn btn-link btn-sm fs-14 fw-normal text-default p-0" data-bs-toggle="modal" data-bs-target="#hotelDetailModal{{ $hotel['id'] }}">+{{ count($hotel['amenities']) - 4 }}</button>
+                                                            @endif
+                                                        @else
+                                                            <i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><span class="fs-14 fw-normal text-default ms-2">+2</span>
+                                                        @endif
+                                                    </h6>
+                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#hotelDetailModal{{ $hotel['id'] }}">
+                                                        View Details
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <p class="line-ellipsis fs-14">Stay in luxury at our hotel, featuring premium amenities, stunning cityscape views, and an on-site spa for the ultimate relaxation experience</p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
-                                            <h6 class="d-flex align-items-center mb-3">Facillities :<i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><a href="#" class="fs-14 fw-normal text-default d-inline-block">+2</a></h6>
-                                            <h5 class="text-primary text-nowrap me-2 mb-3">$600 <span class="fs-14 fw-normal text-default">/ Night</span></h5>
-                                        </div>
                                     </div>
                                 </div>
-                                <!-- /Hotel Grid -->
-
-                                <!-- Hotel Grid -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <a href="{{url('hotel-details')}}">
-                                            <img src="{{URL::asset('build/img/hotels/hotel-06.jpg')}}" class="img-fluid" alt="img">
-                                        </a>
-                                        <div class="fav-item">
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                            <a href="#" class="fav-icon selected">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="place-content pb-1">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                            <div class="overflow-hidden">
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details')}}">The Urban Retreat</a></h5>
-                                                <p class="d-flex align-items-center text-truncate mb-2"><i class="isax isax-location5 me-2"></i>Princes Street, Edinburgh</p>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#" class="d-flex align-items-center overflow-hidden border-end pe-2 me-2">
-                                                    <span class="avatar avatar-md flex-shrink-0 me-2">
-														<img src="{{URL::asset('build/img/users/user-03.jpg')}}" class="rounded-circle" alt="img">
-													</span>
-                                                    <p class="fs-14 text-truncate">Rober Cowell</p>
-                                                </a>
-                                                <div class="d-flex align-items-center text-nowrap">
-                                                    <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">4.5</span>
-                                                    <p class="fs-14">(500 Reviews)</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="line-ellipsis fs-14">Conveniently located near top attractions, our hotel offers modern rooms, free parking, and a complimentary breakfast to start your day right.</p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
-                                            <h6 class="d-flex align-items-center mb-3">Facillities :<i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><a href="#" class="fs-14 fw-normal text-default d-inline-block">+2</a></h6>
-                                            <h5 class="text-primary text-nowrap me-2 mb-3">$300 <span class="fs-14 fw-normal text-default">/ Night</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Hotel Grid -->
-
-                                <!-- Hotel Grid -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-07.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-02.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-03.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                            <a href="#" class="fav-icon selected">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="place-content pb-1">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                            <div class="overflow-hidden">
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details')}}">The Grand Horizon</a></h5>
-                                                <p class="d-flex align-items-center text-truncate mb-2"><i class="isax isax-location5 me-2"></i>Deansgate, Manchester</p>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#" class="d-flex align-items-center overflow-hidden border-end pe-2 me-2">
-                                                    <span class="avatar avatar-md flex-shrink-0 me-2">
-														<img src="{{URL::asset('build/img/users/user-05.jpg')}}" class="rounded-circle" alt="img">
-													</span>
-                                                    <p class="fs-14 text-truncate">Timothy Brewer</p>
-                                                </a>
-                                                <div class="d-flex align-items-center text-nowrap">
-                                                    <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">4.9</span>
-                                                    <p class="fs-14">(450 Reviews)</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="line-ellipsis fs-14">Discover the perfect balance of luxury and affordability at our hotel, with a 24-hour concierge, free Wi-Fi, and easy access to local hotspots.</p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
-                                            <h6 class="d-flex align-items-center mb-3">Facillities :<i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><a href="#" class="fs-14 fw-normal text-default d-inline-block">+2</a></h6>
-                                            <h5 class="text-primary text-nowrap me-2 mb-3">$400 <span class="fs-14 fw-normal text-default">/ Night</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Hotel Grid -->
-
-                                <!-- Hotel Grid -->
-                                <div class="place-item mb-4">
-                                    <div class="place-img">
-                                        <div class="img-slider image-slide owl-carousel nav-center">
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-08.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-02.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('hotel-details')}}">
-                                                    <img src="{{URL::asset('build/img/hotels/hotel-03.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="fav-item">
-                                            <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-ranking me-1"></i>Trending</span>
-                                            <a href="#" class="fav-icon">
-                                                <i class="isax isax-heart5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="place-content pb-1">
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                            <div class="overflow-hidden">
-                                                <h5 class="mb-1 text-truncate"><a href="{{url('hotel-details')}}">Hotel Evergreen </a></h5>
-                                                <p class="d-flex align-items-center text-truncate mb-2"><i class="isax isax-location5 me-2"></i>King’s Road, Chelsea</p>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#" class="d-flex align-items-center overflow-hidden border-end pe-2 me-2">
-                                                    <span class="avatar avatar-md flex-shrink-0 me-2">
-														<img src="{{URL::asset('build/img/users/user-06.jpg')}}" class="rounded-circle" alt="img">
-													</span>
-                                                    <p class="fs-14 text-truncate">Timothy Rio</p>
-                                                </a>
-                                                <div class="d-flex align-items-center text-nowrap">
-                                                    <span class="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">4.5</span>
-                                                    <p class="fs-14">(500 Reviews)</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="line-ellipsis fs-14">Our hotel offers pet-friendly rooms, complimentary shuttle service, and comfortable accommodations just minutes from key attractions and business centers.</p>
-                                        <div class="d-flex align-items-center justify-content-between flex-wrap border-top pt-3">
-                                            <h6 class="d-flex align-items-center mb-3">Facillities :<i class="isax isax-home-wifi ms-2 me-2 text-primary"></i><i class="isax isax-scissor me-2 text-primary"></i><i class="isax isax-profile-2user me-2 text-primary"></i><i class="isax isax-wind-2 me-2 text-primary"></i><a href="#" class="fs-14 fw-normal text-default d-inline-block">+2</a></h6>
-                                            <h5 class="text-primary text-nowrap me-2 mb-3">$300 <span class="fs-14 fw-normal text-default">/ Night</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Hotel Grid -->
                             </div>
-
+                            <!-- /Hotel List Item -->
+                            @empty
+                            <div class="col-12">
+                                <div class="text-center py-5">
+                                    <h4 class="mb-3">No hotels found</h4>
+                                    <p class="text-muted">Try adjusting your search criteria or location.</p>
+                                </div>
+                            </div>
+                            @endforelse
                         </div>
+                    </div>
 
+                    <!-- Hotel Detail Modals -->
+                    @foreach($hotels as $hotel)
+                    <div class="modal fade" id="hotelDetailModal{{ $hotel['id'] }}" tabindex="-1" aria-labelledby="hotelDetailLabel{{ $hotel['id'] }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="hotelDetailLabel{{ $hotel['id'] }}">{{ $hotel['name'] }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Hotel Images Carousel -->
+                                    @if(count($hotel['images'] ?? []) > 1)
+                                        <div id="hotelCarousel{{ $hotel['id'] }}" class="carousel slide mb-4" data-bs-ride="carousel">
+                                            <div class="carousel-inner">
+                                                @foreach($hotel['images'] as $index => $image)
+                                                    <div class="carousel-item @if($index === 0) active @endif">
+                                                        <img src="{{ $image['url'] ?? URL::asset('build/img/hotels/hotel-01.jpg') }}" class="d-block w-100" alt="{{ $image['caption'] ?? 'Hotel Image' }}" style="max-height: 400px; object-fit: cover;" onerror="this.src='{{ URL::asset('build/img/hotels/hotel-01.jpg') }}'">
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#hotelCarousel{{ $hotel['id'] }}" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#hotelCarousel{{ $hotel['id'] }}" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <img src="{{ $hotel['images'][0]['url'] ?? URL::asset('build/img/hotels/hotel-01.jpg') }}" class="img-fluid w-100 mb-4" alt="{{ $hotel['name'] }}" style="max-height: 400px; object-fit: cover;" onerror="this.src='{{ URL::asset('build/img/hotels/hotel-01.jpg') }}'">
+                                    @endif
+
+                                    <!-- Basic Info -->
+                                    <div class="mb-3">
+                                        <h6>Rating: <span class="badge bg-warning">{{ $hotel['rating'] ?? 'N/A' }}</span></h6>
+                                        <p class="text-muted">{{ $hotel['review_count'] ?? 0 }} Reviews</p>
+                                    </div>
+
+                                    <!-- Address & Location -->
+                                    <div class="mb-3">
+                                        <h6>Location</h6>
+                                        @if($hotel['address'] ?? false)
+                                        <p><i class="isax isax-location5"></i> {{ $hotel['address'] }}</p>
+                                        @endif
+                                        @if($hotel['location_details']['latitude'] && $hotel['location_details']['longitude'])
+                                            <small class="text-muted">Coordinates: {{ $hotel['location_details']['latitude'] }}, {{ $hotel['location_details']['longitude'] }}</small>
+                                        @endif
+                                    </div>
+
+                                    <!-- Contact Info -->
+                                    @if($hotel['contact']['phone'] || $hotel['contact']['email'] || $hotel['contact']['website'])
+                                    <div class="mb-3">
+                                        <h6>Contact Information</h6>
+                                        @if($hotel['contact']['phone'])
+                                            <p><i class="isax isax-call"></i> <a href="tel:{{ $hotel['contact']['phone'] }}">{{ $hotel['contact']['phone'] }}</a></p>
+                                        @endif
+                                        @if($hotel['contact']['email'])
+                                            <p><i class="isax isax-sms"></i> <a href="mailto:{{ $hotel['contact']['email'] }}">{{ $hotel['contact']['email'] }}</a></p>
+                                        @endif
+                                        @if($hotel['contact']['website'])
+                                            <p><i class="isax isax-link"></i> <a href="{{ $hotel['contact']['website'] }}" target="_blank">Visit Website</a></p>
+                                        @endif
+                                    </div>
+                                    @endif
+
+                                    <!-- Room Types -->
+                                    @if($hotel['room_types'] ?? [])
+                                    <div class="mb-3">
+                                        <h6>Available Room Types</h6>
+                                        @foreach($hotel['room_types'] as $room)
+                                            <div class="badge bg-light text-dark me-2 mb-2">
+                                                {{ $room['type'] ?? 'Standard' }} - {{ $room['occupancy'] ?? 'Unknown' }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
+
+                                    <!-- Amenities -->
+                                    @if($hotel['amenities'] ?? [])
+                                    <div class="mb-3">
+                                        <h6>Facilities & Amenities</h6>
+                                        <div class="row">
+                                            @foreach($hotel['amenities'] as $amenity)
+                                                @php
+                                                    $amenityName = is_array($amenity) ? ($amenity['name'] ?? 'Amenity') : $amenity;
+                                                    $amenityDesc = is_array($amenity) ? ($amenity['description'] ?? '') : '';
+                                                @endphp
+                                                <div class="col-md-6 mb-2">
+                                                    <small>
+                                                        <i class="isax isax-star text-primary"></i>
+                                                        <strong>{{ $amenityName }}</strong>
+                                                        @if($amenityDesc)
+                                                            <br><span class="text-muted">{{ $amenityDesc }}</span>
+                                                        @endif
+                                                    </small>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <!-- Pricing Details -->
+                                    <div class="mb-3 border-top pt-3">
+                                        <h6 class="mb-2">Pricing Details</h6>
+                                        <div class="bg-light p-3 rounded">
+                                            <p class="mb-0">
+                                                <span class="fs-5 text-muted">Total Price per Night</span><br>
+                                                <span class="fs-3 fw-bold text-primary">{{ $hotel['currency'] ?? 'USD' }} {{ number_format($hotel['price_per_night'] ?? 0, 2) }}</span>
+                                            </p>
+                                        </div>
+                                        @if($hotel['policies'] ?? [])
+                                            <h6 class="mt-3 mb-2">Policies</h6>
+                                            @if($hotel['policies']['cancellation'] ?? false)
+                                                <p class="fs-6 mb-2"><strong>Cancellation:</strong> <br><span class="text-muted ps-3">{{ is_array($hotel['policies']['cancellation']) ? json_encode($hotel['policies']['cancellation']) : $hotel['policies']['cancellation'] }}</span></p>
+                                            @endif
+                                            @if($hotel['policies']['checkincheckout'] ?? false)
+                                                <p class="fs-6 mb-2"><strong>Check-in/Out:</strong> <br><span class="text-muted ps-3">{{ is_array($hotel['policies']['checkincheckout']) ? json_encode($hotel['policies']['checkincheckout']) : $hotel['policies']['checkincheckout'] }}</span></p>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="{{url('hotel-details', $hotel['id'] ?? '')}}" class="btn btn-primary">Book Hotel</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <a href="#" class="btn btn-primary">Load More</a>
-                    </div>
+                    @endforeach
+                    <!-- /Hotel Detail Modals -->
+
                 </div>
             </div>
             <!-- Map -->
             <div class="col-xl-4 map-right grid-map">
-                <div id="map" class="map-listing"></div>
+                <div id="map" class="map-listing" style="height: 600px; width: 100%; position: relative; z-index: 10;"></div>
             </div>
             <!-- /Map -->
         </div>
     </div>
     <!-- /Page Wrapper -->
 
-    
     <!-- ========================
         End Page Content
     ========================= -->
 
 @endsection
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+<!-- Fix Leaflet Map Z-Index and Display Issues -->
+<style>
+    #map {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .leaflet-container {
+        z-index: 10 !important;
+    }
+    
+    .leaflet-control {
+        z-index: 11 !important;
+    }
+    
+    .leaflet-popup {
+        z-index: 12 !important;
+    }
+    
+    .leaflet-tooltip {
+        z-index: 11 !important;
+    }
+</style>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ========================================
+    // Traveler Count Controls for Hotel Map
+    // ========================================
+    $(document).on('click', '.quantity-left-minus', function(e) {
+        e.preventDefault();
+        const field = $(this).attr('data-field');
+
+        if (field) {
+            const input = $(this).closest('.custom-increment').find('input[name="' + field + '"]');
+            let value = parseInt(input.val());
+            const minValue = parseInt(input.attr('min')) || 0;
+
+            // Validate input value
+            if (isNaN(value) || value < minValue) {
+                value = minValue;
+            }
+
+            if (value > minValue) {
+                value--;
+                input.val(value);
+                input.trigger('change');
+            }
+        }
+    });
+
+    $(document).on('click', '.quantity-right-plus', function(e) {
+        e.preventDefault();
+        const field = $(this).attr('data-field');
+
+        if (field) {
+            const input = $(this).closest('.custom-increment').find('input[name="' + field + '"]');
+            let value = parseInt(input.val());
+            const maxValue = parseInt(input.attr('max')) || 9;
+
+            // Validate input value
+            if (isNaN(value)) {
+                value = 0;
+            }
+
+            if (value < maxValue) {
+                value++;
+                input.val(value);
+                input.trigger('change');
+            }
+        }
+    });
+
+    // Update traveler summary when values change
+    $(document).on('change', '.adults-count, .children-count, .infants-count, .rooms-count', function() {
+        updateHotelTravelerSummary();
+    });
+
+    function updateHotelTravelerSummary() {
+        let adults = parseInt($('input[name="adults"]').val()) || 0;
+        let children = parseInt($('input[name="children"]').val()) || 0;
+        let infants = parseInt($('input[name="infants"]').val()) || 0;
+        let rooms = parseInt($('input[name="rooms"]').val()) || 1;
+
+        // Validate minimum values
+        if (adults < 1) adults = 1;
+        if (rooms < 1) rooms = 1;
+        if (children < 0) children = 0;
+        if (infants < 0) infants = 0;
+
+        const totalPersons = adults + children + infants;
+
+        // Update the display numbers
+        $('.total-persons').text(totalPersons);
+
+        // Build summary text
+        let summary = '';
+        if (adults > 0) {
+            summary += adults + (adults === 1 ? ' Adult' : ' Adults');
+        }
+        if (children > 0) {
+            if (summary) summary += ', ';
+            summary += children + (children === 1 ? ' Child' : ' Children');
+        }
+        if (infants > 0) {
+            if (summary) summary += ', ';
+            summary += infants + (infants === 1 ? ' Infant' : ' Infants');
+        }
+        if (rooms > 0) {
+            if (summary) summary += ', ';
+            summary += rooms + (rooms === 1 ? ' Room' : ' Rooms');
+        }
+
+        // Update the summary paragraph if it exists
+        if ($('.traveller-summary').length) {
+            $('.traveller-summary').text(summary || '1 Adult, 1 Room');
+        }
+    }
+
+    // ========================================
+    // Initialize Date Pickers for Hotel Map
+    // ========================================
+    function initHotelDatePickers() {
+        const today = moment().startOf('day');
+
+        $('.datetimepicker').each(function() {
+            const $el = $(this);
+            const inputValue = $el.val();
+            const hasValue = inputValue && inputValue.trim() !== '';
+
+            const options = {
+                format: 'YYYY-MM-DD',
+                minDate: today,
+                maxDate: false,
+                defaultDate: hasValue ? moment(inputValue, 'YYYY-MM-DD') : false,
+                useCurrent: false,
+                stepping: 1,
+                ignoreReadonly: true,
+                sideBySide: false,
+                showTodayButton: true,
+                showClear: false,
+                showClose: true,
+                widgetPositioning: {
+                    horizontal: 'auto',
+                    vertical: 'auto'
+                },
+                keepInvalid: false,
+                daysOfWeekDisabled: [],
+                disabledDates: false,
+                enabledDates: false,
+                viewMode: 'days',
+                toolbarPlacement: 'default',
+                extraFormats: ['YYYY-MM-DD', 'YYYY/MM/DD', 'DD-MM-YYYY', 'DD/MM/YYYY', 'MM-DD-YYYY', 'MM/DD/YYYY']
+            };
+
+            $el.datetimepicker(options);
+        });
+
+        // Validate and format selected dates
+        $('.datetimepicker').on('dp.change', function(e) {
+            if (e.date) {
+                const $el = $(this);
+                const selectedDate = e.date;
+                const formattedDate = selectedDate.format('YYYY-MM-DD');
+                $el.val(formattedDate);
+
+                const dayName = selectedDate.format('dddd');
+
+                if ($el.hasClass('departure-date')) {
+                    $el.closest('.form-item').find('.departure-day').text(dayName);
+                } else if ($el.hasClass('return-date')) {
+                    $el.closest('.form-item').find('.return-day').text(dayName);
+                }
+            }
+        });
+    }
+
+    // Initialize functions when DOM is ready
+    if ($ && $.fn && $.fn.datetimepicker) {
+        initHotelDatePickers();
+        updateHotelTravelerSummary(); // Initialize summary display
+    } else {
+        // Retry once after a short delay if not loaded yet
+        setTimeout(function() {
+            if (window.jQuery && jQuery.fn && jQuery.fn.datetimepicker) {
+                initHotelDatePickers();
+                updateHotelTravelerSummary();
+            }
+        }, 500);
+    }
+
+    // ========================================
+    // Hotel Price Range Handler
+    // ========================================
+    function updateHotelPriceDisplay() {
+        const minPrice = $('.hotel-min-price').val();
+        const maxPrice = $('.hotel-max-price').val();
+        const displayField = $('.hotel-price-display');
+        const offersField = $('.hotel-price-offers');
+
+        if (minPrice || maxPrice) {
+            const min = minPrice ? `$${parseInt(minPrice).toLocaleString()}` : 'Any';
+            const max = maxPrice ? `$${parseInt(maxPrice).toLocaleString()}` : 'Any';
+            displayField.val(`${min} - ${max}`);
+            offersField.text('Custom price range');
+        } else {
+            displayField.val('Any Price');
+            offersField.text('Select price range');
+        }
+    }
+
+    $(document).on('change', '.hotel-min-price, .hotel-max-price', function() {
+        updateHotelPriceDisplay();
+    });
+
+    $(document).on('click', '.hotel-price-preset', function(e) {
+        e.preventDefault();
+        const minPrice = $(this).data('min');
+        const maxPrice = $(this).data('max');
+
+        $('.hotel-min-price').val(minPrice);
+        $('.hotel-max-price').val(maxPrice);
+        updateHotelPriceDisplay();
+    });
+
+    // ========================================
+    // Hotel Location Search with Autosuggest
+    // ========================================
+    $(document).on('input', '.hotel-location-search', function() {
+        const searchTerm = $(this).val().trim();
+
+        if (searchTerm.length < 2) {
+            $('.hotel-location-list').empty();
+            return;
+        }
+
+        // Call hotel autosuggest API
+        fetch(`{{ url('/api/hotels/locations/autosuggest') }}?term=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.json())
+            .then(data => {
+                $('.hotel-location-list').empty();
+
+                if (data && data.length > 0) {
+                    data.forEach(location => {
+                        const locationHtml = `
+                            <li class="border-bottom">
+                                <a class="dropdown-item hotel-location-option" href="#"
+                                   data-name="${location.name}"
+                                   data-city="${location.city}"
+                                   data-country="${location.country}"
+                                   data-iata="${location.iata}"
+                                   data-value="${location.value}">
+                                    <h6 class="fs-16 fw-medium">${location.display}</h6>
+                                    <p class="mb-0">${location.city}, ${location.country}</p>
+                                </a>
+                            </li>
+                        `;
+                        $('.hotel-location-list').append(locationHtml);
+                    });
+                } else {
+                    $('.hotel-location-list').append(`
+                        <li class="text-center py-3 text-muted">
+                            <small>No locations found</small>
+                        </li>
+                    `);
+                }
+            })
+            .catch(error => {
+                console.error('Hotel location search error:', error);
+                $('.hotel-location-list').empty().append(`
+                    <li class="text-center py-3 text-muted">
+                        <small>Error searching locations</small>
+                    </li>
+                `);
+            });
+    });
+
+    // Handle hotel location selection
+    $(document).on('click', '.hotel-location-option', function(e) {
+        e.preventDefault();
+        const name = $(this).data('name');
+        const city = $(this).data('city');
+        const country = $(this).data('country');
+        const value = $(this).data('value');
+        const iata = $(this).data('iata');
+
+        $('.hotel-destination-search').val(`${name}, ${country}`);
+        $('.hotel-destination-info').text(`${name}, ${country}`);
+
+        // Store IATA code if available
+        if (iata) {
+            $('.hotel-destination-iata').val(iata);
+        } else if (value) {
+            $('.hotel-destination-iata').val(value);
+        }
+
+        // Close dropdown
+        const dropdown = $(this).closest('.dropdown-menu');
+        if (dropdown.length) {
+            const bsDropdown = bootstrap.Dropdown.getInstance(dropdown.prev('[data-bs-toggle="dropdown"]'));
+            if (bsDropdown) bsDropdown.hide();
+        }
+    });
+
+    // ========================================
+    // Hotel Map Integration (OpenStreetMap + Leaflet)
+    // ========================================
+    function initHotelMap() {
+        // Ensure map container exists and is ready
+        const mapContainer = document.getElementById('map');
+        if (!mapContainer) {
+            console.error('Map container not found');
+            return;
+        }
+        
+        // Default map center (can be updated based on search results)
+        const defaultCenter = [40.7128, -74.0060]; // New York City [lat, lng]
+
+        // Initialize map with explicit container setup
+        const map = L.map(mapContainer, {
+            center: defaultCenter,
+            zoom: 12,
+            zoomControl: true,
+            attributionControl: true
+        });
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Store markers for cleanup
+        const markers = [];
+        let markerGroup = L.layerGroup().addTo(map);
+
+        // Custom hotel icon
+        const hotelIcon = L.divIcon({
+            html: '<div style="background-color: #007bff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">🏨</div>',
+            className: 'custom-hotel-marker',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Function to add hotel markers to map
+        function addHotelMarkers(hotels) {
+            // Clear existing markers
+            markerGroup.clearLayers();
+            markers.length = 0;
+
+            if (!hotels || hotels.length === 0) return;
+
+            const bounds = [];
+
+            hotels.forEach((hotel, index) => {
+                const lat = hotel.location_details?.latitude || hotel.latitude;
+                const lng = hotel.location_details?.longitude || hotel.longitude;
+
+                if (lat && lng) {
+                    const position = [parseFloat(lat), parseFloat(lng)];
+
+                    // Create marker
+                    const marker = L.marker(position, { icon: hotelIcon })
+                        .addTo(markerGroup)
+                        .bindPopup(`
+                            <div class="hotel-map-popup" style="min-width: 250px;">
+                                <h6 class="mb-2">${hotel.name}</h6>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-warning text-dark me-2">${hotel.rating || 'N/A'}</span>
+                                    <small>(${hotel.review_count || 0} reviews)</small>
+                                </div>
+                                <p class="mb-2"><strong>${hotel.currency || 'USD'} ${hotel.price_per_night ? Number(hotel.price_per_night).toFixed(2) : 'N/A'}</strong> / night</p>
+                                <p class="mb-3 small">${hotel.address || ''}</p>
+                                <a href="{{ url('hotel-details') }}/${hotel.id}" class="btn btn-primary btn-sm w-100">View Details</a>
+                            </div>
+                        `);
+
+                    markers.push(marker);
+                    bounds.push(position);
+                }
+            });
+
+            // Fit map to show all markers if we have any
+            if (bounds.length > 0) {
+                if (bounds.length === 1) {
+                    // Single marker - zoom in closer
+                    map.setView(bounds[0], 15);
+                } else {
+                    // Multiple markers - fit bounds
+                    map.fitBounds(bounds, { padding: [20, 20] });
+                }
+            }
+        }
+
+        // Load hotels from the current page data
+        const hotelsData = @json($hotels ?? []);
+        addHotelMarkers(hotelsData);
+
+        // Expose function globally for potential updates
+        window.updateHotelMap = addHotelMarkers;
+    }
+
+    // Initialize map when DOM is ready
+    // Use setTimeout to ensure all DOM elements are fully rendered
+    setTimeout(function() {
+        initHotelMap();
+    }, 100);
+});
+</script>

@@ -35,7 +35,7 @@
                     <div class="card user-sidebar agent-sidebar mb-4 mb-lg-0">
                         <div class="card-header user-sidebar-header text-center bg-gray-transparent">
                             <div class="agent-profile d-inline-flex">
-                                <img src="{{URL::asset('build/img/users/user-01.jpg')}}" alt="image" class="img-fluid rounded-circle">
+                                <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : URL::asset('build/img/users/user-01.jpg') }}" alt="Profile Image" class="img-fluid rounded-circle">
                                 <a href="{{url('admin-settings')}}" class="avatar avatar-sm rounded-circle btn btn-primary d-flex align-items-center justify-content-center p-0"><i class="isax isax-edit-2 fs-14"></i></a>
                             </div>
                             <h6 class="fs-16">{{ Auth::user()->name }}</h6>

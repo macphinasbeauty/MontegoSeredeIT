@@ -300,7 +300,7 @@
                                             <td>
                                                 @if($booking->departure_date && $booking->return_date)
                                                     @php
-                                                        $days = \Carbon\Carbon::parse($booking->departure_date)->diffInDays(\Carbon\Carbon::parse($booking->return_date));
+                                                        $days = \Carbon\Carbon::parse(explode(' ', $booking->departure_date)[0])->diffInDays(\Carbon\Carbon::parse(explode(' ', $booking->return_date)[0]));
                                                     @endphp
                                                     {{ $days }} Days
                                                 @else

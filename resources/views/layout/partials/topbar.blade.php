@@ -101,342 +101,45 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                                                                       
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flights</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotels</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Cars</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Buses</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/home-01.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -639,342 +342,45 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index', '/') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>  
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                                                                       
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flights</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotels</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Cars</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Buses</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/explore.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1097,342 +503,45 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>  
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                                                                       
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/explore.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1596,342 +705,45 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>      
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                                                                   
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/home-01.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2110,301 +922,24 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>   
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                                                                      
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
                                     <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
@@ -2708,207 +1243,44 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/home-01.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3201,207 +1573,44 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/home-01.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3537,342 +1746,44 @@
                         </div>
                         <nav id="mobile-menu">
                             <ul class="main-nav">
-                                <li class="has-submenu megamenu {{ Request::is('index', '/', 'index-2', 'index-3', 'index-4', 'index-5', 'index-6', 'index-7') ? 'active' : '' }}">
-                                    <a href="#">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="#" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
-                                                </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index')}}"><img src="{{URL::asset('build/img/menu/home-01.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index')}}">All Bookings</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-2') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-2')}}"><img src="{{URL::asset('build/img/menu/home-02.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-2')}}">Hotels</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-3') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-3')}}"><img src="{{URL::asset('build/img/menu/home-03.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-3')}}">Cars</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-4') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-4')}}"><img src="{{URL::asset('build/img/menu/home-04.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-4')}}">Flight</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-5') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-5')}}"><img src="{{URL::asset('build/img/menu/home-05.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-5')}}">Cruise</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-6') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-6')}}"><img src="{{URL::asset('build/img/menu/home-06.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-6')}}">Tours</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo {{ Request::is('index-7') ? 'active' : '' }}">
-                                                            <div class="demo-img">
-                                                                <a href="{{url('index-7')}}"><img src="{{URL::asset('build/img/menu/home-07.jpg')}}" class="img-fluid" alt="img"></a>
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <a href="{{url('index-7')}}">Bus</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>  
-                                                                                                        <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo coming-soon-item">
-                                                            <div class="demo-img">
-                                                               <img src="{{ URL::asset('build/img/bg/coming-soon.jpg')}}" class="img-fluid" alt="img">
-                                                            </div>
-                                                            <div class="demo-info">
-                                                                <h6>Coming Soon</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                   
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active' : ''; }}">
+                                    <a href="{{url('flight-grid')}}">Flight</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('flight-grid', 'flight-list', 'flight-details', 'flight-booking-confirmation', 'add-flight') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Flight Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('flight-grid') ? 'active' : '' }}"><a href="{{url('flight-grid')}}">Flight Grid</a></li>
-                                                            <li class="{{ Request::is('flight-list') ? 'active' : '' }}"><a href="{{url('flight-list')}}">Flight List</a></li>
-                                                            <li class="{{ Request::is('flight-details') ? 'active' : '' }}"><a href="{{url('flight-details')}}">Flight Details</a></li>
-                                                            <li class="{{ Request::is('flight-booking-confirmation') ? 'active' : '' }}"><a href="{{url('flight-booking-confirmation')}}">Flight Booking</a></li>
-                                                            <li class="{{ Request::is('add-flight') ? 'active' : '' }}"><a href="{{url('add-flight')}}">Add Flight</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/flight.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active' : ''; }}">
+                                    <a href="{{url('hotel-grid')}}">Hotel</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('hotel-grid', 'hotel-list', 'hotel-map', 'hotel-details', 'booking-confirmation', 'add-hotel') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Hotel Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('hotel-grid') ? 'active' : '' }}"><a href="{{url('hotel-grid')}}">Hotel Grid</a></li>
-                                                            <li class="{{ Request::is('hotel-list') ? 'active' : '' }}"><a href="{{url('hotel-list')}}">Hotel List</a></li>
-                                                            <li class="{{ Request::is('hotel-map') ? 'active' : '' }}"><a href="{{url('hotel-map')}}">Hotel Map</a></li>
-                                                            <li class="{{ Request::is('hotel-details') ? 'active' : '' }}"><a href="{{url('hotel-details')}}">Hotel Details</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Hotel Booking</a></li>
-                                                            <li class="{{ Request::is('add-hotel') ? 'active' : '' }}"><a href="{{url('add-hotel')}}">Add Hotel</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/hotel.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active' : ''; }}">
+                                    <a href="{{url('car-grid')}}">Car</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('car-grid', 'car-list', 'car-map', 'car-details', 'car-booking-confirmation', 'add-car') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Car Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('car-grid') ? 'active' : '' }}"><a href="{{url('car-grid')}}">Car Grid</a></li>
-                                                            <li class="{{ Request::is('car-list') ? 'active' : '' }}"><a href="{{url('car-list')}}">Car List</a></li>
-                                                            <li class="{{ Request::is('car-map') ? 'active' : '' }}"><a href="{{url('car-map')}}">Car Map</a></li>
-                                                            <li class="{{ Request::is('car-details') ? 'active' : '' }}"><a href="{{url('car-details')}}">Car Details</a></li>
-                                                            <li class="{{ Request::is('car-booking-confirmation') ? 'active' : '' }}"><a href="{{url('car-booking-confirmation')}}">Car Booking</a></li>
-                                                            <li class="{{ Request::is('add-car') ? 'active' : '' }}"><a href="{{url('add-car')}}">Add Car</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/car.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active' : ''; }}">
+                                    <a href="{{url('cruise-grid')}}">Trains</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('cruise-grid', 'cruise-list', 'cruise-map', 'cruise-details', 'cruise-booking-confirmation', 'add-cruise') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Cruise Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('cruise-grid') ? 'active' : '' }}"><a href="{{url('cruise-grid')}}">Cruise Grid</a></li>
-                                                            <li class="{{ Request::is('cruise-list') ? 'active' : '' }}"><a href="{{url('cruise-list')}}">Cruise List</a></li>
-                                                            <li class="{{ Request::is('cruise-map') ? 'active' : '' }}"><a href="{{url('cruise-map')}}">Cruise Map</a></li>
-                                                            <li class="{{ Request::is('cruise-details') ? 'active' : '' }}"><a href="{{url('cruise-details')}}">Cruise Details</a></li>
-                                                            <li class="{{ Request::is('cruise-booking-confirmation') ? 'active' : '' }}"><a href="{{url('cruise-booking-confirmation')}}">Cruise Booking</a></li>
-                                                            <li class="{{ Request::is('add-cruise') ? 'active' : '' }}"><a href="{{url('add-cruise')}}">Add Cruise</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/cruise.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active' : ''; }}">
+                                    <a href="{{url('tour-grid')}}">Tour</a>
                                 </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('tour-grid', 'tour-list', 'tour-map', 'tour-details', 'tour-booking-confirmation', 'add-tour') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Tour Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('tour-grid') ? 'active' : '' }}"><a href="{{url('tour-grid')}}">Tour Grid</a></li>
-                                                            <li class="{{ Request::is('tour-list') ? 'active' : '' }}"><a href="{{url('tour-list')}}">Tour List</a></li>
-                                                            <li class="{{ Request::is('tour-map') ? 'active' : '' }}"><a href="{{url('tour-map')}}">Tour Map</a></li>
-                                                            <li class="{{ Request::is('tour-details') ? 'active' : '' }}"><a href="{{url('tour-details')}}">Tour Details</a></li>
-                                                            <li class="{{ Request::is('tour-booking-confirmation') ? 'active' : '' }}"><a href="{{url('tour-booking-confirmation')}}">Tour Booking</a></li>
-                                                            <li class="{{ Request::is('add-tour') ? 'active' : '' }}"><a href="{{url('add-tour')}}">Add Tour</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/tour.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu mega-innermenu {{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Bus<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
-                                        <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <h6>Bus Bookings</h6>
-                                                        <ul>
-                                                            <li class="{{ Request::is('bus-list', 'edit-bus') ? 'active' : '' }}"><a href="{{url('bus-list')}}">Bus List</a></li>
-                                                            <li class="{{ Request::is('bus-left-sidebar') ? 'active' : '' }}"><a href="{{url('bus-left-sidebar')}}">Bus Left Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-right-sidebar') ? 'active' : '' }}"><a href="{{url('bus-right-sidebar')}}">Bus Right Sidebar</a></li>
-                                                            <li class="{{ Request::is('bus-details') ? 'active' : '' }}"><a href="{{url('bus-details')}}">Bus Details</a></li>
-                                                            <li class="{{ Request::is('bus-booking', 'bus-booking-confirmation') ? 'active' : '' }}"><a href="{{url('bus-booking')}}">Bus Booking</a></li>
-                                                            <li class="{{ Request::is('add-bus') ? 'active' : '' }}"><a href="{{url('add-bus')}}">Add Bus</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="{{URL::asset('build/img/menu/bus.jpg')}}" alt="img" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <li class="{{ Request::is('bus-list', 'edit-bus', 'bus-left-sidebar', 'bus-right-sidebar', 'bus-details', 'bus-booking', 'bus-booking-confirmation', 'add-bus') ? 'active' : ''; }}">
+                                    <a href="{{url('bus-list')}}">Bus</a>
                                 </li>
                                 <li class="has-submenu mega-innermenu {{ Request::is('about-us', 'gallery', 'testimonial', 'faq', 'pricing-plan', 'team', 'invoices', 'blog-grid', 'blog-list', 'blog-details', 'contact-us', 'booking-confirmation', 'destination', 'dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings', 'agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings', 'agent-dashboard', 'terms-conditions', 'privacy-policy', 'login', 'register', 'forgot-password', 'change-password', 'error-404', 'error-500', 'under-maintenance', 'coming-soon', 'index-rtl') ? 'active subdrop' : ''; }}">
-                                    <a href="#">Pages<i class="fa-solid fa-angle-down"></i></a>
+                                    <a href="#">Explore<i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="submenu mega-submenu">
                                         <li>
                                             <div class="megamenu-wrapper">
-                                                <h6>Pages</h6>
-                                                <div class="row g-lg-4">
+                                                <div class="row">
                                                     <div class="col-lg-6">
+                                                        <h6>Explore</h6>
                                                         <ul>
-                                                            <li class="{{ Request::is('about-us') ? 'active' : '' }}"><a href="{{url('about-us')}}">About</a></li>
-                                                            <li class="{{ Request::is('gallery') ? 'active' : '' }}"><a href="{{url('gallery')}}">Gallery</a></li>
-                                                            <li class="{{ Request::is('testimonial') ? 'active' : '' }}"><a href="{{url('testimonial')}}">Testimonials</a></li>
-                                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="{{url('faq')}}">Faq</a></li>
-                                                            <li class="{{ Request::is('pricing-plan') ? 'active' : '' }}"><a href="{{url('pricing-plan')}}">Pricing Plan</a></li>
-                                                            <li class="{{ Request::is('team') ? 'active' : '' }}"><a href="{{url('team')}}">Teams</a></li>
-                                                            <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{url('invoices')}}">Invoice</a></li>
-                                                            <li class="{{ Request::is('blog-grid') ? 'active' : '' }}"><a href="{{url('blog-grid')}}">Blogs Grid</a></li>
-                                                            <li class="{{ Request::is('blog-list') ? 'active' : '' }}"><a href="{{url('blog-list')}}">Blogs List</a></li>
-                                                            <li class="{{ Request::is('blog-details') ? 'active' : '' }}"><a href="{{url('blog-details')}}">Blogs Details</a></li>
-                                                            <li class="{{ Request::is('contact-us') ? 'active' : '' }}"><a href="{{url('contact-us')}}">Contact Us</a></li>
-                                                            <li class="{{ Request::is('booking-confirmation') ? 'active' : '' }}"><a href="{{url('booking-confirmation')}}">Booking Confirmation</a></li>
-                                                            <li class="{{ Request::is('destination') ? 'active' : '' }}"><a href="{{url('destination')}}">Destination</a></li>
+                                                            <li><a href="#">eSIM</a></li>
+                                                            <li><a href="{{url('cruise-grid')}}">Cruise</a></li>
+                                                            <li><a href="#">Resources</a></li>
+                                                            <li><a href="{{url('faq')}}">FAQs</a></li>
+                                                            <li><a href="{{url('contact-us')}}">Contact Us</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <ul>
-                                                            <li class="{{ Request::is('dashboard', 'customer-bus-booking', 'customer-flight-booking', 'customer-cruise-booking', 'customer-hotel-booking', 'customer-tour-booking', 'customer-car-booking', 'review', 'chat', 'notification', 'wishlist', 'wallet', 'payment', 'my-profile', 'profile-settings', 'security-settings', 'notification-settings', 'support-fixes', 'integration-settings') ? 'active' : '' }}"><a href="{{url('dashboard')}}">User Dashboard</a></li>
-                                                            <li class="{{ Request::is('agent-dashboard', 'agent-listings', 'agent-bus-booking', 'agent-flight-booking', 'agent-hotel-booking', 'agent-tour-booking', 'agent-cruise-booking', 'agent-car-booking', 'agent-enquirers', 'agent-earnings', 'agent-review', 'agent-settings', 'agent-account-settings', 'agent-security-settings', 'agent-plans-settings') ? 'active' : '' }}"><a href="{{url('agent-dashboard')}}">Agent Dashboard</a></li>
-                                                            <li class="{{ Request::is('terms-conditions') ? 'active' : '' }}"><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
-                                                            <li class="{{ Request::is('privacy-policy') ? 'active' : '' }}"><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                                                            <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{url('login')}}">Login</a></li>
-                                                            <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{url('register')}}">Register</a></li>
-                                                            <li class="{{ Request::is('forgot-password') ? 'active' : '' }}"><a href="{{url('forgot-password')}}">Forgot Password</a></li>
-                                                            <li class="{{ Request::is('change-password') ? 'active' : '' }}"><a href="{{url('change-password')}}">Change Password</a></li>
-                                                            <li class="{{ Request::is('error-404') ? 'active' : '' }}"><a href="{{url('error-404')}}">404 Error</a></li>
-                                                            <li class="{{ Request::is('error-500') ? 'active' : '' }}"><a href="{{url('error-500')}}">500 Error</a></li>
-                                                            <li class="{{ Request::is('under-maintenance') ? 'active' : '' }}"><a href="{{url('under-maintenance')}}">Under Maintenance</a></li>
-                                                            <li class="{{ Request::is('coming-soon') ? 'active' : '' }}"><a href="{{url('coming-soon')}}">Coming Soon</a></li>
-                                                            <li class="{{ Request::is('index-rtl') ? 'active' : '' }}"><a href="{{url('index-rtl')}}">RTL</a></li>
-                                                        </ul>
+                                                        <div class="menu-img">
+                                                            <img src="{{URL::asset('build/img/menu/home-01.jpg')}}" alt="img" class="img-fluid">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

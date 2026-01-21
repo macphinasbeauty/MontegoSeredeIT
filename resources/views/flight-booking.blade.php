@@ -258,33 +258,36 @@
                             <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
                                 <div class="d-flex align-items-center flex-wrap payment-form">
                                     @php
-                                        $firstEnabled = true;
+                                        $enabledGateways = [];
+                                        foreach($paymentGateways as $gateway) {
+                                            if (($gateway->enabled || $gateway->is_active) && in_array($gateway->name, ['stripe', 'paypal', 'mpesa'])) {
+                                                $enabledGateways[] = $gateway->name;
+                                            }
+                                        }
+                                        $firstEnabled = !empty($enabledGateways) ? $enabledGateways[0] : 'credit-card';
                                     @endphp
                                     @foreach($paymentGateways as $gateway)
-                                        @if($gateway->name === 'stripe')
+                                        @if($gateway->name === 'stripe' && ($gateway->enabled || $gateway->is_active))
                                             <div class="form-check d-flex align-items-center me-3 mb-2">
-                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="credit-card" value="credit-card" {{ $firstEnabled ? 'checked' : '' }}>
+                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="credit-card" value="credit-card" {{ $firstEnabled === 'stripe' ? 'checked' : '' }}>
                                                 <label class="form-check-label fs-14 ms-2" for="credit-card">
                                                     Credit / Debit Card
                                                 </label>
                                             </div>
-                                            @php $firstEnabled = false; @endphp
-                                        @elseif($gateway->name === 'paypal')
+                                        @elseif($gateway->name === 'paypal' && ($gateway->enabled || $gateway->is_active))
                                             <div class="form-check d-flex align-items-center me-3 mb-2">
-                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="paypal" value="paypal" {{ $firstEnabled ? 'checked' : '' }}>
+                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="paypal" value="paypal" {{ $firstEnabled === 'paypal' ? 'checked' : '' }}>
                                                 <label class="form-check-label fs-14 ms-2" for="paypal">
                                                     PayPal
                                                 </label>
                                             </div>
-                                            @php $firstEnabled = false; @endphp
-                                        @elseif($gateway->name === 'mpesa')
+                                        @elseif($gateway->name === 'mpesa' && ($gateway->enabled || $gateway->is_active))
                                             <div class="form-check d-flex align-items-center me-3 mb-2">
-                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="mpesa" value="mpesa" {{ $firstEnabled ? 'checked' : '' }}>
+                                                <input class="form-check-input mt-0" type="radio" name="Radio" id="mpesa" value="mpesa" {{ $firstEnabled === 'mpesa' ? 'checked' : '' }}>
                                                 <label class="form-check-label fs-14 ms-2" for="mpesa">
                                                     M-Pesa
                                                 </label>
                                             </div>
-                                            @php $firstEnabled = false; @endphp
                                         @endif
                                     @endforeach
                                 </div>
@@ -293,7 +296,7 @@
                             <!-- M-Pesa phone input moved into M-Pesa details block to avoid layout shift -->
 
                             <!-- Credit Card -->
-                            <div class="credit-card-details">
+                            <div class="credit-card-details" style="display:none;">
                                 <div class="mb-3">
                                     <h6 class="fs-16 ">Payment With Credit Card</h6>
                                 </div>
@@ -315,35 +318,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                                                               <div class="col-lg-6">
+                                        <div class="col-lg-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Card Number</label>
-                                                <div class="user-icon">
-                                                    <span class="input-icon fs-14"><i class="isax isax-card-tick"></i></span>
-                                                    <input type="text" class="form-control" id="card-number-plain" placeholder="Card number">
-                                                </div>
+                                                <label class="form-label">Card Details</label>
+                                                <div id="card-element" class="form-control"></div>
                                                 <div id="card-errors" role="alert" class="text-danger mt-2"></div>
-                                            </div>
-                                        </div>
-                                        <!-- Plain card number input removed to avoid collecting sensitive data; use Stripe Elements (#card-element) -->
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Expire Date</label>
-                                                <div class="input-icon-end position-relative ">
-                                                    <span class="input-icon-addon">
-                                                        <i class="isax isax-calendar"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control datetimepicker" id="card-expiry-plain" placeholder="dd/mm/yyyy">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">CVV</label>
-                                                <div class="user-icon">
-                                                    <span class="input-icon fs-14"><i class="isax isax-check"></i></span>
-                                                    <input type="text" class="form-control" id="card-cvv-plain" placeholder="CVC">
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -366,7 +345,7 @@
                             <!-- /Paypal -->
 
                             <!-- M-Pesa -->
-                            <div class="mpesa-details" style="display:none;">
+                            <div class="mpesa-details">
                                 <div class="mb-3">
                                     <h6 class="fs-16">Payment With M-Pesa</h6>
                                 </div>
@@ -380,7 +359,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /Stripe -->
+                            <!-- /M-Pesa -->
 
                             <div class="d-flex align-items-center justify-content-end flex-wrap gap-2">
                                 @php
@@ -390,7 +369,7 @@
                                     $discount = $tax;
                                     $total = $subtotal + $tax + 89 - $discount;
                                 @endphp
-                                <button type="button" id="pay-now-button" class="btn btn-primary">Confirm & Pay ${{ number_format($total, 2) }}</button>
+                                <button type="submit" id="pay-now-button" class="btn btn-primary">Confirm & Pay ${{ number_format($total, 2) }}</button>
                                 <div class="ms-3" id="payment-status" style="min-width:260px;color:#666"></div>
                             </div>
                         </div>
@@ -456,20 +435,24 @@
                                 <h6 class="text-primary mb-3">Payment Info</h6>
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <h6 class="fs-16">Sub Total</h6>
-                                    <p class="fs-16">${{ number_format($flight['raw_price'] * ((session('flight_search_params')['adults'] ?? 1) + (session('flight_search_params')['children'] ?? 0)), 2) }}</p>
+                                    <p class="fs-16">${{ number_format($subtotal, 2) }}</p>
                                 </div>
+                                @if($taxRate > 0)
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <h6 class="fs-16">Tax <span class="text-gray-6"> (10%)</span></h6>
-                                    <p class="fs-16">${{ number_format($flight['raw_price'] * ((session('flight_search_params')['adults'] ?? 1) + (session('flight_search_params')['children'] ?? 0)) * 0.1, 2) }}</p>
+                                    <h6 class="fs-16">Tax <span class="text-gray-6"> ({{ $taxRate }}%)</span></h6>
+                                    <p class="fs-16">${{ number_format($taxAmount, 2) }}</p>
                                 </div>
+                                @endif
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <h6 class="fs-16">Booking Fees</h6>
-                                    <p class="fs-16">$89</p>
+                                    <h6 class="fs-16">Service Fee</h6>
+                                    <p class="fs-16">${{ number_format($fees, 2) }}</p>
                                 </div>
+                                @if($hasDiscount && $discountAmount > 0)
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <h6 class="fs-16">Discount <span class="text-gray-6"> (10%)</span></h6>
-                                    <p class="fs-16">-${{ number_format($flight['raw_price'] * ((session('flight_search_params')['adults'] ?? 1) + (session('flight_search_params')['children'] ?? 0)) * 0.1, 2) }}</p>
+                                    <h6 class="fs-16">Discount <span class="text-gray-6"> ({{ $discountRate }}%)</span></h6>
+                                    <p class="fs-16">-${{ number_format($discountAmount, 2) }}</p>
                                 </div>
+                                @endif
                             </div>
                             <div class="mt-3">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -604,33 +587,50 @@ $(document).ready(function() {
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
+    console.log('Payment script loaded - JavaScript is working!');
     const payNowBtn = document.getElementById('pay-now-button');
     const statusEl = document.getElementById('payment-status');
     const form = document.querySelector('form');
-    if (!payNowBtn || !form) return;
+
+    console.log('payNowBtn found:', !!payNowBtn);
+    console.log('statusEl found:', !!statusEl);
+    console.log('form found:', !!form);
+
+    if (!payNowBtn || !form) {
+        console.error('Missing required elements for payment processing');
+        return;
+    }
+
+    console.log('Payment processing initialized successfully');
 
     // Initialize Stripe Elements for credit card capture
     const stripe = Stripe('{{ env('STRIPE_KEY') }}');
     const elements = stripe.elements();
     let card = null;
-    try {
-        if (document.getElementById('card-element')) {
-            card = elements.create('card');
-            card.mount('#card-element');
-            // track completeness for client-side validation
-            window.cardComplete = false;
-            card.on('change', function(event){
-                const displayError = document.getElementById('card-errors');
-                window.cardComplete = !!event.complete;
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                } else {
-                    displayError.textContent = '';
-                }
-            });
+
+    function initializeStripeElements() {
+        if (card) return; // Already initialized
+        try {
+            const cardElement = document.getElementById('card-element');
+            if (cardElement) {
+                card = elements.create('card');
+                card.mount('#card-element');
+                // track completeness for client-side validation
+                window.cardComplete = false;
+                card.on('change', function(event){
+                    const displayError = document.getElementById('card-errors');
+                    window.cardComplete = !!event.complete;
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+                console.log('Stripe Elements initialized successfully');
+            }
+        } catch (e) {
+            console.warn('Stripe Elements init failed', e);
         }
-    } catch (e) {
-        console.warn('Stripe Elements init failed', e);
     }
 
     async function createBooking() {
@@ -652,20 +652,34 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
 
+    console.log('Attaching event listener to button');
     payNowBtn.addEventListener('click', async function(e){
         e.preventDefault();
+        console.log('Event listener fired - processing payment');
         payNowBtn.disabled = true;
-        statusEl.textContent = '';
+        statusEl.textContent = 'Processing...';
+        
+        // Initialize Stripe Elements if not already initialized
+        if (!card) {
+            initializeStripeElements();
+        }
 
         // Determine selected payment method early to run client-side validations before creating booking
         const pmEarly = document.querySelector('input[name="Radio"]:checked');
         const methodEarly = pmEarly ? pmEarly.value : 'credit-card';
+
+        console.log('Payment method selected:', methodEarly);
 
         // client-side validations
         if (methodEarly === 'credit-card') {
             const holder = form.querySelector('input[name="card_holder_name"]');
             if (!holder || !holder.value.trim()) {
                 statusEl.textContent = 'Please enter the card holder name.';
+                payNowBtn.disabled = false;
+                return;
+            }
+            if (!card) {
+                statusEl.textContent = 'Card input not initialized. Please refresh the page.';
                 payNowBtn.disabled = false;
                 return;
             }
@@ -677,6 +691,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         if (methodEarly === 'mpesa') {
             const phoneEarly = document.getElementById('mpesa-phone') ? document.getElementById('mpesa-phone').value.trim() : '';
+            console.log('M-Pesa phone:', phoneEarly);
             if (!phoneEarly) {
                 statusEl.textContent = 'M-Pesa phone number is required.';
                 payNowBtn.disabled = false;
@@ -685,7 +700,9 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         try {
+            console.log('Creating booking...');
             const bookingResp = await createBooking();
+            console.log('Booking created:', bookingResp);
             const bookingId = bookingResp.booking_id;
             const amountCents = bookingResp.total_cents;
             const currency = (bookingResp.currency || 'USD').toLowerCase();
@@ -852,17 +869,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 </script>
-<script>
-// Ensure the correct payment section is visible after other global scripts run
-window.addEventListener('load', function(){
-    setTimeout(function(){
-        var method = document.querySelector('input[name="Radio"]:checked');
-        method = method ? method.value : 'credit-card';
-        $('.credit-card-details, .paypal-details, .mpesa-details').hide();
-        if (method === 'credit-card') $('.credit-card-details').show();
-        else if (method === 'paypal') $('.paypal-details').show();
-        else if (method === 'mpesa') $('.mpesa-details').show();
-    }, 120);
-});
-</script>
+// Payment method initialization is now handled in the main jQuery script above
+// No need for duplicate initialization here
 @endsection

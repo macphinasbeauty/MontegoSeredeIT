@@ -68,34 +68,28 @@
                             <div class="service-wrap mb-4">
                                 <div class="slider-wrap">
                                     <div class="owl-carousel service-carousel nav-center mb-4" id="large-img">
+                                        @forelse($flight['images'] ?? ['build/img/flight/flight-large-01.jpg', 'build/img/flight/flight-large-02.jpg', 'build/img/flight/flight-large-03.jpg', 'build/img/flight/flight-large-04.jpg'] as $image)
                                         <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-01.jpg')}}" class="img-fluid" alt="Slider Img">
+                                            <img src="{{ filter_var($image, FILTER_VALIDATE_URL) ? $image : URL::asset($image) }}" class="img-fluid" alt="{{ $flight['airline_name'] }} flight to {{ $flight['destination_code'] }}">
+                                        </div>
+                                        @empty
+                                        <div class="service-img">
+                                            <img src="{{URL::asset('build/img/flight/flight-large-01.jpg')}}" class="img-fluid" alt="Flight Image">
                                         </div>
                                         <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-02.jpg')}}" class="img-fluid" alt="Slider Img">
+                                            <img src="{{URL::asset('build/img/flight/flight-large-02.jpg')}}" class="img-fluid" alt="Flight Image">
                                         </div>
-                                        <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-03.jpg')}}" class="img-fluid" alt="Slider Img">
-                                        </div>
-                                        <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-04.jpg')}}" class="img-fluid" alt="Slider Img">
-                                        </div>
-                                        <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-05.jpg')}}" class="img-fluid" alt="Slider Img">
-                                        </div>
-                                        <div class="service-img">
-                                            <img src="{{URL::asset('build/img/flight/flight-large-06.jpg')}}" class="img-fluid" alt="Slider Img">
-                                        </div>
+                                        @endforelse
                                     </div>
-                                    <a href="{{URL::asset('build/img/flight/flight-large-04.jpg')}}" data-fancybox="gallery" class="btn btn-white btn-xs view-btn"><i class="isax isax-image me-1"></i>See All</a>
+                                    <a href="{{ filter_var(($flight['images'][0] ?? 'build/img/flight/flight-large-04.jpg'), FILTER_VALIDATE_URL) ? ($flight['images'][0] ?? 'build/img/flight/flight-large-04.jpg') : URL::asset($flight['images'][0] ?? 'build/img/flight/flight-large-04.jpg') }}" data-fancybox="gallery" class="btn btn-white btn-xs view-btn"><i class="isax isax-image me-1"></i>See All</a>
                                 </div>
                                 <div class="owl-carousel slider-nav-thumbnails nav-center" id="small-img">
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-01.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-02.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-03.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-04.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-05.jpg')}}" class="img-fluid" alt="Slider Img"></div>
-                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-06.jpg')}}" class="img-fluid" alt="Slider Img"></div>
+                                    @forelse($flight['images'] ?? ['build/img/flight/flight-thumb-01.jpg', 'build/img/flight/flight-thumb-02.jpg', 'build/img/flight/flight-thumb-03.jpg', 'build/img/flight/flight-thumb-04.jpg'] as $image)
+                                    <div><img src="{{ filter_var($image, FILTER_VALIDATE_URL) ? $image : URL::asset($image) }}" class="img-fluid" alt="{{ $flight['airline_name'] }} flight thumbnail"></div>
+                                    @empty
+                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-01.jpg')}}" class="img-fluid" alt="Flight Thumbnail"></div>
+                                    <div><img src="{{URL::asset('build/img/flight/flight-thumb-02.jpg')}}" class="img-fluid" alt="Flight Thumbnail"></div>
+                                    @endforelse
                                 </div>
                             </div>
                         </div>

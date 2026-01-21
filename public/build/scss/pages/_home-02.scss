@@ -74,7 +74,9 @@
             padding: 40px 0;
         }
         .banner-content {
-            margin-bottom: 120px !important;            
+            margin-bottom: 120px !important;
+            max-height: 120px;
+            overflow: hidden;
             @include mixins.respond-below(lg) {
                 margin-bottom: 40px !important;
             }

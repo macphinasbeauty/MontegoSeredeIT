@@ -39,9 +39,10 @@
                         <form action="{{ route('flights.search') }}" method="post" id="flight-search-form">
                             @csrf
                             <!-- Trip Type -->
+                            <input type="hidden" name="view_type" value="list">
                             <input type="hidden" name="trip_type" id="trip-type" value="{{ $searchParams['trip_type'] ?? 'oneway' }}">
                             <input type="hidden" name="passengers" id="passengers" value="{{ $searchParams['passengers'] ?? 1 }}">
-                            <input type="hidden" name="cabin_class" id="cabin_class" value="{{ $searchParams['cabin_class'] ?? 'economy' }}">
+                            <input type="hidden" name="cabin_class" id="cabin_class" value="{{ $searchParams['cabin_class'] ?? '' }}">
                             
                             <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
                                 <div class="d-flex align-items-center flex-wrap">
@@ -162,7 +163,7 @@
                                             <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
                                                 <label class="form-label fs-14 text-default mb-1">Travellers and cabin class</label>
                                                 <h5><span class="total-persons">{{ $searchParams['passengers'] ?? 1 }}</span> <span class="fw-normal fs-14">Persons</span></h5>
-                                                <p class="fs-12 mb-0"><span class="traveller-summary">{{ $searchParams['adults'] ?? 1 }} Adult{{ ($searchParams['adults'] ?? 1) != 1 ? 's' : '' }}</span>, <span class="cabin-summary">{{ str_replace('_', ' ', $searchParams['cabin_class'] ?? 'economy') }}</span></p>
+                                                <p class="fs-12 mb-0"><span class="traveller-summary">{{ $searchParams['adults'] ?? 1 }} Adult{{ ($searchParams['adults'] ?? 1) != 1 ? 's' : '' }}</span>, <span class="cabin-summary">{{ $searchParams['cabin_class'] ? (['economy' => 'Economy', 'premium_economy' => 'Premium Economy', 'business' => 'Business', 'first' => 'First Class'][$searchParams['cabin_class']] ?? str_replace('_', ' ', $searchParams['cabin_class'])) : 'Any Class' }}</span></p>
                                             </div>
                                             <div class="dropdown-menu dropdown-menu-end dropdown-xl">
                                                 <h5 class="mb-3">Select Travelers &  Class</h5>
@@ -235,25 +236,25 @@
                                                     <h6 class="fs-16 fw-medium mb-2">Cabin Class</h6>
                                                     <div class="d-flex align-items-center flex-wrap">
                                                         <div class="form-check me-3 mb-3">
-                                                            <input class="form-check-input cabin-class-radio" type="radio" value="economy" name="cabin_class_radio" id="economy" {{ ($searchParams['cabin_class'] ?? 'economy') == 'economy' ? 'checked' : '' }}>
+                                                            <input class="form-check-input cabin-class-radio" type="radio" value="economy" name="cabin_class_radio" id="economy" {{ $searchParams['cabin_class'] == 'economy' ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="economy">
                                                                 Economy
                                                             </label>
                                                         </div>
                                                         <div class="form-check me-3 mb-3">
-                                                            <input class="form-check-input cabin-class-radio" type="radio" value="premium_economy" name="cabin_class_radio" id="premium-economy" {{ ($searchParams['cabin_class'] ?? 'economy') == 'premium_economy' ? 'checked' : '' }}>
+                                                            <input class="form-check-input cabin-class-radio" type="radio" value="premium_economy" name="cabin_class_radio" id="premium-economy" {{ $searchParams['cabin_class'] == 'premium_economy' ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="premium-economy">
                                                                 Premium Economy
                                                             </label>
                                                         </div>
                                                         <div class="form-check me-3 mb-3">
-                                                            <input class="form-check-input cabin-class-radio" type="radio" value="business" name="cabin_class_radio" id="business" {{ ($searchParams['cabin_class'] ?? 'economy') == 'business' ? 'checked' : '' }}>
+                                                            <input class="form-check-input cabin-class-radio" type="radio" value="business" name="cabin_class_radio" id="business" {{ $searchParams['cabin_class'] == 'business' ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="business">
                                                                 Business
                                                             </label>
                                                         </div>
                                                         <div class="form-check mb-3">
-                                                            <input class="form-check-input cabin-class-radio" type="radio" value="first" name="cabin_class_radio" id="first-class" {{ ($searchParams['cabin_class'] ?? 'economy') == 'first' ? 'checked' : '' }}>
+                                                            <input class="form-check-input cabin-class-radio" type="radio" value="first" name="cabin_class_radio" id="first-class" {{ $searchParams['cabin_class'] == 'first' ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="first-class">
                                                                 First Class
                                                             </label>
@@ -395,7 +396,7 @@
                     <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6">
                         <div class="d-flex align-items-center hotel-type-item mb-3">
                             <a href="{{url('flight-grid')}}" class="avatar avatar-lg flex-shrink-0">
-                                <img src="{{URL::asset($airline['logo'])}}" class="rounded-circle" alt="{{ $airline['name'] }}">
+                                <img src="{{ filter_var($airline['logo'], FILTER_VALIDATE_URL) ? $airline['logo'] : URL::asset($airline['logo']) }}" class="rounded-circle" alt="{{ $airline['name'] }}">
                             </a>
                             <div class="ms-2" style="min-width: 0;">
                                 <h6 class="fs-16 fw-medium" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><a href="{{url('flight-grid')}}" style="color: inherit; text-decoration: none;">{{ $airline['name'] }}</a></h6>
@@ -713,26 +714,13 @@
                                 <div class="place-item mb-4">
                                     <div class="place-img">
                                         <div class="img-slider image-slide owl-carousel nav-center">
+                                            @foreach($flight['images'] ?? ['build/img/flight/flight-09.jpg', 'build/img/flight/flight-05.jpg'] as $image)
                                             <div class="slide-images">
-                                                <a href="{{url('flight-details')}}">
-                                                    <img src="{{URL::asset('build/img/flight/flight-09.jpg')}}" class="img-fluid" alt="img">
+                                                <a href="{{ route('flight-details', ['provider' => $flight['provider'], 'flightId' => $flight['id']]) }}">
+                                                    <img src="{{ filter_var($image, FILTER_VALIDATE_URL) ? $image : URL::asset($image) }}" class="img-fluid" alt="{{ $flight['airline_name'] }} flight to {{ $flight['destination_code'] }}">
                                                 </a>
                                             </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('flight-details')}}">
-                                                    <img src="{{URL::asset('build/img/flight/flight-05.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('flight-details')}}">
-                                                    <img src="{{URL::asset('build/img/flight/flight-07.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
-                                            <div class="slide-images">
-                                                <a href="{{url('flight-details')}}">
-                                                    <img src="{{URL::asset('build/img/flight/flight-02.jpg')}}" class="img-fluid" alt="img">
-                                                </a>
-                                            </div>
+                                            @endforeach
                                         </div>
                                         <div class="fav-item">
                                             <div class="d-flex align-items-center">
@@ -759,9 +747,9 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <span class="badge bg-outline-success fs-10 fw-medium me-2">{{ $flight['seats_available'] }} Seats Left</span>
-                                                <a href="#" class="avatar avatar-sm">
-                                                    <img src="{{URL::asset('build/img/users/user-08.jpg')}}" class="rounded-circle" alt="img">
+                                                <span class="badge bg-outline-success fs-10 fw-medium me-2" title="Estimated seat availability - actual counts available during booking">{{ $flight['seats_available'] }} Seats Available</span>
+                                                <a href="{{ route('flight-details', ['provider' => $flight['provider'], 'flightId' => $flight['id']]) }}" class="avatar avatar-sm" title="{{ $flight['airline_name'] }}">
+                                                    <img src="{{ filter_var($flight['airline_logo'], FILTER_VALIDATE_URL) ? $flight['airline_logo'] : URL::asset($flight['airline_logo'] ?? 'build/img/icons/airindia.svg') }}" class="rounded-circle" alt="{{ $flight['airline_name'] }} logo">
                                                 </a>
                                             </div>
                                         </div>
@@ -989,4 +977,3 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
 @push('scripts')
-

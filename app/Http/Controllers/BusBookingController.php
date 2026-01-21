@@ -199,3 +199,55 @@ class BusBookingController extends Controller
                 ->with('error', 'Failed to create booking: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Auto-suggest cities for bus routes
+     */
+    public function autosuggestCities(Request $request)
+    {
+        $term = $request->get('term', '');
+
+        if (strlen($term) < 2) {
+            return response()->json([]);
+        }
+
+        // Popular bus cities (could be expanded with actual bus routes data)
+        $busCities = [
+            ['name' => 'Nairobi', 'country' => 'Kenya', 'region' => 'East Africa'],
+            ['name' => 'Mombasa', 'country' => 'Kenya', 'region' => 'East Africa'],
+            ['name' => 'Kisumu', 'country' => 'Kenya', 'region' => 'East Africa'],
+            ['name' => 'Eldoret', 'country' => 'Kenya', 'region' => 'East Africa'],
+            ['name' => 'Nakuru', 'country' => 'Kenya', 'region' => 'East Africa'],
+            ['name' => 'Dar es Salaam', 'country' => 'Tanzania', 'region' => 'East Africa'],
+            ['name' => 'Arusha', 'country' => 'Tanzania', 'region' => 'East Africa'],
+            ['name' => 'Kampala', 'country' => 'Uganda', 'region' => 'East Africa'],
+            ['name' => 'Entebbe', 'country' => 'Uganda', 'region' => 'East Africa'],
+            ['name' => 'Addis Ababa', 'country' => 'Ethiopia', 'region' => 'East Africa'],
+            ['name' => 'Johannesburg', 'country' => 'South Africa', 'region' => 'Southern Africa'],
+            ['name' => 'Cape Town', 'country' => 'South Africa', 'region' => 'Southern Africa'],
+            ['name' => 'Durban', 'country' => 'South Africa', 'region' => 'Southern Africa'],
+            ['name' => 'Lagos', 'country' => 'Nigeria', 'region' => 'West Africa'],
+            ['name' => 'Accra', 'country' => 'Ghana', 'region' => 'West Africa'],
+            ['name' => 'Abuja', 'country' => 'Nigeria', 'region' => 'West Africa'],
+        ];
+
+        $filtered = array_filter($busCities, function ($city) use ($term) {
+            return stripos($city['name'], $term) !== false ||
+                   stripos($city['country'], $term) !== false ||
+                   stripos($city['region'], $term) !== false;
+        });
+
+        // Format for auto-suggest dropdown
+        $formatted = array_map(function ($city) {
+            return [
+                'name' => $city['name'],
+                'country' => $city['country'],
+                'region' => $city['region'],
+                'value' => $city['name'],
+                'display' => trim($city['name'] . ', ' . $city['country']),
+            ];
+        }, array_values($filtered));
+
+        return response()->json(array_slice($formatted, 0, 8));
+    }
+}

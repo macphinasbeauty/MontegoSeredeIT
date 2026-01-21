@@ -50,12 +50,12 @@ class FlightCalendarController extends Controller
             // Use provider-stored credentials
             $clientId = $amadeusProvider->api_key ?? env('AMADEUS_CLIENT_ID');
             $clientSecret = $amadeusProvider->api_secret ?? env('AMADEUS_CLIENT_SECRET');
-            $endpoint = $amadeusProvider->endpoint ?? env('AMADEUS_ENDPOINT', 'https://test.api.amadeus.com');
+            $endpoint = $amadeusProvider->endpoint ?? env('AMADEUS_ENDPOINT', 'https://api.amadeus.com');
             Log::info('Using Amadeus credentials from Provider DB entry');
         } else {
             $clientId = env('AMADEUS_CLIENT_ID');
             $clientSecret = env('AMADEUS_CLIENT_SECRET');
-            $endpoint = env('AMADEUS_ENDPOINT', 'https://test.api.amadeus.com');
+            $endpoint = env('AMADEUS_ENDPOINT', 'https://api.amadeus.com');
             if ($amadeusProvider && !$amadeusProvider->is_active) {
                 Log::warning('Amadeus provider exists in DB but is not active; falling back to .env');
             }

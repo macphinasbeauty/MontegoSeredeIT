@@ -376,6 +376,140 @@ class FlightApiService
     }
 
     /**
+     * Create an order with Duffel after successful payment
+     * This is required to get PNR and enable boarding pass generation
+     */
+    public function createDuffelOrder($offerId, array $passengers, array $selectedSeats = [])
+    {
+        if (!$this->duffelProvider) {
+            throw new \Exception('Duffel provider not configured');
+        }
+
+        try {
+            Log::info('Creating Duffel order', ['offer_id' => $offerId, 'passenger_count' => count($passengers)]);
+
+            // Prepare passenger data for Duffel order
+            $orderPassengers = [];
+            foreach ($passengers as $index => $passenger) {
+                $orderPassengers[] = [
+                    'id' => 'pas_' . ($index + 1),
+                    'given_name' => $passenger['first_name'] ?? '',
+                    'family_name' => $passenger['last_name'] ?? '',
+                    'gender' => $passenger['gender'] ?? 'm',
+                    'born_on' => $passenger['date_of_birth'] ?? null,
+                    'title' => $this->getPassengerTitle($passenger),
+                    'email' => $passenger['email'] ?? null,
+                    'phone_number' => $passenger['phone'] ?? null,
+                ];
+            }
+
+            // Prepare services (selected seats)
+            $services = [];
+            if (!empty($selectedSeats)) {
+                foreach ($selectedSeats as $seat) {
+                    if (isset($seat['service_id'])) {
+                        $services[] = [
+                            'id' => $seat['service_id'],
+                            'quantity' => 1,
+                        ];
+                    }
+                }
+            }
+
+            $orderData = [
+                'data' => [
+                    'selected_offers' => [$offerId],
+                    'passengers' => $orderPassengers,
+                    'type' => 'instant',
+                ]
+            ];
+
+            // Add services if any seats were selected
+            if (!empty($services)) {
+                $orderData['data']['services'] = $services;
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->duffelProvider->api_key,
+                'Content-Type' => 'application/json',
+                'Duffel-Version' => 'v2',
+            ])->post($this->duffelProvider->endpoint . '/air/orders', $orderData);
+
+            if ($response->successful()) {
+                $order = $response->json();
+                Log::info('Duffel order created successfully', [
+                    'order_id' => $order['data']['id'] ?? null,
+                    'booking_reference' => $order['data']['booking_reference'] ?? null
+                ]);
+                return $order['data'];
+            }
+
+            Log::error('Duffel order creation failed', [
+                'offer_id' => $offerId,
+                'status' => $response->status(),
+                'response' => $response->body()
+            ]);
+
+            throw new \Exception('Failed to create Duffel order: ' . $response->body());
+
+        } catch (\Exception $e) {
+            Log::error('Error creating Duffel order: ' . $e->getMessage(), [
+                'offer_id' => $offerId,
+                'exception' => $e->getMessage()
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Get passenger title based on age and gender
+     */
+    private function getPassengerTitle($passenger)
+    {
+        $age = $passenger['age'] ?? 30;
+        $gender = strtolower($passenger['gender'] ?? 'm');
+
+        if ($age < 18) {
+            return ''; // Children don't have titles in most booking systems
+        }
+
+        if ($gender === 'f' || $gender === 'female') {
+            return 'ms'; // Use 'ms' as default for females
+        }
+
+        return 'mr'; // Default for males
+    }
+
+    /**
+     * Get boarding passes for an order
+     */
+    public function getBoardingPasses($orderId)
+    {
+        if (!$this->duffelProvider) {
+            throw new \Exception('Duffel provider not configured');
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->duffelProvider->api_key,
+                'Content-Type' => 'application/json',
+                'Duffel-Version' => 'v2',
+            ])->get($this->duffelProvider->endpoint . '/air/orders/' . $orderId . '/boarding_passes');
+
+            if ($response->successful()) {
+                return $response->json()['data'] ?? [];
+            }
+
+            Log::warning('Failed to fetch boarding passes for order: ' . $orderId);
+            return [];
+
+        } catch (\Exception $e) {
+            Log::error('Error fetching boarding passes: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
      * Get seat map from Amadeus (alternative provider)
      */
     public function getAmadeusSeatMap($flightOfferId)
@@ -649,27 +783,49 @@ class FlightApiService
                 ];
 
                 $results = $this->searchFlightsFromDuffel($searchParams);
-                
+
+                Log::info('Raw Duffel response for ' . $dateStr, ['results' => $results]);
+
                 // Duffel returns offers nested in data.offers
                 $offers = $results['data']['offers'] ?? $results['data'] ?? $results['offers'] ?? [];
-                
+
+                Log::info('Extracted offers for ' . $dateStr, ['offers_count' => count($offers), 'offers' => $offers]);
+
                 if (!empty($offers)) {
                     $cheapest = null;
                     $minPrice = PHP_INT_MAX;
 
                     foreach ($offers as $offer) {
                         if (!is_array($offer)) {
+                            Log::warning('Skipping non-array offer for ' . $dateStr, ['offer' => $offer]);
                             continue; // Skip non-array items
                         }
-                        $price = (float)($offer['total_amount']['amount'] ?? PHP_INT_MAX);
-                        if ($price < $minPrice && $price < PHP_INT_MAX) {
+
+                        // Try different price paths
+                        $price = null;
+                        if (isset($offer['total_amount']['amount'])) {
+                            $price = (float)$offer['total_amount']['amount'];
+                        } elseif (isset($offer['total_amount']) && is_numeric($offer['total_amount'])) {
+                            $price = (float)$offer['total_amount'];
+                        } elseif (isset($offer['price']['total'])) {
+                            $price = (float)$offer['price']['total'];
+                        }
+
+                        Log::info('Extracted price for offer', [
+                            'date' => $dateStr,
+                            'offer_id' => $offer['id'] ?? 'unknown',
+                            'price' => $price,
+                            'total_amount' => $offer['total_amount'] ?? 'missing'
+                        ]);
+
+                        if ($price !== null && $price > 0 && $price < $minPrice) {
                             $minPrice = $price;
                             $cheapest = $offer;
                         }
                     }
 
                     if ($cheapest && $minPrice < PHP_INT_MAX) {
-                        $samplePrices[$dateStr] = (float)$cheapest['total_amount']['amount'];
+                        $samplePrices[$dateStr] = $minPrice;
                         Log::info('Sample price for ' . $dateStr . ': $' . $samplePrices[$dateStr]);
                     } else {
                         Log::info('No valid cheapest price found for ' . $dateStr . ' (minPrice=' . $minPrice . ')');

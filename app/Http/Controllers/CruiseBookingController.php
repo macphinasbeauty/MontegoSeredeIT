@@ -111,4 +111,54 @@ class CruiseBookingController extends Controller
         return redirect()->route('cruise-booking-confirmation')
             ->with('success', 'Cruise booking confirmed successfully!');
     }
+
+    /**
+     * Auto-suggest ports/destinations for cruises
+     */
+    public function autosuggestPorts(Request $request)
+    {
+        $term = $request->get('term', '');
+
+        if (strlen($term) < 2) {
+            return response()->json([]);
+        }
+
+        // Popular cruise ports and destinations
+        $cruisePorts = [
+            ['name' => 'Miami', 'country' => 'USA', 'region' => 'Caribbean'],
+            ['name' => 'Fort Lauderdale', 'country' => 'USA', 'region' => 'Caribbean'],
+            ['name' => 'Los Angeles', 'country' => 'USA', 'region' => 'Pacific'],
+            ['name' => 'Barcelona', 'country' => 'Spain', 'region' => 'Mediterranean'],
+            ['name' => 'Rome', 'country' => 'Italy', 'region' => 'Mediterranean'],
+            ['name' => 'Venice', 'country' => 'Italy', 'region' => 'Mediterranean'],
+            ['name' => 'Athens', 'country' => 'Greece', 'region' => 'Mediterranean'],
+            ['name' => 'Dubai', 'country' => 'UAE', 'region' => 'Middle East'],
+            ['name' => 'Singapore', 'country' => 'Singapore', 'region' => 'Asia'],
+            ['name' => 'Sydney', 'country' => 'Australia', 'region' => 'Pacific'],
+            ['name' => 'Vancouver', 'country' => 'Canada', 'region' => 'Pacific'],
+            ['name' => 'New York', 'country' => 'USA', 'region' => 'Atlantic'],
+            ['name' => 'London', 'country' => 'UK', 'region' => 'Europe'],
+            ['name' => 'Amsterdam', 'country' => 'Netherlands', 'region' => 'Europe'],
+            ['name' => 'Copenhagen', 'country' => 'Denmark', 'region' => 'Europe'],
+        ];
+
+        $filtered = array_filter($cruisePorts, function ($port) use ($term) {
+            return stripos($port['name'], $term) !== false ||
+                   stripos($port['country'], $term) !== false ||
+                   stripos($port['region'], $term) !== false;
+        });
+
+        // Format for auto-suggest dropdown
+        $formatted = array_map(function ($port) {
+            return [
+                'name' => $port['name'],
+                'country' => $port['country'],
+                'region' => $port['region'],
+                'value' => $port['name'],
+                'display' => trim($port['name'] . ', ' . $port['country']),
+            ];
+        }, array_values($filtered));
+
+        return response()->json(array_slice($formatted, 0, 8));
+    }
 }

@@ -4,14 +4,71 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-Route::get('/', [App\Http\Controllers\FlightController::class, 'index'])->name('index');
-Route::post('/flights/search', [App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
-Route::get('/api/airports/search', [App\Http\Controllers\FlightController::class, 'searchAirports'])->name('api.airports.search');
-Route::get('/api/airports/nearest', [App\Http\Controllers\FlightController::class, 'nearestAirport'])->name('api.airports.nearest');
-Route::get('/api/flights/cheapest-dates', [App\Http\Controllers\FlightController::class, 'getCheapestDates'])->name('api.flights.cheapest-dates');
-Route::post('/api/flights/verify-price', [App\Http\Controllers\FlightController::class, 'verifyFlightPrice'])->name('api.flights.verify-price');
-// Calendar endpoint powered by Amadeus (fast monthly cheapest-date search)
-Route::get('/api/flight-calendar', [App\Http\Controllers\FlightCalendarController::class, 'getMonthlyFares'])->name('api.flights.calendar');
+// Home/Destination routes
+Route::get('/api/destinations/featured', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getFeaturedDestinations());
+})->name('api.destinations.featured');
+
+Route::get('/api/destinations/fresh', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getFreshDestinations());
+})->name('api.destinations.fresh');
+
+Route::get('/api/destinations/api', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getApiDestinations());
+})->name('api.destinations.api');
+
+// Trending places routes
+Route::get('/api/trending/flights', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getTrendingFlights());
+})->name('api.trending.flights');
+
+Route::get('/api/trending/hotels', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getTrendingHotels());
+})->name('api.trending.hotels');
+
+Route::get('/api/trending/tours', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getTrendingTours());
+})->name('api.trending.tours');
+
+Route::get('/api/statistics', function() {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    return response()->json($homeController->getStatistics());
+})->name('api.statistics');
+Route::match(['get', 'post'], '/flights/search', [App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
 
 // (Debug routes removed)
 
@@ -24,6 +81,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/', function () {
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    
+    return view('index', [
+        'popularAirports' => \App\Models\Airport::where('is_active', true)->inRandomOrder()->limit(10)->get(),
+        'featuredDestinations' => $homeController->getFeaturedDestinations(),
+        'trendingFlights' => $homeController->getTrendingFlights(),
+        'trendingHotels' => $homeController->getTrendingHotels(),
+        'trendingTours' => $homeController->getTrendingTours(),
+        'statistics' => $homeController->getStatistics(),
+    ]);
+})->name('index');
 
 Route::get('/index', function () {
     return redirect()->route('index');
@@ -69,15 +143,38 @@ Route::get('/add-flight', function () {
     return view('add-flight');
 })->name('add-flight');
 
-Route::get('/flight-grid', function () {
-    return view('flight-grid');
-})->name('flight-grid');
+Route::get('/flight-grid', [App\Http\Controllers\FlightController::class, 'grid'])->name('flight-grid');
 
 Route::get('/flight-list', [App\Http\Controllers\FlightController::class, 'list'])->name('flight-list');
 
 Route::get('/flight-details/{provider}/{flightId}', [App\Http\Controllers\FlightController::class, 'show'])->name('flight-details');
+Route::post('/flight-fare-selection/{provider}/{fareId}', [App\Http\Controllers\FlightController::class, 'selectFare'])->name('flight-fare-selection.select');
 
 Route::post('/flight-booking-confirmation', [App\Http\Controllers\FlightController::class, 'confirmation'])->name('flight-booking-confirmation');
+
+// Test route for debugging auth redirects
+Route::get('/test-no-auth', function() {
+    return 'No auth middleware - this should work for anyone';
+})->name('test-no-auth');
+
+// Test POST route for debugging
+Route::post('/test-post-no-auth', function(\Illuminate\Http\Request $request) {
+    return 'POST request works - data: ' . json_encode($request->all());
+})->name('test-post-no-auth');
+
+// Test form for debugging POST requests
+Route::get('/test-form', function() {
+    return '
+    <html><body>
+    <h1>Test POST Form</h1>
+    <form action="' . route('test-post-no-auth') . '" method="POST">
+        <input type="hidden" name="_token" value="' . csrf_token() . '">
+        <input type="text" name="test_field" value="test_value">
+        <button type="submit">Submit POST</button>
+    </form>
+    <p><a href="' . route('test-no-auth') . '">Test GET route</a></p>
+    </body></html>';
+})->name('test-form');
 // AJAX endpoint to create booking (returns JSON) used by booking page to start payments
 Route::post('/booking/create-ajax', [App\Http\Controllers\FlightController::class, 'createBookingAjax'])->name('booking.create.ajax');
 Route::get('/booking/status/{id}', [App\Http\Controllers\FlightController::class, 'bookingStatusAjax'])->name('booking.status.ajax');
@@ -124,9 +221,7 @@ Route::get('/car-map', [App\Http\Controllers\AmadeusCarBookingController::class,
 Route::get('/car-details/{id}', [App\Http\Controllers\AmadeusCarBookingController::class, 'details'])->name('car-details');
 Route::get('/car-booking/{id}', [App\Http\Controllers\AmadeusCarBookingController::class, 'booking'])->name('car-booking');
 
-Route::get('/booking-confirmation', function () {
-    return view('booking-confirmation');
-})->name('booking-confirmation');
+Route::get('/booking-confirmation', [App\Http\Controllers\HotelBookingController::class, 'confirmation'])->name('booking-confirmation');
 
 Route::get('/add-hotel', function () {
     return view('add-hotel');
@@ -139,8 +234,6 @@ Route::get('/cars/poll/{sessionToken}', [App\Http\Controllers\CarRentalControlle
 Route::get('/cars/{sessionToken}/{carId}', [App\Http\Controllers\CarRentalController::class, 'show'])->name('car-rental.show');
 Route::get('/cars/{sessionToken}/{carId}/booking', [App\Http\Controllers\CarRentalController::class, 'booking'])->name('car-rental.booking');
 Route::post('/cars/{sessionToken}/{carId}/confirm', [App\Http\Controllers\CarRentalController::class, 'confirmBooking'])->name('car-rental.confirm');
-Route::get('/api/cars/locations/search', [App\Http\Controllers\CarRentalController::class, 'searchLocations'])->name('api.cars.locations.search');
-Route::get('/api/cars/locations/autosuggest', [App\Http\Controllers\CarRentalController::class, 'autosuggestLocations'])->name('api.cars.locations.autosuggest');
 
 Route::get('/car-list', function () {
     return view('car-list');
@@ -152,7 +245,7 @@ Route::get('/car-map', function () {
 
 Route::get('/car-details', function () {
     return view('car-details');
-})->name('car-details');
+})->name('car-details.view');
 
 Route::get('/car-booking-confirmation', function () {
     return view('car-booking-confirmation');
@@ -183,8 +276,15 @@ Route::get('/tour-grid', [App\Http\Controllers\TourBookingController::class, 'gr
 Route::get('/tour-list', [App\Http\Controllers\TourBookingController::class, 'list'])->name('tour-list');
 Route::get('/tour-map', [App\Http\Controllers\TourBookingController::class, 'map'])->name('tour-map');
 Route::get('/tour-details/{id}', [App\Http\Controllers\TourBookingController::class, 'details'])->name('tour-details');
+// Handle tour-booking without ID - redirect to tour grid
+Route::get('/tour-booking', function () {
+    return redirect()->route('tour-grid')->with('error', 'Please select a tour to book first.');
+})->name('tour-booking.index');
 Route::get('/tour-booking/{id}', [App\Http\Controllers\TourBookingController::class, 'booking'])->name('tour-booking');
-Route::post('/tour-booking', [App\Http\Controllers\TourBookingController::class, 'store'])->name('tour-booking.store');
+Route::post('/tour-booking/process', [App\Http\Controllers\TourBookingController::class, 'process'])->name('tour-booking.process');
+Route::get('/tour-booking/confirm-payment', [App\Http\Controllers\TourBookingController::class, 'confirmPayment'])->name('tour-booking.confirm-payment');
+Route::post('/tour-booking/store', [App\Http\Controllers\TourBookingController::class, 'store'])->name('tour-booking.store');
+Route::post('/tour-booking/validate-coupon', [App\Http\Controllers\TourBookingController::class, 'validateCoupon'])->name('tour-booking.validate-coupon');
 
 Route::get('/tour-booking-confirmation', function () {
     return view('tour-booking-confirmation');
@@ -264,7 +364,15 @@ Route::get('/contact-us', function () {
 })->name('contact-us');
 
 Route::get('/destination', function () {
-    return view('destination');
+    $homeController = new \App\Http\Controllers\HomeController(
+        new \App\Services\ViatorService(),
+        new \App\Services\ImageService(),
+        new \App\Services\FlightApiService()
+    );
+    
+    return view('destination', [
+        'featuredDestinations' => $homeController->getAllDestinations(),
+    ]);
 })->name('destination');
 
 Route::get('/terms-conditions', function () {
@@ -495,11 +603,52 @@ Route::post('/admin/system/company/update', function (\Illuminate\Http\Request $
     return redirect()->back()->with('success', 'Company information updated successfully!');
 })->middleware(['auth', 'admin'])->name('admin.system.company.update');
 
+Route::post('/admin/system/tour-service-fee/update', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'tour_service_fee' => 'required|numeric|min:0|max:999999.99',
+        'tour_service_fee_description' => 'nullable|string|max:255',
+    ]);
+
+    \App\Models\Setting::setValue('tour_service_fee', $request->tour_service_fee, 'tour', 'Tour service fee amount');
+    \App\Models\Setting::setValue('tour_service_fee_description', $request->tour_service_fee_description, 'tour', 'Tour service fee description');
+
+    return redirect()->back()->with('success', 'Tour service fee updated successfully!');
+})->middleware(['auth', 'admin'])->name('admin.system.tour-service-fee.update');
 
 
-Route::get('/admin-security-settings', function () {
-    return view('admin-security-settings');
-})->middleware(['auth', 'admin'])->name('admin-security-settings');
+
+Route::get('/admin-agents', function () {
+    return redirect()->route('admin.agents.index');
+})->middleware(['auth', 'admin'])->name('admin-agents');
+
+Route::get('/admin-security-settings', [App\Http\Controllers\AdminSecuritySettingsController::class, 'index'])->middleware(['auth', 'admin'])->name('admin-security-settings');
+Route::post('/admin-security-settings/change-password', [App\Http\Controllers\AdminSecuritySettingsController::class, 'changePassword'])->middleware(['auth', 'admin'])->name('admin-security-settings.change-password');
+
+// Two-Factor Authentication
+Route::post('/admin-security-settings/2fa/send/{type}', [App\Http\Controllers\AdminSecuritySettingsController::class, 'sendTwoFactorCode'])->middleware(['auth', 'admin'])->name('admin-security-settings.2fa.send');
+Route::post('/admin-security-settings/2fa/verify/{type}', [App\Http\Controllers\AdminSecuritySettingsController::class, 'verifyTwoFactorCode'])->middleware(['auth', 'admin'])->name('admin-security-settings.2fa.verify');
+Route::post('/admin-security-settings/2fa/toggle/{type}', [App\Http\Controllers\AdminSecuritySettingsController::class, 'toggleTwoFactor'])->middleware(['auth', 'admin'])->name('admin-security-settings.2fa.toggle');
+Route::post('/admin-security-settings/2fa/disable/{type}', [App\Http\Controllers\AdminSecuritySettingsController::class, 'disableTwoFactor'])->middleware(['auth', 'admin'])->name('admin-security-settings.2fa.disable');
+
+// Phone Number Verification
+Route::post('/admin-security-settings/phone/send-code', [App\Http\Controllers\AdminSecuritySettingsController::class, 'sendPhoneVerificationCode'])->middleware(['auth', 'admin'])->name('admin-security-settings.phone.send-code');
+Route::post('/admin-security-settings/phone/verify', [App\Http\Controllers\AdminSecuritySettingsController::class, 'verifyPhoneNumber'])->middleware(['auth', 'admin'])->name('admin-security-settings.phone.verify');
+Route::post('/admin-security-settings/phone/remove', [App\Http\Controllers\AdminSecuritySettingsController::class, 'removePhoneNumber'])->middleware(['auth', 'admin'])->name('admin-security-settings.phone.remove');
+
+// Email Verification
+Route::post('/admin-security-settings/email/send-code', [App\Http\Controllers\AdminSecuritySettingsController::class, 'sendEmailVerificationCode'])->middleware(['auth', 'admin'])->name('admin-security-settings.email.send-code');
+Route::post('/admin-security-settings/email/verify', [App\Http\Controllers\AdminSecuritySettingsController::class, 'verifyEmailChange'])->middleware(['auth', 'admin'])->name('admin-security-settings.email.verify');
+Route::post('/admin-security-settings/email/remove-verification', [App\Http\Controllers\AdminSecuritySettingsController::class, 'removeEmailVerification'])->middleware(['auth', 'admin'])->name('admin-security-settings.email.remove-verification');
+
+// Account Activity
+Route::get('/admin-security-settings/activity', [App\Http\Controllers\AdminSecuritySettingsController::class, 'getAccountActivity'])->middleware(['auth', 'admin'])->name('admin-security-settings.activity');
+
+// Device Management
+Route::get('/admin-security-settings/devices', [App\Http\Controllers\AdminSecuritySettingsController::class, 'getDevices'])->middleware(['auth', 'admin'])->name('admin-security-settings.devices');
+Route::post('/admin-security-settings/devices/{deviceId}/revoke', [App\Http\Controllers\AdminSecuritySettingsController::class, 'revokeDevice'])->middleware(['auth', 'admin'])->name('admin-security-settings.devices.revoke');
+
+// Account Deletion
+Route::post('/admin-security-settings/delete-account', [App\Http\Controllers\AdminSecuritySettingsController::class, 'deleteAccount'])->middleware(['auth', 'admin'])->name('admin-security-settings.delete-account');
 
 Route::get('/admin-plans-settings', function () {
     return view('admin-plans-settings');
@@ -648,37 +797,37 @@ Route::post('/admin-payment-gateways', function (\Illuminate\Http\Request $reque
     return redirect('/admin-payment-gateways')->with('status', 'Payment gateways updated');
 })->middleware(['auth', 'admin']);
 
-// Admin Provider Management Routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('providers', App\Http\Controllers\Admin\ProviderController::class);
-    Route::post('providers/{provider}/test-connection', [App\Http\Controllers\Admin\ProviderController::class, 'testConnection'])->name('providers.test-connection');
+    // Admin Provider Management Routes
+    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('providers', App\Http\Controllers\Admin\ProviderController::class);
+        Route::post('providers/{provider}/test-connection', [App\Http\Controllers\Admin\ProviderController::class, 'testConnection'])->name('providers.test-connection');
 
-    // Admin User Management Routes
-    Route::resource('users', App\Http\Controllers\Admin\AdminUsersController::class);
-    Route::patch('users/{user}/toggle-status', [App\Http\Controllers\Admin\AdminUsersController::class, 'toggleStatus'])->name('users.toggle-status');
+        // Admin User Management Routes
+        Route::resource('users', App\Http\Controllers\Admin\AdminUsersController::class);
+        Route::patch('users/{user}/toggle-status', [App\Http\Controllers\Admin\AdminUsersController::class, 'toggleStatus'])->name('users.toggle-status');
 
-    // Admin Agent Management Routes
-    Route::resource('agents', App\Http\Controllers\Admin\AdminAgentsController::class);
-    Route::patch('agents/{agent}/toggle-status', [App\Http\Controllers\Admin\AdminAgentsController::class, 'toggleStatus'])->name('agents.toggle-status');
+        // Admin Agent Management Routes
+        Route::resource('agents', App\Http\Controllers\Admin\AdminAgentsController::class);
+        Route::patch('agents/{agent}/toggle-status', [App\Http\Controllers\Admin\AdminAgentsController::class, 'toggleStatus'])->name('agents.toggle-status');
 
-    // Admin Agent Permissions Routes
-    Route::get('agent-permissions', [App\Http\Controllers\AdminAgentPermissionsController::class, 'index'])->name('agent-permissions.index');
-    Route::patch('agent-permissions/{agent}', [App\Http\Controllers\AdminAgentPermissionsController::class, 'update'])->name('agent-permissions.update');
-    Route::post('agent-permissions/bulk-update', [App\Http\Controllers\AdminAgentPermissionsController::class, 'bulkUpdate'])->name('agent-permissions.bulk-update');
+        // Admin Agent Permissions Routes
+        Route::get('agent-permissions', [App\Http\Controllers\AdminAgentPermissionsController::class, 'index'])->name('agent-permissions.index');
+        Route::patch('agent-permissions/{agent}', [App\Http\Controllers\AdminAgentPermissionsController::class, 'update'])->name('agent-permissions.update');
+        Route::post('agent-permissions/bulk-update', [App\Http\Controllers\AdminAgentPermissionsController::class, 'bulkUpdate'])->name('agent-permissions.bulk-update');
 
-    // Admin Expert Applications Routes
-    Route::resource('expert-applications', App\Http\Controllers\AdminExpertApplicationsController::class)->only(['index', 'show', 'update']);
+        // Admin Expert Applications Routes
+        Route::resource('expert-applications', App\Http\Controllers\AdminExpertApplicationsController::class)->only(['index', 'show', 'update']);
 
-    // Admin Mail Settings Routes
-    Route::get('mail-settings', [App\Http\Controllers\AdminMailSettingsController::class, 'index'])->name('mail-settings.index');
-    Route::post('mail-settings', [App\Http\Controllers\AdminMailSettingsController::class, 'update'])->name('mail-settings.update');
-    Route::post('mail-settings/test', [App\Http\Controllers\AdminMailSettingsController::class, 'test'])->name('mail-settings.test');
+        // Admin Mail Settings Routes
+        Route::get('mail-settings', [App\Http\Controllers\AdminMailSettingsController::class, 'index'])->name('mail-settings.index');
+        Route::post('mail-settings', [App\Http\Controllers\AdminMailSettingsController::class, 'update'])->name('mail-settings.update');
+        Route::post('mail-settings/test', [App\Http\Controllers\AdminMailSettingsController::class, 'test'])->name('mail-settings.test');
 
-    // Debug route to test admin routes
-    Route::get('debug-test', function() {
-        return 'Admin routes are working!';
-    })->name('debug-test');
-});
+        // Debug route to test admin routes
+        Route::get('debug-test', function() {
+            return 'Admin routes are working!';
+        })->name('debug-test');
+    });
 
 // Admin Service Management Routes
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -711,6 +860,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin-flight-booking');
     })->name('admin-flight-booking');
     Route::get('/admin-bus-booking', [App\Http\Controllers\AdminBusBookingController::class, 'index'])->name('admin-bus-booking');
+
+    // Website Settings Routes
+    Route::get('/admin/website-settings', [App\Http\Controllers\WebsiteSettingsController::class, 'index'])->name('admin.website-settings');
+    Route::post('/admin/website-settings/slider-content', [App\Http\Controllers\WebsiteSettingsController::class, 'updateSliderContent'])->name('admin.website-settings.slider-content.update');
+Route::post('/admin/website-settings/flight-pricing', [App\Http\Controllers\WebsiteSettingsController::class, 'updateFlightPricing'])->name('admin.website-settings.flight-pricing.update');
+    Route::post('/admin/website-settings/sliders/{page}', [App\Http\Controllers\WebsiteSettingsController::class, 'updateSliders'])->name('admin.website-settings.sliders.update');
+    Route::delete('/admin/website-settings/sliders/{page}/{index}', [App\Http\Controllers\WebsiteSettingsController::class, 'deleteSlider'])->name('admin.website-settings.sliders.delete');
+    Route::post('/admin/website-settings/backgrounds', [App\Http\Controllers\WebsiteSettingsController::class, 'updateBackgrounds'])->name('admin.website-settings.backgrounds.update');
+    Route::delete('/admin/website-settings/backgrounds/{backgroundKey}', [App\Http\Controllers\WebsiteSettingsController::class, 'deleteBackground'])->name('admin.website-settings.backgrounds.delete');
+    Route::post('/admin/website-settings/theme', [App\Http\Controllers\WebsiteSettingsController::class, 'updateTheme'])->name('admin.website-settings.theme.update');
+    Route::post('/admin/website-settings/homepage-theme', [App\Http\Controllers\WebsiteSettingsController::class, 'updateHomepageTheme'])->name('admin.website-settings.homepage-theme.update');
 });
 
 Route::get('/agent-listings', function () {
@@ -862,6 +1022,15 @@ Route::get('/bus-right-sidebar', function () {
 Route::get('/customer-bus-booking', [App\Http\Controllers\UserBookingController::class, 'buses'])->middleware('auth')->name('customer-bus-booking');
 
 Route::get('/agent-bus-booking', [App\Http\Controllers\AgentBusController::class, 'bookings'])->middleware(['auth', 'role:agent'])->name('agent-bus-booking');
+
+// Review routes
+Route::middleware('auth')->group(function () {
+    Route::post('/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews', [App\Http\Controllers\ReviewController::class, 'getReviews'])->name('reviews.get');
+    Route::put('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/reviews/{review}/helpful', [App\Http\Controllers\ReviewController::class, 'markHelpful'])->name('reviews.helpful');
+});
 
 Route::get('/support-fixes', function () {
     return view('support-fixes');

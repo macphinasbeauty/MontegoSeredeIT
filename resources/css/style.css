@@ -13801,7 +13801,7 @@ footer.footer-three .footer-bottom .policy-links li a:hover {
   font-weight: 500;
   color: #111827;
   border-radius: 74px;
-  padding: 8px 16px;
+  padding: 6px 12px;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -13827,7 +13827,7 @@ footer.footer-three .footer-bottom .policy-links li a:hover {
 .banner-form .form-info .form-item {
   flex: 1;
   text-align: left;
-  padding: 8px;
+  padding: 2px;
   border-left: 1px solid #E4EBF1;
   position: relative;
   display: -webkit-box;
@@ -13874,13 +13874,13 @@ footer.footer-three .footer-bottom .policy-links li a:hover {
   }
 }
 .banner-form .form-info .form-item .form-control {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   padding: 0;
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  min-height: 32px;
+  min-height: auto;
 }
 .banner-form .form-info .form-item.dropdown .dropdown-menu {
   padding: 20px;
@@ -13905,11 +13905,11 @@ footer.footer-three .footer-bottom .policy-links li a:hover {
   display: none;
 }
 .banner-form .info-item {
-  padding: 20px;
+  padding: 10px;
 }
 .banner-form .search-btn {
-  padding: 20px;
-  margin-left: 24px;
+  padding: 10px;
+  margin-left: 15px;
 }
 @media (max-width: 991.98px) {
   .banner-form .search-btn {
@@ -25728,3 +25728,65 @@ table.table.dataTable > thead > tr th {
 }
 
 /*# sourceMappingURL=style.css.map */
+/* --- 1. CARD & HEADER (The Top Section) --- */
+.banner-form.card .card-header {
+    padding: 4px 15px !important; /* Removes massive top gap */
+    border-bottom: 1px solid #E4EBF1;
+}
+
+.banner-form .nav li .nav-link {
+    font-size: 13px !important;
+    padding: 4px 12px !important; /* Slimmer tabs */
+    border-radius: 30px;
+}
+
+/* --- 2. CARD BODY (The Main Container) --- */
+.banner-form.card .card-body {
+    padding: 8px 15px !important; /* Tightens space around the form */
+}
+
+/* --- 3. FORM ITEMS (The Search Fields) --- */
+.banner-form .form-info .form-item {
+    padding: 6px 12px !important; /* Reduced from 20px */
+    min-height: 52px !important;   /* Safe minimum to prevent text overlap */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.banner-form .form-info .form-item .form-control {
+    font-size: 15px !important;   /* Shrunk from 20px */
+    line-height: 1.2 !important;  /* Prevents vertical clipping */
+    height: auto !important;
+    min-height: 22px !important;
+    padding: 0 !important;
+}
+
+/* --- 4. SEARCH BUTTON --- */
+.banner-form .search-btn {
+    padding: 8px 24px !important; /* Shrunk from 20px */
+    margin-left: 15px;
+    height: 48px !important;      /* Matches the slimmer form height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- 5. RTL SUPPORT --- */
+[dir=rtl] .banner-form .search-btn {
+    margin: 0 15px 0 0 !important;
+}
+
+[dir=rtl] .banner-form .form-info .form-item {
+    text-align: right;
+}
+
+/* --- 6. CLEANUP (Removing extra margins) --- */
+.banner-form .mb-2, 
+.banner-form .form-check {
+    margin-bottom: 2px !important; /* Shrinks the radio button row gap */
+}
+
+.banner-form .info-item {
+    padding: 0 !important; /* Removes duplicate padding if present */
+}
