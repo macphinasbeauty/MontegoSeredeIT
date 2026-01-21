@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Welcome to DreamsTour - Your Agent Account</title>
+    <title>Welcome to Miles Montego - Your Agent Account</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -21,11 +21,18 @@
             <p><strong>Password:</strong> {{ $password }}</p>
             <p style="color: #dc3545; font-weight: bold;">⚠️ Please save these credentials securely and change your password after first login.</p>
         </div>
+        @elseif($password === null)
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #007bff;">Password Reset Required</h3>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p style="color: #28a745; font-weight: bold;">✅ A password reset link has been sent to your email. Please check your inbox and follow the instructions to set a new password.</p>
+            <p>If you don't receive the password reset email within a few minutes, please check your spam folder.</p>
+        </div>
         @else
         <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #007bff;">Your Account Details</h3>
             <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p style="color: #28a745; font-weight: bold;">✅ Use your existing password to log in to your agent account.</p>
+            <p style="color: #28a745; font-weight: bold;">✅ Use your existing password to log in, or click "Forgot Password" if you need to reset it.</p>
         </div>
         @endif
 

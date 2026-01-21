@@ -101,7 +101,6 @@
                             </div>
                             @endif
 
-                            @if($application->status === 'pending')
                             <form method="POST" action="{{ route('admin.expert-applications.update', $application) }}">
                                 @csrf
                                 @method('PUT')
@@ -128,11 +127,6 @@
                                     <button type="submit" class="btn btn-primary">Update Status</button>
                                 </div>
                             </form>
-                            @else
-                            <div class="d-flex justify-content-end">
-                                <a href="{{ route('admin.expert-applications.index') }}" class="btn btn-primary">Back to Applications</a>
-                            </div>
-                            @endif
                         </div>
                     </div>
                 </div>

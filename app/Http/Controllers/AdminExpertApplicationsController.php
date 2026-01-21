@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use App\Mail\AgentWelcome;
 
 class AdminExpertApplicationsController extends Controller
@@ -57,6 +58,10 @@ class AdminExpertApplicationsController extends Controller
         } elseif ($request->status === 'rejected') {
             $data['approved_by'] = auth()->id();
             // No agent creation for rejected applications
+        } elseif ($request->status === 'pending') {
+            // Clear approval data when reverting to pending
+            $data['approved_at'] = null;
+            $data['approved_by'] = null;
         }
 
         $application->update($data);
@@ -72,10 +77,13 @@ class AdminExpertApplicationsController extends Controller
         try {
             // Check if user already exists
             $user = User::where('email', $application->email)->first();
+            $userJustCreated = false;
+            $password = null;
 
             if (!$user) {
                 // Generate a random password
                 $password = Str::random(12);
+                $userJustCreated = true;
 
                 // Create new user
                 $user = User::create([
@@ -126,19 +134,20 @@ class AdminExpertApplicationsController extends Controller
                         'mail.from.address' => $mailSetting->mail_from_address,
                         'mail.from.name' => $mailSetting->mail_from_name,
                     ]);
-                }
 
-                // Check if user was just created in this request
-                $userJustCreated = $user->wasRecentlyCreated ?? false;
+                    if ($userJustCreated) {
+                        // New user - send welcome email with generated password
+                        Mail::to($user->email)->send(new AgentWelcome($user, $password));
+                    } else {
+                        // Existing user - send password reset email so they can access their account
+                        Password::sendResetLink(['email' => $user->email]);
 
-                if ($userJustCreated) {
-                    // New user - send welcome email with generated password
-                    Mail::to($user->email)->send(new AgentWelcome($user, $password));
+                        // Also send welcome notification
+                        Mail::to($user->email)->send(new AgentWelcome($user, null));
+                    }
                 } else {
-                    // Existing user - send notification that they've been granted agent access
-                    // For now, we'll send the same email but without the password section
-                    // You could create a separate email template for existing users
-                    Mail::to($user->email)->send(new AgentWelcome($user, ''));
+                    // No active mail settings configured - log warning and skip email
+                    \Log::warning('Agent welcome email not sent - no active mail settings configured. Please configure mail settings in admin panel.');
                 }
             } catch (\Exception $e) {
                 \Log::error('Failed to send agent welcome email: ' . $e->getMessage());

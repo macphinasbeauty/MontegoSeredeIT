@@ -20,7 +20,7 @@ class AgentWelcome extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, string $password)
+    public function __construct(User $user, ?string $password)
     {
         $this->user = $user;
         $this->password = $password;
@@ -32,7 +32,7 @@ class AgentWelcome extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to DreamsTour - Your Agent Account is Ready!',
+            subject: 'Welcome to Miles Montego - Your Agent Account is Ready!',
         );
     }
 

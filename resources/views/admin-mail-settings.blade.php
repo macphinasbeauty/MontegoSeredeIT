@@ -39,8 +39,13 @@
                 <!-- Mail Settings -->
                 <div class="col-xl-9 col-lg-8">
                     <div class="card settings mb-0">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between align-items-center">
                             <h6>Mail Configuration</h6>
+                            @if($mailSetting->is_active)
+                                <span class="badge bg-success">Active</span>
+                            @else
+                                <span class="badge bg-warning">Inactive</span>
+                            @endif
                         </div>
                         <div class="card-body pb-3">
                             @if(session('success'))

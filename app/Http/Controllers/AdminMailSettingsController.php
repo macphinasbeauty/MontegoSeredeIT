@@ -21,7 +21,7 @@ class AdminMailSettingsController extends Controller
                 'mail_host' => 'smtp.gmail.com',
                 'mail_port' => 587,
                 'mail_encryption' => 'tls',
-                'mail_from_name' => 'DreamsTour',
+                'mail_from_name' => 'Miles Montego',
                 'is_active' => false,
             ]);
         }
@@ -68,10 +68,87 @@ class AdminMailSettingsController extends Controller
 
             $mailSetting->update($data);
 
+            // Update .env file with mail settings
+            $this->updateEnvFile($data);
+
             return redirect()->back()->with('success', 'Mail settings updated successfully!');
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update .env file with mail settings
+     */
+    private function updateEnvFile(array $data)
+    {
+        $envFile = base_path('.env');
+
+        if (!file_exists($envFile)) {
+            return; // .env file doesn't exist
+        }
+
+        $envContent = file_get_contents($envFile);
+        $lines = explode("\n", $envContent);
+        $updated = false;
+
+        // Map database fields to .env variables
+        $envMappings = [
+            'mail_driver' => 'MAIL_MAILER',
+            'mail_host' => 'MAIL_HOST',
+            'mail_port' => 'MAIL_PORT',
+            'mail_username' => 'MAIL_USERNAME',
+            'mail_password' => 'MAIL_PASSWORD',
+            'mail_encryption' => 'MAIL_ENCRYPTION',
+            'mail_from_address' => 'MAIL_FROM_ADDRESS',
+            'mail_from_name' => 'MAIL_FROM_NAME',
+        ];
+
+        foreach ($lines as $index => $line) {
+            // Skip comments and empty lines
+            if (empty(trim($line)) || strpos(trim($line), '#') === 0) {
+                continue;
+            }
+
+            foreach ($envMappings as $dbField => $envVar) {
+                if (strpos($line, "{$envVar}=") === 0) {
+                    $value = $data[$dbField] ?? '';
+                    // Quote values that contain spaces
+                    if (strpos($value, ' ') !== false) {
+                        $value = '"' . $value . '"';
+                    }
+                    $lines[$index] = "{$envVar}={$value}";
+                    $updated = true;
+                    break;
+                }
+            }
+        }
+
+        // If no updates were made, add missing variables
+        $existingVars = [];
+        foreach ($lines as $line) {
+            if (preg_match('/^([A-Z_]+)=/', $line, $matches)) {
+                $existingVars[] = $matches[1];
+            }
+        }
+
+        foreach ($envMappings as $dbField => $envVar) {
+            if (!in_array($envVar, $existingVars)) {
+                $value = $data[$dbField] ?? '';
+                // Quote values that contain spaces
+                if (strpos($value, ' ') !== false) {
+                    $value = '"' . $value . '"';
+                }
+                $lines[] = "{$envVar}={$value}";
+                $updated = true;
+            }
+        }
+
+        if ($updated) {
+            // Write back to .env file
+            $newContent = implode("\n", $lines);
+            file_put_contents($envFile, $newContent);
         }
     }
 
@@ -89,6 +166,10 @@ class AdminMailSettingsController extends Controller
 
             if (!$mailSetting) {
                 return redirect()->back()->with('error', 'No mail settings configured. Please save mail settings first.');
+            }
+
+            if (!$mailSetting->is_active) {
+                return redirect()->back()->with('error', 'Mail settings are not active. Please check "Active Configuration" and save settings.');
             }
 
             // Ensure we have required values

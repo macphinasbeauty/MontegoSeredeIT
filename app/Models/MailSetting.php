@@ -50,7 +50,7 @@ class MailSetting extends Model
                 'mail_host' => 'smtp.gmail.com',
                 'mail_port' => 587,
                 'mail_encryption' => 'tls',
-                'mail_from_name' => 'DreamsTour',
+                'mail_from_name' => 'Miles Montego',
                 'is_active' => false,
             ]);
         }
